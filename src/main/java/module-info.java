@@ -1,4 +1,6 @@
 module sk.groupOne.mytunes {
+    requires javafx.fxml;
+    requires javafx.controls;
 
     opens sk.groupOne.mytunes to javafx.fxml;
     exports sk.groupOne.mytunes;
