@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="600.0" maxWidth="750.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.gui.controllers.MainWindowController">
@@ -27,6 +29,10 @@
       <Button layoutX="590.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
       <Label layoutX="9.0" layoutY="531.0" prefHeight="20.0" prefWidth="150.0" text="Now playing:" />
       <Label layoutX="9.0" layoutY="547.0" prefHeight="20.0" prefWidth="150.0" text="Current song" />
-      <Button layoutX="349.0" layoutY="529.0" mnemonicParsing="false" text="Button" />
+      <ImageView fx:id="playPause" fitHeight="40.0" fitWidth="40.0" layoutX="346.0" layoutY="512.0" onMousePressed="#playPauseMouseDown" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/play.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
