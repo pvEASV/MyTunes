@@ -22,11 +22,11 @@
       <Label layoutX="460.0" layoutY="47.0" text="Songs" />
       <Button fx:id="playlistNewButton" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#onPlaylistNewButton" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button layoutX="84.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
-      <Button layoutX="154.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
-      <Button layoutX="366.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+      <Button fx:id="playlistDeleteButton" layoutX="154.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
+      <Button fx:id="songOnPlaylistDeleteButton" layoutX="366.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
       <Button layoutX="463.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button layoutX="526.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
-      <Button layoutX="590.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+      <Button fx:id="songsDeleteButton" layoutX="590.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
       <Label layoutX="9.0" layoutY="531.0" prefHeight="20.0" prefWidth="150.0" text="Now playing:" />
       <Label layoutX="9.0" layoutY="547.0" prefHeight="20.0" prefWidth="150.0" text="Current song" />
       <ImageView fx:id="playPause" fitHeight="40.0" fitWidth="40.0" layoutX="346.0" layoutY="512.0" onMousePressed="#playPauseMouseDown" pickOnBounds="true" preserveRatio="true">
