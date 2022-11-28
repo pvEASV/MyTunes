@@ -12,6 +12,7 @@ public class MyTunes extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/my-tunes-main-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
         stage.setTitle("MyTunes");
         stage.setResizable(false);
         stage.setScene(scene);
