@@ -20,7 +20,7 @@
       <ListView layoutX="460.0" layoutY="65.0" prefHeight="400.0" prefWidth="275.0" />
       <Label layoutX="226.0" layoutY="47.0" text="Songs on playlist" />
       <Label layoutX="460.0" layoutY="47.0" text="Songs" />
-      <Button fx:id="playlistNewButton" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#onPlaylistNewButton" prefHeight="26.0" prefWidth="60.0" text="New..." />
+      <Button fx:id="playlistNewButton" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#playlistNewButtonAction" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button layoutX="84.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
       <Button fx:id="playlistDeleteButton" layoutX="154.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
       <Button fx:id="songOnPlaylistDeleteButton" layoutX="366.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />

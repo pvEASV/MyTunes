@@ -2,15 +2,19 @@ package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import mytunes.MyTunes;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,10 +26,6 @@ public class MainWindowController {
     @FXML
     private Button playlistDeleteButton, songOnPlaylistDeleteButton, songsDeleteButton;
 
-
-    public void onPlaylistNewButton(ActionEvent actionEvent) {
-        System.out.println("New playlist button clicked");
-    }
 
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
@@ -83,5 +83,18 @@ public class MainWindowController {
             // cancel button is pressed
             System.out.println("Cancel button clicked");
         }
+    }
+
+    public void playlistNewButtonAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-playlist-view.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        //scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
+        stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/playlist.png"))));
+        stage.setTitle("Add playlist");
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }
