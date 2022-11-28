@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="600.0" maxWidth="750.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="600.0" maxWidth="750.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.groupOne.mytunes.gui.controllers.MainWindowController">
    <children>
       <TextField layoutX="586.0" layoutY="14.0" />
       <Slider layoutX="175.0" layoutY="560.0" prefHeight="15.0" prefWidth="400.0" />
@@ -20,7 +20,7 @@
       <ListView layoutX="460.0" layoutY="65.0" prefHeight="400.0" prefWidth="275.0" />
       <Label layoutX="226.0" layoutY="47.0" text="Songs on playlist" />
       <Label layoutX="460.0" layoutY="47.0" text="Songs" />
-      <Button layoutX="14.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="New..." />
+      <Button fx:id="playlistNewButton" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#onPlaylistNewButton" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button layoutX="84.0" layoutY="473.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
       <Button layoutX="154.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
       <Button layoutX="366.0" layoutY="473.0" mnemonicParsing="false" prefWidth="60.0" text="Delete" />
