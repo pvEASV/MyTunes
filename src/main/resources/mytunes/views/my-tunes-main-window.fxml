@@ -29,17 +29,17 @@
       <Button fx:id="songsDeleteButton" layoutX="590.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
       <Label layoutX="9.0" layoutY="531.0" prefHeight="20.0" prefWidth="150.0" text="Now playing:" />
       <Label layoutX="9.0" layoutY="547.0" prefHeight="20.0" prefWidth="150.0" text="Current song" />
-      <ImageView fx:id="playPauseButton" fitHeight="40.0" fitWidth="40.0" layoutX="346.0" layoutY="512.0" onMousePressed="#buttonMouseDown" onMouseReleased="#playPauseMouseUp" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="playPauseButton" fitHeight="40.0" fitWidth="40.0" layoutX="346.0" layoutY="512.0" onMousePressed="#controlsButtonMouseDown" onMouseReleased="#playPauseMouseUp" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/play.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="forwardButton" fitHeight="40.0" fitWidth="51.0" layoutX="396.0" layoutY="511.0" onMousePressed="#buttonMouseDown" onMouseReleased="#forwardMouseUp" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="forwardButton" fitHeight="40.0" fitWidth="51.0" layoutX="396.0" layoutY="511.0" onMousePressed="#controlsButtonMouseDown" onMouseReleased="#forwardMouseUp" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/forward.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="rewindButton" fitHeight="40.0" fitWidth="51.0" layoutX="286.0" layoutY="511.0" onMousePressed="#buttonMouseDown" onMouseReleased="#rewindMouseUp" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="rewindButton" fitHeight="40.0" fitWidth="51.0" layoutX="286.0" layoutY="511.0" onMousePressed="#controlsButtonMouseDown" onMouseReleased="#rewindMouseUp" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/rewind.png" />
          </image>
