@@ -29,4 +29,16 @@ public class MainWindowController {
         }
         isPlaying = !isPlaying;
     }
+
+    public void forwardMouseDown(MouseEvent mouseEvent) {
+    }
+
+    public void forwardMouseUp(MouseEvent mouseEvent) {
+    }
+
+    public void rewindMouseDown(MouseEvent mouseEvent) {
+    }
+
+    public void rewindMouseUp(MouseEvent mouseEvent) {
+    }
 }
