@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="600.0" maxWidth="750.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.groupOne.mytunes.gui.controllers.MainWindowController">
+<AnchorPane maxHeight="600.0" maxWidth="750.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.gui.controllers.MainWindowController">
    <children>
       <TextField layoutX="586.0" layoutY="14.0" />
       <Slider layoutX="175.0" layoutY="560.0" prefHeight="15.0" prefWidth="400.0" />

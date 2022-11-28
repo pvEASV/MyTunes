@@ -1,4 +1,4 @@
-package sk.groupOne.mytunes;
+package mytunes;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

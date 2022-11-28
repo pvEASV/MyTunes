@@ -1,4 +1,4 @@
-package sk.groupOne.mytunes.gui.controllers;
+package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
 
