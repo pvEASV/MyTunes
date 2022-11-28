@@ -12,7 +12,7 @@ import java.util.Objects;
 public class MainWindowController {
 
     @FXML
-    private ImageView playPause;
+    private ImageView playPauseButton;
     private boolean isPlaying = false;
 
 
@@ -20,25 +20,30 @@ public class MainWindowController {
         System.out.println("New playlist button clicked");
     }
 
-    public void playPauseMouseDown(MouseEvent mouseEvent) {
+    public void playPauseMouseUp(MouseEvent mouseEvent) {
+        resetOpacity(mouseEvent);
         System.out.println("Play/Pause button mouse down");
         if (!isPlaying) {
-            playPause.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
+            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
         } else {
-            playPause.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
+            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
         }
         isPlaying = !isPlaying;
     }
-
-    public void forwardMouseDown(MouseEvent mouseEvent) {
-    }
-
     public void forwardMouseUp(MouseEvent mouseEvent) {
-    }
-
-    public void rewindMouseDown(MouseEvent mouseEvent) {
+        resetOpacity(mouseEvent);
     }
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
+        resetOpacity(mouseEvent);
+    }
+
+    public void buttonMouseDown(MouseEvent mouseEvent) {
+        ImageView imageView = (ImageView) mouseEvent.getSource();
+        imageView.setOpacity(0.5);
+    }
+    private void resetOpacity(MouseEvent mouseEvent) {
+        ImageView imageView = (ImageView) mouseEvent.getSource();
+        imageView.setOpacity(1);
     }
 }
