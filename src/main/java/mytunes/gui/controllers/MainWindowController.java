@@ -57,7 +57,7 @@ public class MainWindowController {
     }
 
     /**
-     * Changes opacity of the control button to 0.5 when mouse is pressed down
+     * Changes opacity of the music controls buttons to 0.5 when mouse is pressed down on them
      * @param mouseEvent The mouse event that triggered this method
      */
     public void controlsButtonMouseDown(MouseEvent mouseEvent) {
