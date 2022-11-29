@@ -28,6 +28,7 @@ public class SongDAO {
         }
     }
     public void addSong(Song song){
+        //TODO there is an issue with adding a song that contains ' in its title/path
         String sql = "INSERT INTO ALL_SONGS (title, author, genre, filepath, duration) VALUES ('" + song.getTitle() + "', '" + song.getAuthor().getName() + "', '" + song.getGenre().getName() + "', '" + song.getPath() + "', " + song.getDuration() + ")";
         try (Connection con = cm.getConnection()){
             Statement stmt = con.createStatement();

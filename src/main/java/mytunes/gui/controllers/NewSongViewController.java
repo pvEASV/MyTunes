@@ -12,6 +12,7 @@ import mytunes.MyTunes;
 import mytunes.gui.models.Model;
 
 import java.io.File;
+import java.io.IOException;
 
 public class NewSongViewController {
     public TextField txtFieldTitle;
@@ -48,8 +49,10 @@ public class NewSongViewController {
     public void btnSaveAction(ActionEvent actionEvent) {
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
-        if (!title.isEmpty() && !filepath.isEmpty() && title.equals("Field must not be empty!") && filepath.equals("Field must not be empty!") ){
+        if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!") ){
             model.createSong(title, filepath);
+            Node node = (Node) actionEvent.getSource();
+            node.getScene().getWindow().hide();
             //TODO update all songs list view
         }
         else{
@@ -58,8 +61,6 @@ public class NewSongViewController {
             if (filepath.isEmpty())
                 txtFieldFile.setText("Field must not be empty!");
         }
-        Node node = (Node) actionEvent.getSource();
-        node.getScene().getWindow().hide();
     }
 
     public void btnCancelAction(ActionEvent actionEvent) {

@@ -12,8 +12,6 @@ public class LogicManager {
     private SongDAO songDAO = new SongDAO();
     private GenreDAO genreDAO = new GenreDAO();
 
-
-
     public void createSong(String title, String filepath) {
         songDAO.addSong(new Song(title, new Author("some author"), filepath, new Genre("test genre"), 404));
     }
