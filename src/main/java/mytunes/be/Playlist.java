@@ -13,18 +13,13 @@ public class Playlist {
         this.name = name;
     }
 
-    public Playlist(int id, String name, HashMap<Integer, Song> songs) {
-        this.id = id;
+    public Playlist(String name, HashMap<Integer, Song> songs) {
         this.name = name;
         this.songs = songs;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
