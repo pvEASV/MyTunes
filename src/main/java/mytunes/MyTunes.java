@@ -6,6 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import mytunes.be.Author;
+import mytunes.be.Genre;
+import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
 import mytunes.dal.SongDAO;
 
@@ -24,17 +27,28 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-        ConnectionManager cm = new ConnectionManager();
-        try {
-            System.out.println(cm.getConnection());
-            SongDAO songDAO = new SongDAO();
-            songDAO.getSong(1);
-        } catch (SQLServerException e) {
-            throw new RuntimeException(e);
-        }
+
+        test();
     }
 
     public static void main(String[] args) {
         launch();
+    }
+
+    private void test() {
+        SongDAO songDAO = new SongDAO();
+        Song song = songDAO.getSong(6);
+        System.out.println(song.toString());
+
+        ConnectionManager cm = new ConnectionManager();
+        try {
+            System.out.println(cm.getConnection());
+
+            songDAO.addSong(new Song("testRealPath1", new Author("test"), "D?", new Genre("test"), 404));
+        } catch (SQLServerException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

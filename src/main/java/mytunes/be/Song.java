@@ -11,6 +11,16 @@ public class Song {
     public Song(String title, Author author, String path, Genre genre, int duration) {
         this.title = title;
         this.author = author;
+        this.duration = duration;
+        this.path = path;
+        this.genre = genre;
+    }
+
+    public Song(int id, String title, Author author, int duration, String path, Genre genre) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.duration = duration;
         this.path = path;
         this.genre = genre;
     }
@@ -57,5 +67,9 @@ public class Song {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+    public String toString(){
+        return  "ID: " + id + ", Title: " + title + ", Author: " + author.getName() + ", Genre: " + genre.getName() +
+                ", Duration: " + duration + ", Path: " + path;
     }
 }
