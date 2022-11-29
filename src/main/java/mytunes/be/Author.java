@@ -8,17 +8,12 @@ public class Author {
     private String country;
     private List<Genre> genres;
 
-    public Author(int id, String name) {
-        this.id = id;
+    public Author(String name) {
         this.name = name;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

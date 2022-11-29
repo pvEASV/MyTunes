@@ -1,6 +1,9 @@
-module sk.groupOne.mytunes {
+module mytunes {
     requires javafx.fxml;
     requires javafx.controls;
+    requires com.microsoft.sqlserver.jdbc;
+    requires java.sql;
+    requires java.naming;
 
     opens mytunes to javafx.fxml;
     exports mytunes;
