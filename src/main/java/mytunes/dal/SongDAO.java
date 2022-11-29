@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SongDAO {
     ConnectionManager cm = new ConnectionManager();
@@ -16,12 +18,6 @@ public class SongDAO {
         Song song = new Song(title,filepath);
         //TODO add song to database
         return song;
-    }
-
-    public Genre createGenre(String name) {
-        Genre genre = new Genre(name);
-        //TODO add genre to database
-        return genre;
     }
 
    /* public Song getSong(int id) {

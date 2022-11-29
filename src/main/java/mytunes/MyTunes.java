@@ -24,14 +24,14 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-        ConnectionManager cm = new ConnectionManager();
+        /*ConnectionManager cm = new ConnectionManager();
         try {
             System.out.println(cm.getConnection());
             SongDAO songDAO = new SongDAO();
             //songDAO.getSong(1);
         } catch (SQLServerException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public static void main(String[] args) {
