@@ -3,7 +3,6 @@ package mytunes.dal;
 import mytunes.be.Author;
 import mytunes.be.Genre;
 import mytunes.be.Song;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,6 +11,12 @@ import java.sql.Statement;
 
 public class SongDAO {
     ConnectionManager cm = new ConnectionManager();
+
+    public Song createSong(String title, String filepath) {
+        Song song = new Song(title,filepath);
+        //add song to database
+        return song;
+    }
 
     public Song getSong(int id) {
         String sql = "SELECT * FROM ALL_SONGS WHERE id = " + id;
