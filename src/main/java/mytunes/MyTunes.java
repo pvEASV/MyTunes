@@ -28,7 +28,7 @@ public class MyTunes extends Application {
         try {
             System.out.println(cm.getConnection());
             SongDAO songDAO = new SongDAO();
-            songDAO.getSong(1);
+            //songDAO.getSong(1);
         } catch (SQLServerException e) {
             throw new RuntimeException(e);
         }

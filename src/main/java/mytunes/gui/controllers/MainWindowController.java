@@ -32,7 +32,6 @@ public class MainWindowController {
 
     private boolean isPlaying = false;
 
-
     /**
      * This method is called when the user clicks the ImageView representing play/pause button.
      * @param mouseEvent The mouse event that triggered this method.
@@ -122,7 +121,9 @@ public class MainWindowController {
     public void playlistEditButtonAction(ActionEvent actionEvent) {
 
     }
+
     public void filterOnKeyTyped(KeyEvent keyEvent) {
+
     }
     /**
      * Called when the user clicks the "new" button under all songs section
@@ -144,5 +145,6 @@ public class MainWindowController {
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) {
+
     }
 }

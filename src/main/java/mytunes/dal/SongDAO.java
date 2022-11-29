@@ -14,11 +14,17 @@ public class SongDAO {
 
     public Song createSong(String title, String filepath) {
         Song song = new Song(title,filepath);
-        //add song to database
+        //TODO add song to database
         return song;
     }
 
-    public Song getSong(int id) {
+    public Genre createGenre(String name) {
+        Genre genre = new Genre(name);
+        //TODO add genre to database
+        return genre;
+    }
+
+   /* public Song getSong(int id) {
         String sql = "SELECT * FROM ALL_SONGS WHERE id = " + id;
         try (Connection con = cm.getConnection()){
             Statement stmt = con.createStatement();
@@ -31,5 +37,5 @@ public class SongDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }
