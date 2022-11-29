@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
-    private Slider volumeControlSlider;
+    private Slider volumeControlSlider, songTimeSlider;
     @FXML
     private TextField filterTextField;
     @FXML
@@ -87,6 +87,7 @@ public class MainWindowController {
             type = "playlist";
         alert.setTitle("Delete " + type);
         alert.setContentText("Do you really wish to delete this " + type + " ?");
+
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isEmpty()){
             // alert is exited, no button has been pressed.
@@ -133,7 +134,7 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-song-view.fxml"));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        //scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
+        scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
         stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/record.png"))));
         stage.setTitle("Add song");
         stage.setResizable(false);
