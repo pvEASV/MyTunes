@@ -1,19 +1,11 @@
 package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import mytunes.gui.models.SongModel;
 
 import java.io.File;
@@ -25,7 +17,7 @@ public class NewSongViewController {
     public TextField txtFieldTime;
     public TextField txtFieldFile;
 
-    private SongModel songModel = new SongModel();
+    private final SongModel songModel = new SongModel();
 
     public void btnGenreMoreAction(ActionEvent actionEvent) {
     }
@@ -51,6 +43,8 @@ public class NewSongViewController {
             if (filepath.isEmpty() || filepath.equals("Field must not be empty!"))
                 txtFieldFile.setText("Field must not be empty!");
         }
+        Node node = (Node) actionEvent.getSource();
+        node.getScene().getWindow().hide();
     }
 
     public void btnCancelAction(ActionEvent actionEvent) {

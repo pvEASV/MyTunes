@@ -10,7 +10,7 @@ import mytunes.be.Author;
 import mytunes.be.Genre;
 import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
-import mytunes.dal.SongDAO;
+import mytunes.dal.dao.SongDAO;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -21,7 +21,7 @@ public class MyTunes extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/my-tunes-main-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/spotify.png"))));
-        scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(MyTunes.class.getResource("css/mainstyle.css")).toExternalForm());
         stage.setTitle("MyTunes");
         stage.setResizable(false);
         stage.setScene(scene);
@@ -46,8 +46,6 @@ public class MyTunes extends Application {
 
             songDAO.addSong(new Song("testRealPath1", new Author("test"), "D?", new Genre("test"), 404));
         } catch (SQLServerException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
