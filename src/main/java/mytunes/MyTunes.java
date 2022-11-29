@@ -27,7 +27,6 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-
         test();
     }
 

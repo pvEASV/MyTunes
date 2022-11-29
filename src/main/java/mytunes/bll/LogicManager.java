@@ -1,5 +1,6 @@
 package mytunes.bll;
 
+import mytunes.be.Author;
 import mytunes.be.Genre;
 import mytunes.be.Song;
 import mytunes.dal.dao.GenreDAO;

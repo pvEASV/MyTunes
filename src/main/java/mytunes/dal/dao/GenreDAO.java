@@ -1,4 +1,4 @@
-package mytunes.dal;
+package mytunes.dal.dao;
 
 import mytunes.be.Genre;
 
