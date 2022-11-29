@@ -13,8 +13,9 @@ public class SongDAO {
     ConnectionManager cm = new ConnectionManager();
 
     public Song createSong(String title, String filepath) {
-        System.out.println("success");
-        return new Song(title, filepath);
+        Song song = new Song(title,filepath);
+        //add song to database
+        return song;
     }
 
     public Song getSong(int id) {
