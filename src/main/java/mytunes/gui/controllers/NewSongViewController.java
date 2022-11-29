@@ -23,7 +23,14 @@ public class NewSongViewController {
     public void btnSaveAction(ActionEvent actionEvent) {
         String title = txtFieldTitle.getText();
         String filepath = txtFieldFile.getText();
-        songModel.createSong(title, filepath);
+        if (!title.isEmpty() && !filepath.isEmpty())
+            songModel.createSong(title, filepath);
+        else{
+            if (title.isEmpty() || title.equals("Field must not be empty!"))
+                txtFieldTitle.setText("Field must not be empty!");
+            if (filepath.isEmpty() || filepath.equals("Field must not be empty!"))
+                txtFieldFile.setText("Field must not be empty!");
+        }
     }
 
     public void btnCancelAction(ActionEvent actionEvent) {
