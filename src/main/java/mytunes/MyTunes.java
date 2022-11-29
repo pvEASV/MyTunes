@@ -1,10 +1,13 @@
 package mytunes;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import mytunes.dal.ConnectionManager;
+import mytunes.dal.SongDAO;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -21,6 +24,14 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+        ConnectionManager cm = new ConnectionManager();
+        try {
+            System.out.println(cm.getConnection());
+            SongDAO songDAO = new SongDAO();
+            songDAO.getSong(1);
+        } catch (SQLServerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {
