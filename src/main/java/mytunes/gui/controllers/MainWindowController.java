@@ -19,6 +19,8 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
+    private Slider volumeControlSlider;
+    @FXML
     private TextField filterTextField;
     @FXML
     private ListView<?> songsInPlaylistListVIew, allSongsListView, playListListVIew;

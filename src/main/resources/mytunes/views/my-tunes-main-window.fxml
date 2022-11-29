@@ -8,7 +8,7 @@
    <children>
       <TextField fx:id="filterTextField" layoutX="586.0" layoutY="14.0" onKeyTyped="#filterOnKeyTyped" />
       <Slider layoutX="175.0" layoutY="560.0" prefHeight="15.0" prefWidth="400.0" />
-      <Slider layoutX="721.0" layoutY="476.0" orientation="VERTICAL" prefHeight="110.0" prefWidth="14.0" />
+      <Slider fx:id="volumeControlSlider" layoutX="721.0" layoutY="476.0" orientation="VERTICAL" prefHeight="110.0" prefWidth="14.0" />
       <ListView fx:id="playListListVIew" layoutX="14.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
       <ListView fx:id="songsInPlaylistListVIew" layoutX="226.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
       <ListView fx:id="allSongsListView" layoutX="460.0" layoutY="65.0" prefHeight="400.0" prefWidth="275.0" />
