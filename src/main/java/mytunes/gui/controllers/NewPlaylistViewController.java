@@ -11,15 +11,20 @@ import mytunes.gui.models.Model;
 public class NewPlaylistViewController {
     @FXML
     private TextField nameTextField;
-    private Model model = new Model();
+    private Model model = null;
 
     public void saveButtonAction(ActionEvent actionEvent) {
-        String playlistName = nameTextField.getText().trim();
-        //TODO model.createPlaylist(playlist);
+        model.createPlaylist(new Playlist(nameTextField.getText().trim()));
+        Node node = (Node) actionEvent.getSource();
+        node.getScene().getWindow().hide();
     }
 
     public void cancelButtonAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
         node.getScene().getWindow().hide();
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 }

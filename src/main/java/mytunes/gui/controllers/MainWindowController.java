@@ -130,7 +130,9 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void playlistNewButtonAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        FXMLLoader fxmlLoader = openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
+        newPlaylistViewController.setModel(model);
     }
     public void playlistEditButtonAction(ActionEvent actionEvent) throws IOException {
         openNewWindow("Edit playlist", "views/edit-playlist-view.fxml", "images/playlist.png");

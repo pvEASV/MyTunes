@@ -41,7 +41,15 @@ public class PlaylistDAO {
     }
 
     public void addPlaylist(Playlist playlist){
-        //TODO implement
+        String sql = "INSERT INTO ALL_PLAYLISTS (playlistName, total_length) " +
+                "VALUES ('" + validateStringForSQL(playlist.getName()) + "', "
+                + playlist.getTotalLength() + ")";
+        try (Connection con = cm.getConnection()){
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deletePlaylist(Playlist playlist) {
@@ -50,5 +58,11 @@ public class PlaylistDAO {
 
     public void updatePlaylist(Playlist playlist) {
         //TODO implement
+    }
+
+    public String validateStringForSQL(String string){
+        if (string == null) return null;
+        string = string.replace("'", "''");
+        return string;
     }
 }

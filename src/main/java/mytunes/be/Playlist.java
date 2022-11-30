@@ -13,6 +13,10 @@ public class Playlist {
         this.name = name;
     }
 
+    public Playlist(String name){
+        this.name = name;
+    }
+
     public Playlist(String name, HashMap<Integer, Song> songs) {
         this.name = name;
         this.songs = songs;
