@@ -9,13 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
-import mytunes.bll.LogicManager;
 import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class NewSongViewController {
     public TextField txtFieldTitle;

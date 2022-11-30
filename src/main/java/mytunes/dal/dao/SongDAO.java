@@ -27,7 +27,7 @@ public class SongDAO {
                 String genre = rs.getString("genre");
                 int duration = rs.getInt("duration");
                 String path = rs.getString("filepath");
-                Song song = new Song(id, title, new Author(author), new Genre(genre), path, duration);
+                Song song = new Song(id, title, new Artist(artist), new Genre(genre), path, duration);
                 allSongs.add(song);
             }
             return allSongs;
