@@ -16,6 +16,10 @@ public class LogicManager {
         songDAO.addSong(new Song(title, new Artist("some author"), new Genre("test genre"), filepath, 404));
     }
 
+    public void deleteSong(Song song){
+        songDAO.deleteSong(song);
+    }
+
     public Genre createGenre(String name) {
         return genreDAO.createGenre(name);
     }

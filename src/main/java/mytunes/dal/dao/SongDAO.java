@@ -85,6 +85,17 @@ public class SongDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteSong(Song song){
+        String sql = "DELETE FROM ALL_SONGS WHERE id =" + song.getId();
+        try (Connection con = cm.getConnection()){
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Used to replace ' with '' in a string to make it SQL compatible
      * @param string the string to check
