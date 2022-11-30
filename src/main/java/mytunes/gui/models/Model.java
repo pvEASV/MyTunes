@@ -21,6 +21,7 @@ public class Model {
         playlists = FXCollections.observableArrayList();
         allSongs = FXCollections.observableArrayList();
     }
+
     public Song getSongToEdit() {
         return songToEdit;
     }

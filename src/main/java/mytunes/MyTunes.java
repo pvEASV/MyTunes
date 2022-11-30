@@ -25,15 +25,9 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-        test();
     }
 
     public static void main(String[] args) {
         launch();
-    }
-
-    private void test() {
-        PlaylistDAO playlistDAO = new PlaylistDAO();
-        List<Playlist> playlists = playlistDAO.getAllPlaylists();
     }
 }

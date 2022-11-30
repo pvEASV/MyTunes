@@ -86,7 +86,6 @@ public class NewSongViewController {
         else
             isSavingSaveAction(actionEvent);
     }
-
      */
 
     public void btnSaveAction(ActionEvent actionEvent) {
@@ -99,9 +98,13 @@ public class NewSongViewController {
         //TODO wrong duration input
         if (!title.isEmpty())
             txtFieldTitle.promptTextProperty().setValue("");
+        if (!filepath.isEmpty())
+            txtFieldFile.promptTextProperty().setValue("");
+        if (!txtFieldDuration.getText().isEmpty() && duration == -1)
+            txtFieldDuration.promptTextProperty().setValue("Invalid input! Duration in format mm:ss");
         if (!title.isEmpty() && !filepath.isEmpty() && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")
                 && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")) {
-            if (isEditing) //instead of having two methods, maybe we can just switch create/edit in here to avoid duplicate code...
+            if (isEditing) //TODO instead of having two methods, maybe we can just switch create/edit in here to avoid duplicate code...
                 model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
             else
                 model.createSong(title, filepath);
