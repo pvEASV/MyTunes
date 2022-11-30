@@ -145,6 +145,8 @@ public class MainWindowController {
             model.setSongToEdit(selectedSong);
             FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
             NewSongViewController newSongViewController = fxmlLoader.getController();
+            newSongViewController.setIsEditing();
+
         }
     }
 

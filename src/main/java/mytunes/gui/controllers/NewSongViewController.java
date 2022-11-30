@@ -1,7 +1,6 @@
 package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -25,20 +24,9 @@ public class NewSongViewController {
 
     private final Model model = new Model();
 
+
     private boolean isEditing = false;
 
-    @FXML
-    public void initialize(boolean isEditing){
-        this.isEditing = isEditing;
-        if (isEditing){
-            Song songToEdit = model.getSongToEdit();
-            txtFieldTitle.setText(songToEdit.getTitle());
-            txtFieldArtist.setText(songToEdit.getArtist().getName());
-            comboBoxGenre.setValue(songToEdit.getGenre().getName());
-            txtFieldFile.setText(songToEdit.getPath());
-            txtFieldDuration.setText("" + songToEdit.getDuration());
-        }
-    }
     /**
      * Called when a user clicks "More" button while creating a new song
      * Enables a user to create and add another genre to the combobox
@@ -81,6 +69,17 @@ public class NewSongViewController {
      * @param actionEvent The action event that triggered this method
      */
     public void btnSaveAction(ActionEvent actionEvent) {
+        if (!isEditing)
+            isSavingSaveAction(actionEvent);
+        else
+            isEditingSaveAction(actionEvent);
+    }
+
+    private void isEditingSaveAction(ActionEvent actionEvent) {
+
+    }
+
+    private void isSavingSaveAction(ActionEvent actionEvent){
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
         String author = txtFieldArtist.getText().trim();
@@ -136,5 +135,14 @@ public class NewSongViewController {
             }
         }
         return duration;
+    }
+    public void setIsEditing() {
+        isEditing = true;
+        Song songToEdit = model.getSongToEdit();
+        txtFieldTitle.setText(songToEdit.getTitle());
+        txtFieldArtist.setText(songToEdit.getArtist().getName());
+        comboBoxGenre.setValue(songToEdit.getGenre().getName());
+        txtFieldFile.setText(songToEdit.getPath());
+        txtFieldDuration.setText("" + songToEdit.getDuration());
     }
 }
