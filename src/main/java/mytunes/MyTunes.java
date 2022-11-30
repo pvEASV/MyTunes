@@ -42,7 +42,6 @@ public class MyTunes extends Application {
         ConnectionManager cm = new ConnectionManager();
         try {
             System.out.println(cm.getConnection());
-            songDAO.addSong(new Song("testRealPath1", new Author("test"), "D?", new Genre("test"), 404));
         } catch (SQLServerException e) {
             throw new RuntimeException(e);
         }

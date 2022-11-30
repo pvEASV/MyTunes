@@ -28,8 +28,12 @@ public class SongDAO {
         }
     }
     public void addSong(Song song){
-        //TODO there is an issue with adding a song that contains ' in its title/path
-        String sql = "INSERT INTO ALL_SONGS (title, author, genre, filepath, duration) VALUES ('" + song.getTitle() + "', '" + song.getAuthor().getName() + "', '" + song.getGenre().getName() + "', '" + song.getPath() + "', " + song.getDuration() + ")";
+        String sql = "INSERT INTO ALL_SONGS (title, author, genre, filepath, duration) " +
+                        "VALUES ('" + validateStringForSQL(song.getTitle()) + "', '"
+                        + validateStringForSQL(song.getAuthor().getName()) + "', '"
+                        + validateStringForSQL(song.getGenre().getName()) + "', '"
+                        + validateStringForSQL(song.getPath()) + "', "
+                        + song.getDuration() + ")";
         try (Connection con = cm.getConnection()){
             Statement stmt = con.createStatement();
             stmt.execute(sql);
@@ -41,5 +45,15 @@ public class SongDAO {
             } else
                 throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Used to replace ' with '' in a string to make it SQL compatible
+     * @param string the string to set
+     * @return the string with ' replaced by ''
+     */
+    public String validateStringForSQL(String string){
+        string = string.replace("'", "''");
+        return string;
     }
 }
