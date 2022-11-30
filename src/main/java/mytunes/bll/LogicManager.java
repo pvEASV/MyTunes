@@ -13,7 +13,7 @@ public class LogicManager {
     private GenreDAO genreDAO = new GenreDAO();
 
     public void createSong(String title, String filepath) {
-        songDAO.addSong(new Song(title, new Author("some author"), filepath, new Genre("test genre"), 404));
+        //TODO songDAO.addSong(new Song(title, new Author("some author"),new Genre("test genre"), filepath, 404));
     }
 
     public Genre createGenre(String name) {

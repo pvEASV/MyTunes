@@ -8,7 +8,8 @@ public class Song {
     private String path;
     private Genre genre;
 
-    public Song(String title, Author author, String path, Genre genre, int duration) {
+    public Song(int id, String title, Author author, Genre genre, String path, int duration) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.duration = duration;
@@ -16,13 +17,17 @@ public class Song {
         this.genre = genre;
     }
 
-    public Song(int id, String title, Author author, int duration, String path, Genre genre) {
-        this.id = id;
+    public Song(String title, Author author, Genre genre, String path,  int duration) {
         this.title = title;
         this.author = author;
         this.duration = duration;
         this.path = path;
         this.genre = genre;
+    }
+
+    public Song(String title, String path){
+        this.title = title;
+        this.path = path;
     }
 
     public int getId() {

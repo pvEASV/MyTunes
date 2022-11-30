@@ -132,6 +132,14 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
+        loadNewSongWindow();
+    }
+
+    public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
+        loadNewSongWindow();
+    }
+
+    private void loadNewSongWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-song-view.fxml"));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -142,9 +150,5 @@ public class MainWindowController {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-    }
-
-    public void songEditButtonAction(ActionEvent actionEvent) {
-
     }
 }

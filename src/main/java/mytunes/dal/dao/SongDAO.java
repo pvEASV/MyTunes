@@ -22,7 +22,7 @@ public class SongDAO {
             System.out.println(result_id);
 
             return new Song(id, rs.getString("title"), new Author(rs.getString("author")),
-                    rs.getInt("duration"), rs.getString("filepath"), new Genre(rs.getString("genre")));
+                    new Genre(rs.getString("genre")), rs.getString("filepath"), rs.getInt("duration"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
