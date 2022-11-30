@@ -12,12 +12,22 @@ public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
     private final ObservableList<Song> allSongs;
+
+
+    private Song songToEdit;
     private LogicManager bll = new LogicManager();
 
     public Model(){
         genres = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
         allSongs = FXCollections.observableArrayList();
+    }
+    public Song getSongToEdit() {
+        return songToEdit;
+    }
+
+    public void setSongToEdit(Song songToEdit) {
+        this.songToEdit = songToEdit;
     }
 
     public void createSong(String title, String filepath){

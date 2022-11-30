@@ -1,6 +1,5 @@
 package mytunes.gui.controllers;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -139,13 +138,14 @@ public class MainWindowController {
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
-    }
-
-    private void editWindowSetPreviousValues(FXMLLoader fxmlLoader){
-        NewSongViewController newSongViewController = fxmlLoader.getController();
-        newSongViewController.txtFieldTitle.setText("Hello");
-        newSongViewController.txtFieldFile.setText("Hello");
+        Song selectedSong = allSongsListView.getSelectionModel().getSelectedItem();
+        if (selectedSong == null) {
+            new Alert(Alert.AlertType.ERROR, "Please select a song to edit").showAndWait();
+        } else {
+            model.setSongToEdit(selectedSong);
+            FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
+            NewSongViewController newSongViewController = fxmlLoader.getController();
+        }
     }
 
     private FXMLLoader openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {

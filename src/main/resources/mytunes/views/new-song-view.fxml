@@ -36,8 +36,8 @@
                   <Button fx:id="btnGenreMore" mnemonicParsing="false" onAction="#btnGenreMoreAction" prefHeight="25.0" text="More..." />
                </children>
             </HBox>
-            <Label prefHeight="25.0" text="Time:" GridPane.rowIndex="3" />
-            <TextField fx:id="txtFieldTime" prefHeight="25.0" promptText="3:35" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label prefHeight="25.0" text="Duration:" GridPane.rowIndex="3" />
+            <TextField fx:id="txtFieldDuration" prefHeight="25.0" promptText="3:35" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
                   <TextField fx:id="txtFieldFile" prefHeight="26.0" prefWidth="270.0" promptText="C:\Users\..." />

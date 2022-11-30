@@ -1,6 +1,7 @@
 package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
+import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
 import java.io.File;
@@ -18,11 +20,25 @@ public class NewSongViewController {
     public TextField txtFieldTitle;
     public TextField txtFieldArtist;
     public ComboBox<String> comboBoxGenre;
-    public TextField txtFieldTime;
     public TextField txtFieldFile;
+    public TextField txtFieldDuration;
 
-    private Model model = new Model();
+    private final Model model = new Model();
 
+    private boolean isEditing = false;
+
+    @FXML
+    public void initialize(boolean isEditing){
+        this.isEditing = isEditing;
+        if (isEditing){
+            Song songToEdit = model.getSongToEdit();
+            txtFieldTitle.setText(songToEdit.getTitle());
+            txtFieldArtist.setText(songToEdit.getArtist().getName());
+            comboBoxGenre.setValue(songToEdit.getGenre().getName());
+            txtFieldFile.setText(songToEdit.getPath());
+            txtFieldDuration.setText("" + songToEdit.getDuration());
+        }
+    }
     /**
      * Called when a user clicks "More" button while creating a new song
      * Enables a user to create and add another genre to the combobox
@@ -69,7 +85,7 @@ public class NewSongViewController {
         String filepath = txtFieldFile.getText().trim();
         String author = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
-        int duration = validateDurationInput(txtFieldTime.getText().trim());
+        int duration = validateDurationInput(txtFieldDuration.getText().trim());
         if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!")) {
             model.createSong(title, filepath);
             Node node = (Node) actionEvent.getSource();
