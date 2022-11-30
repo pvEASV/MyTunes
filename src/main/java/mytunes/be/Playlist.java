@@ -22,6 +22,12 @@ public class Playlist {
         this.songs = songs;
     }
 
+    public Playlist(int id, String playlistName, int totalLength) {
+        this.id = id;
+        this.name = playlistName;
+        this.totalLength = totalLength;
+    }
+
     public int getId() {
         return id;
     }
@@ -48,5 +54,13 @@ public class Playlist {
 
     public void setSongs(HashMap<Integer, Song> songs) {
         this.songs = songs;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist" +
+                "id = " + id +
+                ", name = '" + name + '\'' +
+                ", totalLength = " + totalLength;
     }
 }

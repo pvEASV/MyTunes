@@ -1,5 +1,6 @@
 package mytunes.dal.dao;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import mytunes.be.Artist;
 import mytunes.be.Genre;
 import mytunes.be.Playlist;
@@ -26,7 +27,7 @@ public class PlaylistDAO {
                 int id = rs.getInt("id");
                 String playlistName = rs.getString("playlistName");
                 int totalLength = rs.getInt("total_length");
-                Playlist playlist = new Playlist(id, playlistName);
+                Playlist playlist = new Playlist(id, playlistName, totalLength);
                 allPlaylists.add(playlist);
             }
             return allPlaylists;
@@ -36,8 +37,17 @@ public class PlaylistDAO {
         }
     }
 
-    public void getPlaylist(Playlist playlist){
-        //TODO implement
+    public Playlist getPlaylist(int id) {
+        String sql = "SELECT * FROM ALL_PLAYLISTS WHERE id = " + id;
+        try (Connection con = cm.getConnection()) {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            return new Playlist(id, rs.getString("playlistName"), rs.getInt("total_length"));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addPlaylist(Playlist playlist){
@@ -63,7 +73,15 @@ public class PlaylistDAO {
     }
 
     public void updatePlaylist(Playlist playlist) {
-        //TODO implement
+        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + validateStringForSQL(playlist.getName()) + "', "
+                + "total_length = '" + playlist.getTotalLength() + "' "
+                + "WHERE id = " + playlist.getId();
+        try (Connection con = cm.getConnection()){
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String validateStringForSQL(String string){

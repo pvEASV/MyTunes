@@ -13,6 +13,7 @@ public class Model {
     private final ObservableList<Playlist> playlists;
     private final ObservableList<Song> allSongs;
     private Song songToEdit;
+    private Playlist playlistToEdit;
     private LogicManager bll = new LogicManager();
 
     public Model(){
@@ -54,6 +55,7 @@ public class Model {
 
     public void createPlaylist(Playlist playlist){
         bll.createPlaylist(playlist);
+        loadAllPlaylists();
     }
 
     public void deletePlaylist(Playlist playlist) {
@@ -62,7 +64,7 @@ public class Model {
     }
 
     public void updatePlaylist(Playlist playlist){
-        bll.updatePlaylist(playlist);
+        bll.updatePlaylist(new Playlist(playlistToEdit.getId(), playlist.getName(), playlist.getTotalLength()));
     }
 
     private void loadAllPlaylists() {
@@ -73,6 +75,14 @@ public class Model {
     public ObservableList<Playlist> getAllPlaylists(){
         loadAllPlaylists();
         return playlists;
+    }
+
+    public Playlist getPlaylistToEdit() {
+        return playlistToEdit;
+    }
+
+    public void setPlaylistToEdit(Playlist playlist){
+        this.playlistToEdit = playlist;
     }
 
     public void createGenre(String name) {

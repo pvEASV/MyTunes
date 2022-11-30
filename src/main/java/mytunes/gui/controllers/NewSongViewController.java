@@ -79,6 +79,7 @@ public class NewSongViewController {
      *
      * @param actionEvent The action event that triggered this method
      */
+    /*
     public void btnSaveAction(ActionEvent actionEvent) {
         if (isEditing)
             isEditingSaveAction(actionEvent);
@@ -86,45 +87,56 @@ public class NewSongViewController {
             isSavingSaveAction(actionEvent);
     }
 
-    private void isEditingSaveAction(ActionEvent actionEvent) {
+     */
+
+    public void btnSaveAction(ActionEvent actionEvent) {
         //TODO: mae this a separate method
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
         String artist = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
         int duration = validateDurationInput(txtFieldDuration.getText().trim());
-        if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!")) {
-            model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
+        //TODO wrong duration input
+        if (!title.isEmpty())
+            txtFieldTitle.promptTextProperty().setValue("");
+        if (!title.isEmpty() && !filepath.isEmpty() && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")
+                && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")) {
+            if (isEditing) //instead of having two methods, maybe we can just switch create/edit in here to avoid duplicate code...
+                model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
+            else
+                model.createSong(title, filepath);
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
-            //TODO update all songs list view
         } else {
             if (title.isEmpty())
-                txtFieldTitle.setText("Field must not be empty!");
+                txtFieldTitle.promptTextProperty().setValue("Field must not be empty!");
             if (filepath.isEmpty())
-                txtFieldFile.setText("Field must not be empty!");
+                txtFieldFile.promptTextProperty().setValue("Field must not be empty!");
         }
 
     }
 
+    /*
     private void isSavingSaveAction(ActionEvent actionEvent){
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
         String artist = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
         int duration = validateDurationInput(txtFieldDuration.getText().trim());
-        if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!")) {
-            model.createSong(title, filepath);
+        if (!title.isEmpty())
+            txtFieldTitle.promptTextProperty().setValue("");
+        if (!title.isEmpty() && !filepath.isEmpty() && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")
+                && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")) {
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
-            //TODO update all songs list view
         } else {
             if (title.isEmpty())
-                txtFieldTitle.setText("Field must not be empty!");
+                txtFieldTitle.promptTextProperty().setValue("Field must not be empty!");
             if (filepath.isEmpty())
-                txtFieldFile.setText("Field must not be empty!");
+                txtFieldFile.promptTextProperty().setValue("Field must not be empty!");
         }
     }
+     */
 
     /**
      * Cancels creating a new song
@@ -141,32 +153,20 @@ public class NewSongViewController {
      *@param input The duration of the song
      */
     private int validateDurationInput(String input) {
-        //TODO use arrays
-        //TODO implement method for a wrong input (-1)
         String[] inputArray = input.split(":");
-
         int duration = -1;
-        int colonPosition;
-        if (input.contains(":")) {
-            switch (input.length()) {
-                case 6:
-                case 8:
-                    colonPosition = input.indexOf(":");
-                    if (colonPosition == 1 || colonPosition == 2) {
-                        duration += Integer.parseInt(input.substring(0, colonPosition)) * 3600;
-                        input = input.substring(colonPosition + 1);
-                    }
-                case 4:
-                case 5:
-                    colonPosition = input.indexOf(":");
-                    if (colonPosition == 1 || colonPosition == 2) {
-                        duration += Integer.parseInt(input.substring(0, colonPosition)) * 60 + Integer.parseInt(input.substring(colonPosition + 1)) + 1;
-                    }
-                    break;
-            }
+        if (inputArray.length == 3){
+            duration += Integer.parseInt(inputArray[0])*3600;
+            duration += Integer.parseInt(inputArray[1])*60;
+            duration += Integer.parseInt(inputArray[2]);
+        }
+        else if (inputArray.length == 2){
+            duration += Integer.parseInt(inputArray[0])*60;
+            duration += Integer.parseInt(inputArray[1]);
         }
         return duration;
     }
+
     public void setIsEditing() {
         isEditing = true;
         Song songToEdit = model.getSongToEdit();

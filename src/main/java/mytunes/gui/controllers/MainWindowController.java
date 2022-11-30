@@ -31,8 +31,6 @@ public class MainWindowController {
     @FXML
     private ImageView playPauseButton;
     @FXML
-    private Button playlistDeleteButton, songsInPlaylistDeleteButton, songsDeleteButton;
-    @FXML
     private TableView<Song> allSongsTableView;
     @FXML
     private TableColumn<Song, String> titleColumn, artistColumn, genreColumn;
@@ -128,21 +126,16 @@ public class MainWindowController {
         alert.setContentText("Do you really wish to delete this " + type + " ?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isEmpty()){
-            // TODO alert is exited, no button has been pressed.
-        } else if(result.get() == ButtonType.OK){
-            if (type.equals("song")){
+        if(result.get() == ButtonType.OK) {
+            if (type.equals("song")) {
                 Song song = allSongsTableView.getSelectionModel().getSelectedItem();
                 model.deleteSong(song);
-            }
-            else{
+                showAllSongs();
+            } else {
                 Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
                 model.deletePlaylist(playlist);
+                showAllPlaylists();
             }
-
-        } else if(result.get() == ButtonType.CANCEL){
-            //TODO cancel button is pressed
-            System.out.println("Cancel button clicked");
         }
     }
 
@@ -158,7 +151,16 @@ public class MainWindowController {
         newPlaylistViewController.setModel(model);
     }
     public void playlistEditButtonAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("Edit playlist", "views/edit-playlist-view.fxml", "images/playlist.png");
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (playlist == null)
+            new Alert(Alert.AlertType.ERROR, "Please select a playlist to edit").showAndWait();
+        else {
+            model.setPlaylistToEdit(playlist);
+            FXMLLoader fxmlLoader = openNewWindow("Edit playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+            NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
+            newPlaylistViewController.setModel(model);
+            newPlaylistViewController.setIsEditing();
+        }
     }
 
     public void filterOnKeyTyped(KeyEvent keyEvent) {
@@ -174,7 +176,6 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
         NewSongViewController newSongViewController = fxmlLoader.getController();
         newSongViewController.setModel(model);
-
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
@@ -201,6 +202,7 @@ public class MainWindowController {
         stage.centerOnScreen();
         scene.getWindow().setOnHiding(event -> {
            showAllSongs();
+           showAllPlaylists();
         });
         stage.show();
         return fxmlLoader;
