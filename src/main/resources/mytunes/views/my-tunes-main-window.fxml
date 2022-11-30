@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,7 +18,6 @@
       <Slider fx:id="volumeControlSlider" layoutX="721.0" layoutY="476.0" orientation="VERTICAL" prefHeight="110.0" prefWidth="14.0" />
       <ListView fx:id="playListListVIew" layoutX="14.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
       <ListView fx:id="songsInPlaylistListVIew" layoutX="226.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
-      <ListView fx:id="allSongsListView" layoutX="460.0" layoutY="65.0" prefHeight="400.0" prefWidth="275.0" />
       <Label layoutX="14.0" layoutY="47.0" text="Playlists" />
       <Label layoutX="226.0" layoutY="47.0" text="Songs in playlist" />
       <Label layoutX="460.0" layoutY="47.0" text="All songs" />
@@ -47,5 +48,13 @@
       </ImageView>
       <Label fx:id="lblSongTimeUntilEnd" layoutX="576.0" layoutY="557.0" text="Song length" />
       <Label fx:id="lblSongTimeSinceStart" layoutX="140.0" layoutY="557.0" text="0:00" />
+      <TableView fx:id="allSongsTableView" layoutX="456.0" layoutY="64.0" prefHeight="400.0" prefWidth="274.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Title" />
+          <TableColumn prefWidth="75.0" text="Artist" />
+            <TableColumn prefWidth="75.0" text="Genre" />
+            <TableColumn prefWidth="75.0" text="Duration" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
