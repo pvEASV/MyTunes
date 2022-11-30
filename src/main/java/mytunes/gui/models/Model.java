@@ -32,6 +32,11 @@ public class Model {
         bll.createSong(title, filepath);
     }
 
+    public void deleteSong(Song song){
+        bll.deleteSong(song);
+        loadAllSongs();
+    }
+
     public void createGenre(String name) {
         //TODO update combobox
         Genre genre = bll.createGenre(name);

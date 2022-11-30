@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
+import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
@@ -25,16 +26,15 @@ public class MainWindowController {
     @FXML
     private TextField filterTextField;
     @FXML
-    private ListView<?> songsInPlaylistListVIew;
+    private ListView<Song> songsInPlaylistListVIew;
     @FXML
     private ListView<Song> allSongsListView;
     @FXML
-    private ListView<?> playListListVIew;
+    private ListView<Playlist> playListListVIew;
     @FXML
     private ImageView playPauseButton;
     @FXML
     private Button playlistDeleteButton, songsInPlaylistDeleteButton, songsDeleteButton;
-
 
     private boolean isPlaying = false;
     private Model model = new Model();
@@ -101,10 +101,16 @@ public class MainWindowController {
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isEmpty()){
             // TODO alert is exited, no button has been pressed.
-            System.out.println("No button clicked");
         } else if(result.get() == ButtonType.OK){
-            //TODO ok button is pressed
-            System.out.println("Ok button clicked");
+            if (type.equals("song")){
+                Song song = allSongsListView.getSelectionModel().getSelectedItem();
+                model.deleteSong(song);
+            }
+            else{
+                Playlist playlist;
+                //TODO model.deletePlaylist(playlist);
+            }
+
         } else if(result.get() == ButtonType.CANCEL){
             //TODO cancel button is pressed
             System.out.println("Cancel button clicked");

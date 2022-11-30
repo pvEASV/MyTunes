@@ -142,6 +142,7 @@ public class NewSongViewController {
      *@param input The duration of the song
      */
     private int validateDurationInput(String input) {
+        //TODO split into arrays
         int duration = -1;
         int colonPosition;
 
