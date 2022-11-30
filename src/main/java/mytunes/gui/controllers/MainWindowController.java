@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -28,25 +29,38 @@ public class MainWindowController {
     @FXML
     private ListView<Song> songsInPlaylistListVIew;
     @FXML
-    private ListView<Song> allSongsListView;
-    @FXML
     private ListView<Playlist> playlistListVIew;
     @FXML
     private ImageView playPauseButton;
     @FXML
     private Button playlistDeleteButton, songsInPlaylistDeleteButton, songsDeleteButton;
+    @FXML
+    private TableView<Song> allSongsTableView;
+    @FXML
+    private TableColumn<Song, String> titleColumn;
+    @FXML
+    private TableColumn<Song, String> artistColumn;
+    @FXML
+    private TableColumn<Song, String> genreColumn;
+    @FXML
+    private TableColumn<Song, Integer> durationColumn;
+    //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
     private Model model = new Model();
 
     @FXML
     public void initialize() {
-        allSongsListView = new ListView<>();
         showAllSongs();
     }
 
     private void showAllSongs() {
-        allSongsListView.setItems(model.getAllSongs());
+        allSongsTableView.refresh();
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        allSongsTableView.getItems().setAll(model.getAllSongs());
     }
 
     /**
@@ -109,7 +123,7 @@ public class MainWindowController {
             // TODO alert is exited, no button has been pressed.
         } else if(result.get() == ButtonType.OK){
             if (type.equals("song")){
-                Song song = allSongsListView.getSelectionModel().getSelectedItem();
+                Song song = allSongsTableView.getSelectionModel().getSelectedItem();
                 model.deleteSong(song);
             }
             else{
@@ -155,7 +169,7 @@ public class MainWindowController {
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
-        Song selectedSong = allSongsListView.getSelectionModel().getSelectedItem();
+        Song selectedSong = allSongsTableView.getSelectionModel().getSelectedItem();
         if (selectedSong == null) {
             new Alert(Alert.AlertType.ERROR, "Please select a song to edit").showAndWait();
         } else {

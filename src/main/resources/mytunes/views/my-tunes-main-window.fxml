@@ -50,10 +50,10 @@
       <Label fx:id="lblSongTimeSinceStart" layoutX="140.0" layoutY="557.0" text="0:00" />
       <TableView fx:id="allSongsTableView" layoutX="456.0" layoutY="64.0" prefHeight="400.0" prefWidth="274.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Title" />
-          <TableColumn prefWidth="75.0" text="Artist" />
-            <TableColumn prefWidth="75.0" text="Genre" />
-            <TableColumn prefWidth="75.0" text="Duration" />
+          <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
+          <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
+            <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+            <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
         </columns>
       </TableView>
    </children>

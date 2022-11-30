@@ -35,8 +35,5 @@ public class MyTunes extends Application {
     private void test() {
         PlaylistDAO playlistDAO = new PlaylistDAO();
         List<Playlist> playlists = playlistDAO.getAllPlaylists();
-        for (Playlist playlist : playlists){
-            System.out.println(playlist);
-        }
     }
 }

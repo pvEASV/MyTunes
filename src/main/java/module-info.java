@@ -9,4 +9,6 @@ module mytunes {
     exports mytunes;
     exports mytunes.gui.controllers;
     opens mytunes.gui.controllers to javafx.fxml;
+    opens mytunes.be to javafx.base;
+    exports mytunes.be;
 }

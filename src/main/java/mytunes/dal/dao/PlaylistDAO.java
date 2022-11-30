@@ -53,7 +53,13 @@ public class PlaylistDAO {
     }
 
     public void deletePlaylist(Playlist playlist) {
-        //TODO implement
+        String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + playlist.getId();
+        try (Connection con = cm.getConnection()){
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updatePlaylist(Playlist playlist) {
