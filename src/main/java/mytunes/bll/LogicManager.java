@@ -23,19 +23,20 @@ public class LogicManager {
         songDAO.deleteSong(song);
     }
 
+    public void updateSong(Song song) {
+        songDAO.editSong(song);
+    }
+
+    public List<Song> getAllSongs() {
+        return songDAO.getAllSongs();
+    }
+
     public Genre createGenre(String name) {
         return genreDAO.createGenre(name);
     }
 
     public List<Genre> getAllGenres() {
         return genreDAO.getAllGenres();
-    }
-
-    public List<Song> getAllSongs() {
-        return songDAO.getAllSongs();
-    }
-    public void updateSong(Song song) {
-        songDAO.editSong(song);
     }
 
     public void createPlaylist(Playlist playlist){

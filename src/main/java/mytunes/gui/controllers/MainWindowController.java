@@ -41,6 +41,7 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
+        allSongsListView = new ListView<>();
         showAllSongs();
     }
 

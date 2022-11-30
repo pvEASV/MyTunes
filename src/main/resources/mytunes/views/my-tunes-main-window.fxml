@@ -26,11 +26,11 @@
       <Label layoutX="9.0" layoutY="547.0" prefHeight="20.0" prefWidth="150.0" text="Current song" />
       <Button fx:id="playlistNewButton" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#playlistNewButtonAction" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button fx:id="playlistEditButton" layoutX="84.0" layoutY="473.0" mnemonicParsing="false" onAction="#playlistEditButtonAction" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
-      <Button fx:id="playlistDeleteButton" layoutX="154.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
-      <Button fx:id="songsInPlaylistDeleteButton" layoutX="366.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
+      <Button fx:id="playlistDeleteButton" layoutX="154.0" layoutY="473.0" mnemonicParsing="false" onAction="#deleteButtonAction" prefWidth="60.0" text="Delete" />
+      <Button fx:id="songsInPlaylistDeleteButton" layoutX="366.0" layoutY="473.0" mnemonicParsing="false" onAction="#deleteButtonAction" prefWidth="60.0" text="Delete" />
       <Button fx:id="songNewButton" layoutX="463.0" layoutY="473.0" mnemonicParsing="false" onAction="#songNewButtonAction" prefHeight="26.0" prefWidth="60.0" text="New..." />
       <Button fx:id="songEditButton" layoutX="526.0" layoutY="473.0" mnemonicParsing="false" onAction="#songEditButtonAction" prefHeight="26.0" prefWidth="60.0" text="Edit..." />
-      <Button fx:id="songsDeleteButton" layoutX="590.0" layoutY="473.0" mnemonicParsing="false" onAction="#showAlert" prefWidth="60.0" text="Delete" />
+      <Button fx:id="songsDeleteButton" layoutX="590.0" layoutY="473.0" mnemonicParsing="false" onAction="#deleteButtonAction" prefWidth="60.0" text="Delete" />
       <ImageView fx:id="playPauseButton" fitHeight="40.0" fitWidth="40.0" layoutX="346.0" layoutY="512.0" onMousePressed="#controlsButtonMouseDown" onMouseReleased="#playPauseMouseUp" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/play.png" />

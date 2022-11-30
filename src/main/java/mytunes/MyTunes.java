@@ -5,9 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import mytunes.be.Playlist;
+import mytunes.dal.dao.PlaylistDAO;
 import mytunes.dal.dao.SongDAO;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class MyTunes extends Application {
@@ -30,6 +33,10 @@ public class MyTunes extends Application {
     }
 
     private void test() {
-        SongDAO songDAO = new SongDAO();
+        PlaylistDAO playlistDAO = new PlaylistDAO();
+        List<Playlist> playlists = playlistDAO.getAllPlaylists();
+        for (Playlist playlist : playlists){
+            System.out.println(playlist);
+        }
     }
 }
