@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -146,7 +145,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        FXMLLoader fxmlLoader = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        NewSongViewController newSongViewController = fxmlLoader.getController();
+        newSongViewController.setModel(model);
+
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
