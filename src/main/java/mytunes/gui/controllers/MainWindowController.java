@@ -134,7 +134,7 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("Add song", "new-song-view.fxml", "images/song.png");
+        openNewWindow("Add song", "new-song-view.fxml", "images/record.png");
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
@@ -145,6 +145,7 @@ public class MainWindowController {
             model.setSongToEdit(selectedSong);
             FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
             NewSongViewController newSongViewController = fxmlLoader.getController();
+            newSongViewController.setModel(model);
             newSongViewController.setIsEditing();
 
         }

@@ -27,6 +27,7 @@ public class LogicManager {
     public List<Song> getAllSongs() {
         return songDAO.getAllSongs();
     }
-
-
+    public void updateSong(Song song) {
+        songDAO.editSong(song);
+    }
 }

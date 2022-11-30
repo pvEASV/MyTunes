@@ -12,8 +12,6 @@ public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
     private final ObservableList<Song> allSongs;
-
-
     private Song songToEdit;
     private LogicManager bll = new LogicManager();
 
@@ -53,5 +51,9 @@ public class Model {
     public ObservableList<Song> getAllSongs() {
         loadAllSongs();
         return allSongs;
+    }
+
+    public void updateSong(Song song){
+        bll.updateSong(new Song(songToEdit.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getPath(), song.getDuration()));
     }
 }

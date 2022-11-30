@@ -91,6 +91,7 @@ public class SongDAO {
      * @return the string with ' replaced by ''
      */
     public String validateStringForSQL(String string){
+        if (string == null) return null;
         string = string.replace("'", "''");
         return string;
     }

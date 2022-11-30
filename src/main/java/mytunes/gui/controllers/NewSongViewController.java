@@ -1,6 +1,7 @@
 package mytunes.gui.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -9,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
+import mytunes.be.Artist;
+import mytunes.be.Genre;
 import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
@@ -22,11 +25,20 @@ public class NewSongViewController {
     public TextField txtFieldFile;
     public TextField txtFieldDuration;
 
-    private final Model model = new Model();
+
+
+    private Model model = null;
 
 
     private boolean isEditing = false;
 
+    public void setModel(Model model) {
+        this.model = model;
+    }
+    @FXML
+    public void initialize() {
+        isEditing = false;
+    }
     /**
      * Called when a user clicks "More" button while creating a new song
      * Enables a user to create and add another genre to the combobox
@@ -69,20 +81,37 @@ public class NewSongViewController {
      * @param actionEvent The action event that triggered this method
      */
     public void btnSaveAction(ActionEvent actionEvent) {
-        if (!isEditing)
-            isSavingSaveAction(actionEvent);
-        else
+        if (isEditing)
             isEditingSaveAction(actionEvent);
+        else
+            isSavingSaveAction(actionEvent);
     }
 
     private void isEditingSaveAction(ActionEvent actionEvent) {
+        //TODO: mae this a separate method
+        String title = txtFieldTitle.getText().trim();
+        String filepath = txtFieldFile.getText().trim();
+        String artist = txtFieldArtist.getText().trim();
+        String genre = comboBoxGenre.getValue();
+        int duration = validateDurationInput(txtFieldDuration.getText().trim());
+        if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!")) {
+            model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
+            Node node = (Node) actionEvent.getSource();
+            node.getScene().getWindow().hide();
+            //TODO update all songs list view
+        } else {
+            if (title.isEmpty())
+                txtFieldTitle.setText("Field must not be empty!");
+            if (filepath.isEmpty())
+                txtFieldFile.setText("Field must not be empty!");
+        }
 
     }
 
     private void isSavingSaveAction(ActionEvent actionEvent){
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
-        String author = txtFieldArtist.getText().trim();
+        String artist = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
         int duration = validateDurationInput(txtFieldDuration.getText().trim());
         if (!title.isEmpty() && !filepath.isEmpty() && !title.equals("Field must not be empty!") && !filepath.equals("Field must not be empty!")) {
