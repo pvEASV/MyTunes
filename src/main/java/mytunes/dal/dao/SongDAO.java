@@ -71,9 +71,23 @@ public class SongDAO {
         }
     }
 
+    public void editSong(Song song){
+        String sql = "UPDATE ALL_SONGS SET title = '" + validateStringForSQL(song.getTitle()) + "', "
+                + "author = '" + validateStringForSQL(song.getAuthor().getName()) + "', "
+                + "genre = '" + validateStringForSQL(song.getGenre().getName()) + "', "
+                + "filepath = '" + validateStringForSQL(song.getPath()) + "', "
+                + "duration = " + song.getDuration() + " "
+                + "WHERE id = " + song.getId();
+        try (Connection con = cm.getConnection()){
+            Statement stmt = con.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * Used to replace ' with '' in a string to make it SQL compatible
-     * @param string the string to set
+     * @param string the string to check
      * @return the string with ' replaced by ''
      */
     public String validateStringForSQL(String string){
