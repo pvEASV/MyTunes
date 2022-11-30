@@ -1,1 +1,1 @@
-EXEC sp_rename 'ALL_SONGS.name', 'title';
+EXEC sp_rename 'ALL_SONGS.author', 'artist';

@@ -2,16 +2,18 @@ package mytunes.be;
 
 import java.util.List;
 
-public class Author {
+public class Artist {
     private int id;
     private String name;
     private String country;
     private List<Genre> genres;
 
-    public Author(String name) {
+    public Artist(String name) {
         this.name = name;
     }
-
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getId() {
         return id;
     }
@@ -43,6 +45,7 @@ public class Author {
     public void addGenre(Genre genre) {
         genres.add(genre);
     }
+
 
 
 }

@@ -3,31 +3,26 @@ package mytunes.be;
 public class Song {
     private int id;
     private String title;
-    private Author author;
+    private Artist artist;
     private int duration;
     private String path;
     private Genre genre;
 
-    public Song(int id, String title, Author author, Genre genre, String path, int duration) {
+    public Song(int id, String title, Artist artist, Genre genre, String path, int duration) {
         this.id = id;
         this.title = title;
-        this.author = author;
+        this.artist = artist;
         this.duration = duration;
         this.path = path;
         this.genre = genre;
     }
 
-    public Song(String title, Author author, Genre genre, String path,  int duration) {
+    public Song(String title, Artist artist, Genre genre, String path,  int duration) {
         this.title = title;
-        this.author = author;
+        this.artist = artist;
         this.duration = duration;
         this.path = path;
         this.genre = genre;
-    }
-
-    public Song(String title, String path){
-        this.title = title;
-        this.path = path;
     }
 
     public int getId() {
@@ -42,12 +37,12 @@ public class Song {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public String getPath() {
@@ -74,7 +69,7 @@ public class Song {
         this.duration = duration;
     }
     public String toString(){
-        return  "ID: " + id + ", Title: " + title + ", Author: " + author.getName() + ", Genre: " + genre.getName() +
+        return  "ID: " + id + ", Title: " + title + ", Artist: " + artist.getName() + ", Genre: " + genre.getName() +
                 ", Duration: " + duration + ", Path: " + path;
     }
 }
