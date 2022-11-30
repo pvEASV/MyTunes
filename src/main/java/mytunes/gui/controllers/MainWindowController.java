@@ -1,5 +1,6 @@
 package mytunes.gui.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
+import mytunes.be.Song;
+import mytunes.gui.models.Model;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,7 +26,11 @@ public class MainWindowController {
     @FXML
     private TextField filterTextField;
     @FXML
-    private ListView<?> songsInPlaylistListVIew, allSongsListView, playListListVIew;
+    private ListView<?> songsInPlaylistListVIew;
+    @FXML
+    private ListView<Song> allSongsListView;
+    @FXML
+    private ListView<?> playListListVIew;
     @FXML
     private ImageView playPauseButton;
     @FXML
@@ -31,7 +38,12 @@ public class MainWindowController {
 
 
     private boolean isPlaying = false;
+    private Model model = new Model();
 
+    @FXML
+    public void initialize() {
+        allSongsListView.setItems(model.getAllSongs());
+    }
     /**
      * This method is called when the user clicks the ImageView representing play/pause button.
      * @param mouseEvent The mouse event that triggered this method.
@@ -107,19 +119,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void playlistNewButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-playlist-view.fxml"));
-        Stage stage = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
-        //scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
-        stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/playlist.png"))));
-        stage.setTitle("Add playlist");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+        openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
     }
-    public void playlistEditButtonAction(ActionEvent actionEvent) {
-
+    public void playlistEditButtonAction(ActionEvent actionEvent) throws IOException {
+        openNewWindow("Edit playlist", "views/edit-playlist-view.fxml", "images/playlist.png");
     }
 
     public void filterOnKeyTyped(KeyEvent keyEvent) {
@@ -132,23 +135,29 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        loadNewSongWindow();
+        openNewWindow("Add song", "new-song-view.fxml", "images/song.png");
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
-        loadNewSongWindow();
+        FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
     }
 
-    private void loadNewSongWindow() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-song-view.fxml"));
+    private void editWindowSetPreviousValues(FXMLLoader fxmlLoader){
+        NewSongViewController newSongViewController = fxmlLoader.getController();
+        newSongViewController.txtFieldTitle.setText("Hello");
+        newSongViewController.txtFieldFile.setText("Hello");
+    }
+
+    private FXMLLoader openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource(fxmlFile));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        scene.getStylesheets().add(MyTunes.class.getResource("css/mainstyle.css").toExternalForm());
-        stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/record.png"))));
-        stage.setTitle("Add song");
+        stage.getIcons().add(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream(iconFile))));
+        stage.setTitle(title);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+        return fxmlLoader;
     }
 }

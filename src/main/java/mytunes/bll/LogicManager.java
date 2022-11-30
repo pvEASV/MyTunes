@@ -24,5 +24,9 @@ public class LogicManager {
         return genreDAO.getAllGenres();
     }
 
+    public List<Song> getAllSongs() {
+        return songDAO.getAllSongs();
+    }
+
 
 }
