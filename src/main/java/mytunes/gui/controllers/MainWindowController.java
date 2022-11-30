@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -41,8 +42,13 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
+        showAllSongs();
+    }
+
+    private void showAllSongs() {
         allSongsListView.setItems(model.getAllSongs());
     }
+
     /**
      * This method is called when the user clicks the ImageView representing play/pause button.
      * @param mouseEvent The mouse event that triggered this method.
@@ -140,7 +146,7 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("Add song", "new-song-view.fxml", "images/record.png");
+        openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
@@ -154,6 +160,7 @@ public class MainWindowController {
             newSongViewController.setModel(model);
             newSongViewController.setIsEditing();
 
+
         }
     }
 
@@ -166,6 +173,9 @@ public class MainWindowController {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();
+        scene.getWindow().setOnHiding(event -> {
+           showAllSongs();
+        });
         stage.show();
         return fxmlLoader;
     }
