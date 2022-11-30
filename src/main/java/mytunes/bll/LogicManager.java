@@ -2,8 +2,10 @@ package mytunes.bll;
 
 import mytunes.be.Artist;
 import mytunes.be.Genre;
+import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.dal.dao.GenreDAO;
+import mytunes.dal.dao.PlaylistDAO;
 import mytunes.dal.dao.SongDAO;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class LogicManager {
     private final SongDAO songDAO = new SongDAO();
     private final GenreDAO genreDAO = new GenreDAO();
+    private final PlaylistDAO playlistDAO = new PlaylistDAO();
 
     public void createSong(String title, String filepath) {
         songDAO.addSong(new Song(title, new Artist("some author"), new Genre("test genre"), filepath, 404));
@@ -33,5 +36,21 @@ public class LogicManager {
     }
     public void updateSong(Song song) {
         songDAO.editSong(song);
+    }
+
+    public void createPlaylist(Playlist playlist){
+        playlistDAO.addPlaylist(playlist);
+    }
+
+    public List<Playlist> getAllPlaylists() {
+        return playlistDAO.getAllPlaylists();
+    }
+
+    public void deletePlaylist(Playlist playlist) {
+        playlistDAO.deletePlaylist(playlist);
+    }
+
+    public void updatePlaylist(Playlist playlist) {
+        playlistDAO.updatePlaylist(playlist);
     }
 }

@@ -30,7 +30,7 @@ public class MainWindowController {
     @FXML
     private ListView<Song> allSongsListView;
     @FXML
-    private ListView<Playlist> playListListVIew;
+    private ListView<Playlist> playlistListVIew;
     @FXML
     private ImageView playPauseButton;
     @FXML
@@ -94,7 +94,7 @@ public class MainWindowController {
      * Called when the user clicks one of delete buttons
      * @param actionEvent The action event that triggered this method
      */
-    public void showAlert(ActionEvent actionEvent){
+    public void deleteButtonAction(ActionEvent actionEvent){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Node source = (Node) actionEvent.getSource();
         String type = "song";
@@ -112,8 +112,8 @@ public class MainWindowController {
                 model.deleteSong(song);
             }
             else{
-                Playlist playlist;
-                //TODO model.deletePlaylist(playlist);
+                Playlist playlist = playlistListVIew.getSelectionModel().getSelectedItem();
+                model.deletePlaylist(playlist);
             }
 
         } else if(result.get() == ButtonType.CANCEL){
@@ -161,8 +161,6 @@ public class MainWindowController {
             NewSongViewController newSongViewController = fxmlLoader.getController();
             newSongViewController.setModel(model);
             newSongViewController.setIsEditing();
-
-
         }
     }
 

@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mytunes.be.Playlist;
 import mytunes.gui.models.Model;
 
 public class NewPlaylistViewController {
@@ -13,7 +14,8 @@ public class NewPlaylistViewController {
     private Model model = new Model();
 
     public void saveButtonAction(ActionEvent actionEvent) {
-        //TODO create a new playlist and save it to database
+        String playlistName = nameTextField.getText().trim();
+        //TODO model.createPlaylist(playlist);
     }
 
     public void cancelButtonAction(ActionEvent actionEvent) {

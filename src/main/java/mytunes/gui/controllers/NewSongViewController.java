@@ -17,6 +17,8 @@ import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class NewSongViewController {
     public TextField txtFieldTitle;
@@ -25,10 +27,7 @@ public class NewSongViewController {
     public TextField txtFieldFile;
     public TextField txtFieldDuration;
 
-
-
     private Model model = null;
-
 
     private boolean isEditing = false;
 
@@ -55,8 +54,8 @@ public class NewSongViewController {
         stage.centerOnScreen();
         stage.show();
 
-        //comboBoxGenre.getItems().add();
-        //add the genre to database
+        //TODO comboBoxGenre.getItems().add();
+        //TODO create the genre and add the genre to the database
     }
 
     /**
@@ -142,10 +141,12 @@ public class NewSongViewController {
      *@param input The duration of the song
      */
     private int validateDurationInput(String input) {
-        //TODO split into arrays
+        //TODO use arrays
+        //TODO implement method for a wrong input (-1)
+        String[] inputArray = input.split(":");
+
         int duration = -1;
         int colonPosition;
-
         if (input.contains(":")) {
             switch (input.length()) {
                 case 6:

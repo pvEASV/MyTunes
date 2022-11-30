@@ -30,6 +30,7 @@ public class Model {
 
     public void createSong(String title, String filepath){
         bll.createSong(title, filepath);
+        loadAllSongs();
     }
 
     public void deleteSong(Song song){
@@ -37,18 +38,7 @@ public class Model {
         loadAllSongs();
     }
 
-    public void createGenre(String name) {
-        //TODO update combobox
-        Genre genre = bll.createGenre(name);
-        genres.add(genre);
-    }
-
-    private void updateGenres() {
-        genres.clear();
-        genres.addAll(bll.getAllGenres());
-    }
-
-    private void loadAllSongs(){
+    public void loadAllSongs(){
         allSongs.clear();
         allSongs.addAll(bll.getAllSongs());
     }
@@ -60,5 +50,34 @@ public class Model {
 
     public void updateSong(Song song){
         bll.updateSong(new Song(songToEdit.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getPath(), song.getDuration()));
+    }
+
+    public void createPlaylist(Playlist playlist){
+        bll.createPlaylist(playlist);
+    }
+
+    public void deletePlaylist(Playlist playlist) {
+        bll.deletePlaylist(playlist);
+        loadAllPlaylists();
+    }
+
+    public void updatePlaylist(Playlist playlist){
+        bll.updatePlaylist(playlist);
+    }
+
+    private void loadAllPlaylists() {
+        playlists.clear();
+        playlists.addAll(bll.getAllPlaylists());
+    }
+
+    public void createGenre(String name) {
+        //TODO update combobox
+        Genre genre = bll.createGenre(name);
+        genres.add(genre);
+    }
+
+    private void updateGenres() {
+        genres.clear();
+        genres.addAll(bll.getAllGenres());
     }
 }
