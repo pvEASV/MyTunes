@@ -1,15 +1,10 @@
 package mytunes;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import mytunes.be.Author;
-import mytunes.be.Genre;
-import mytunes.be.Song;
-import mytunes.dal.ConnectionManager;
 import mytunes.dal.dao.SongDAO;
 
 import java.io.IOException;
