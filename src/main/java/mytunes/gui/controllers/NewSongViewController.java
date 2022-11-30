@@ -106,13 +106,6 @@ public class NewSongViewController {
 
         if (input.contains(":")) {
             switch (input.length()) {
-                case 4:
-                case 5:
-                    colonPosition = input.indexOf(":");
-                    if (colonPosition == 1 || colonPosition == 2) {
-                        duration += Integer.parseInt(input.substring(0, colonPosition)) * 60 + Integer.parseInt(input.substring(colonPosition + 1)) + 1;
-                    }
-                    break;
                 case 6:
                 case 8:
                     colonPosition = input.indexOf(":");
@@ -120,6 +113,8 @@ public class NewSongViewController {
                         duration += Integer.parseInt(input.substring(0, colonPosition)) * 3600;
                         input = input.substring(colonPosition + 1);
                     }
+                case 4:
+                case 5:
                     colonPosition = input.indexOf(":");
                     if (colonPosition == 1 || colonPosition == 2) {
                         duration += Integer.parseInt(input.substring(0, colonPosition)) * 60 + Integer.parseInt(input.substring(colonPosition + 1)) + 1;

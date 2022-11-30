@@ -101,13 +101,13 @@ public class MainWindowController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isEmpty()){
-            // alert is exited, no button has been pressed.
+            // TODO alert is exited, no button has been pressed.
             System.out.println("No button clicked");
         } else if(result.get() == ButtonType.OK){
-            //ok button is pressed
+            //TODO ok button is pressed
             System.out.println("Ok button clicked");
         } else if(result.get() == ButtonType.CANCEL){
-            // cancel button is pressed
+            //TODO cancel button is pressed
             System.out.println("Cancel button clicked");
         }
     }
