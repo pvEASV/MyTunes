@@ -1,5 +1,7 @@
 package mytunes.gui.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +20,10 @@ import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class MainWindowController {
     @FXML
@@ -29,7 +33,7 @@ public class MainWindowController {
     @FXML
     private ListView<Song> songsInPlaylistListVIew;
     @FXML
-    private ImageView playPauseButton;
+    private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
     @FXML
     private TableView<Song> allSongsTableView;
     @FXML
@@ -52,6 +56,14 @@ public class MainWindowController {
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
+        //filterTextField.textProperty().addListener((obs,o,n) -> model.search(n));
+        filterTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                allSongsTableView.getItems().setAll(model.search(newValue));
+                allSongsTableView.refresh();
+            }
+        });
     }
 
     private void showAllSongs() {

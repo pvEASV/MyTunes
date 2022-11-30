@@ -8,6 +8,7 @@ import mytunes.dal.dao.GenreDAO;
 import mytunes.dal.dao.PlaylistDAO;
 import mytunes.dal.dao.SongDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogicManager {
@@ -31,14 +32,6 @@ public class LogicManager {
         return songDAO.getAllSongs();
     }
 
-    public Genre createGenre(String name) {
-        return genreDAO.createGenre(name);
-    }
-
-    public List<Genre> getAllGenres() {
-        return genreDAO.getAllGenres();
-    }
-
     public void createPlaylist(Playlist playlist){
         playlistDAO.addPlaylist(playlist);
     }
@@ -53,5 +46,24 @@ public class LogicManager {
 
     public void updatePlaylist(Playlist playlist) {
         playlistDAO.updatePlaylist(playlist);
+    }
+
+    public Genre createGenre(String name) {
+        return genreDAO.createGenre(name);
+    }
+
+    public List<Genre> getAllGenres() {
+        return genreDAO.getAllGenres();
+    }
+
+    public List<Song> filterSongs(String query){
+        List<Song> allSongs = songDAO.getAllSongs();
+        List<Song> filteredSongs = new ArrayList<>();
+        for (Song song : allSongs){
+            if (song.getTitle().toLowerCase().trim().contains(query.toLowerCase())){
+                filteredSongs.add(song);
+            }
+        }
+        return filteredSongs;
     }
 }

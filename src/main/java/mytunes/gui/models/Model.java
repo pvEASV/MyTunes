@@ -8,6 +8,8 @@ import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.bll.LogicManager;
 
+import java.util.List;
+
 public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
@@ -95,5 +97,9 @@ public class Model {
     private void updateGenres() {
         genres.clear();
         genres.addAll(bll.getAllGenres());
+    }
+
+    public List<Song> search(String query){
+        return bll.filterSongs(query);
     }
 }

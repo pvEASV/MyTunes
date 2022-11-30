@@ -46,6 +46,8 @@ public class Artist {
         genres.add(genre);
     }
 
-
-
+    @Override
+    public String toString() {
+        return name;
+    }
 }
