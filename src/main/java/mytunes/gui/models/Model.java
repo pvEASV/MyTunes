@@ -5,16 +5,19 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import mytunes.be.Genre;
 import mytunes.be.Playlist;
+import mytunes.be.Song;
 import mytunes.bll.LogicManager;
 
 public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
+    private final ObservableList<Song> allSongs;
     private LogicManager bll = new LogicManager();
 
     public Model(){
         genres = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
+        allSongs = FXCollections.observableArrayList();
     }
 
     public void createSong(String title, String filepath){
@@ -30,5 +33,15 @@ public class Model {
     private void updateGenres() {
         genres.clear();
         genres.addAll(bll.getAllGenres());
+    }
+
+    private void loadAllSongs(){
+        allSongs.clear();
+        allSongs.addAll(bll.getAllSongs());
+    }
+
+    public ObservableList<Song> getAllSongs() {
+        loadAllSongs();
+        return allSongs;
     }
 }

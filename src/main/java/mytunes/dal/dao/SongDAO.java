@@ -8,10 +8,34 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SongDAO {
     ConnectionManager cm = new ConnectionManager();
 
+    public List<Song> getAllSongs() {
+        ArrayList<Song> allSongs =new ArrayList<>();
+        try (Connection con = cm.getConnection()) {
+            String sql = "SELECT * FROM ALL_SONGS";
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author= rs.getString("author");
+                String genre = rs.getString("genre");
+                int duration = rs.getInt("duration");
+                String path = rs.getString("filepath");
+                Song song = new Song(id, title, new Author(author), duration, path, new Genre(genre));
+                allSongs.add(song);
+            }
+            return allSongs;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
     public Song getSong(int id) {
         String sql = "SELECT * FROM ALL_SONGS WHERE id = " + id;
         try (Connection con = cm.getConnection()){

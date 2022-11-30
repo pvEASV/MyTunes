@@ -1,5 +1,6 @@
 package mytunes.gui.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
+import mytunes.be.Song;
+import mytunes.gui.models.Model;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,7 +26,11 @@ public class MainWindowController {
     @FXML
     private TextField filterTextField;
     @FXML
-    private ListView<?> songsInPlaylistListVIew, allSongsListView, playListListVIew;
+    private ListView<?> songsInPlaylistListVIew;
+    @FXML
+    private ListView<Song> allSongsListView;
+    @FXML
+    private ListView<?> playListListVIew;
     @FXML
     private ImageView playPauseButton;
     @FXML
@@ -31,7 +38,12 @@ public class MainWindowController {
 
 
     private boolean isPlaying = false;
+    private Model model = new Model();
 
+    @FXML
+    public void initialize() {
+        setAllSongsListView(model.getAllSongs());
+    }
     /**
      * This method is called when the user clicks the ImageView representing play/pause button.
      * @param mouseEvent The mouse event that triggered this method.
@@ -146,5 +158,13 @@ public class MainWindowController {
 
     public void songEditButtonAction(ActionEvent actionEvent) {
 
+    }
+
+    public ListView<Song> getAllSongsListView() {
+        return allSongsListView;
+    }
+
+    public void setAllSongsListView(ObservableList<Song> allSongsObservableList) {
+        allSongsListView.setItems(allSongsObservableList);
     }
 }
