@@ -70,6 +70,11 @@ public class Model {
         playlists.addAll(bll.getAllPlaylists());
     }
 
+    public ObservableList<Playlist> getAllPlaylists(){
+        loadAllPlaylists();
+        return playlists;
+    }
+
     public void createGenre(String name) {
         //TODO update combobox
         Genre genre = bll.createGenre(name);

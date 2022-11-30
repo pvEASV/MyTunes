@@ -29,21 +29,22 @@ public class MainWindowController {
     @FXML
     private ListView<Song> songsInPlaylistListVIew;
     @FXML
-    private ListView<Playlist> playlistListVIew;
-    @FXML
     private ImageView playPauseButton;
     @FXML
     private Button playlistDeleteButton, songsInPlaylistDeleteButton, songsDeleteButton;
     @FXML
     private TableView<Song> allSongsTableView;
     @FXML
-    private TableColumn<Song, String> titleColumn;
-    @FXML
-    private TableColumn<Song, String> artistColumn;
-    @FXML
-    private TableColumn<Song, String> genreColumn;
+    private TableColumn<Song, String> titleColumn, artistColumn, genreColumn;
     @FXML
     private TableColumn<Song, Integer> durationColumn;
+    //TODO change the duration to mm:ss
+    @FXML
+    private TableView<Playlist> playlistsTableView;
+    @FXML
+    private TableColumn<Playlist, String> playlistNameColumn;
+    @FXML
+    private TableColumn<Playlist, Integer> totalLengthColumn;
     //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
@@ -52,6 +53,7 @@ public class MainWindowController {
     @FXML
     public void initialize() {
         showAllSongs();
+        showAllPlaylists();
     }
 
     private void showAllSongs() {
@@ -61,6 +63,13 @@ public class MainWindowController {
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         allSongsTableView.getItems().setAll(model.getAllSongs());
+    }
+
+    private void showAllPlaylists(){
+        playlistsTableView.refresh();
+        playlistNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        totalLengthColumn.setCellValueFactory(new PropertyValueFactory<>("totalLength"));
+        playlistsTableView.getItems().setAll(model.getAllPlaylists());
     }
 
     /**
@@ -127,7 +136,7 @@ public class MainWindowController {
                 model.deleteSong(song);
             }
             else{
-                Playlist playlist = playlistListVIew.getSelectionModel().getSelectedItem();
+                Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
                 model.deletePlaylist(playlist);
             }
 

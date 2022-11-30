@@ -16,7 +16,6 @@
       <TextField fx:id="filterTextField" layoutX="586.0" layoutY="14.0" onKeyTyped="#filterOnKeyTyped" />
       <Slider fx:id="songTimeSlider" layoutX="175.0" layoutY="560.0" prefHeight="15.0" prefWidth="400.0" />
       <Slider fx:id="volumeControlSlider" layoutX="721.0" layoutY="476.0" orientation="VERTICAL" prefHeight="110.0" prefWidth="14.0" />
-      <ListView fx:id="playListListVIew" layoutX="14.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
       <ListView fx:id="songsInPlaylistListVIew" layoutX="226.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0" />
       <Label layoutX="14.0" layoutY="47.0" text="Playlists" />
       <Label layoutX="226.0" layoutY="47.0" text="Songs in playlist" />
@@ -54,6 +53,12 @@
           <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
             <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
             <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
+        </columns>
+      </TableView>
+      <TableView fx:id="playlistsTableView" layoutX="15.0" layoutY="65.0" prefHeight="400.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="playlistNameColumn" prefWidth="134.39999103546143" text="Name" />
+          <TableColumn fx:id="totalLengthColumn" prefWidth="65.5999755859375" text="Duration" />
         </columns>
       </TableView>
    </children>
