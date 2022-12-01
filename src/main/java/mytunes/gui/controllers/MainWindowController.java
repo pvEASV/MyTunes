@@ -69,15 +69,13 @@ public class MainWindowController {
         showAllSongs();
         showAllPlaylists();
 
-
         media = new Media(MEDIA_URL);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volume);
 
         // without this listener there can be error for unknown duration
         mediaPlayer.setOnReady(() -> {
-            System.out.println(media.getDuration());
-            lblSongTimeUntilEnd.setText(humanReadableTime(media.getDuration()));
+            setMediaPlayerBehavior();
         });
 
 
@@ -91,7 +89,6 @@ public class MainWindowController {
         volumeControlSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             volume = newValue.doubleValue() / 100;
             mediaPlayer.setVolume(volume);
-            System.out.println(volume);
         });
     }
 
@@ -126,8 +123,6 @@ public class MainWindowController {
         } else {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
             isPlaying = true;
-
-
             mediaPlayer.play();
         }
     }
@@ -280,5 +275,14 @@ public class MainWindowController {
         int minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    private void setMediaPlayerBehavior(){
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration()));
+        songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
+        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+            lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().subtract(newValue)));
+            songTimeSlider.setValue(newValue.toSeconds());
+        });
     }
 }
