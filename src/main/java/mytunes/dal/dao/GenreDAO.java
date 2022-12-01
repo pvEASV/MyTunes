@@ -19,7 +19,7 @@ public class GenreDAO {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM GENRES");
             while (rs.next()){
                 int id = rs.getInt("id");
-                String genreName = rs.getString("name");
+                String genreName = rs.getString("genreName");
                 Genre genre = new Genre(id, genreName);
                 allGenres.add(genre);
             }
@@ -34,7 +34,7 @@ public class GenreDAO {
         try (Connection con = cm.getConnection()){
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM GENRES WHERE id = " + id);
             rs.next();
-            return new Genre(id, rs.getString("name"));
+            return new Genre(id, rs.getString("genreName"));
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -42,10 +42,14 @@ public class GenreDAO {
     }
 
     public void createGenre(Genre genre) {
-        //TODO alter, so a user can't create a genre that already exists
         String sql = "INSERT INTO GENRES (genreName) " + "VALUES ('" + validateStringForSQL(genre.getName()) + "')";
         try (Connection con = cm.getConnection()){
-            con.createStatement().executeQuery(sql);
+            for (Genre g : getAllGenres()){
+                if (g.getName().toLowerCase().trim().equals(genre.getName().toLowerCase().trim())){
+                    return;
+                }
+            }
+            con.createStatement().execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

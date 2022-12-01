@@ -36,5 +36,7 @@ public class MyTunes extends Application {
 
     public void test(){
         GenreDAO genreDAO = new GenreDAO();
+        genreDAO.createGenre(new Genre("Rock"));
+        genreDAO.createGenre(new Genre("Metal"));
     }
 }
