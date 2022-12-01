@@ -19,11 +19,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class NewSongViewController {
-    public TextField txtFieldTitle;
-    public TextField txtFieldArtist;
-    public ComboBox<String> comboBoxGenre;
-    public TextField txtFieldFile;
-    public TextField txtFieldDuration;
+    @FXML
+    private TextField txtFieldTitle, txtFieldArtist, txtFieldFile, txtFieldDuration;
+    @FXML
+    private ComboBox<String> comboBoxGenre;
 
     private Model model = null;
 
@@ -51,6 +50,8 @@ public class NewSongViewController {
         stage.setScene(new Scene(fxmlLoader.load()));
         stage.centerOnScreen();
         stage.show();
+        NewGenreViewController newGenreViewController = fxmlLoader.getController();
+        newGenreViewController.setModel(model);
 
         //TODO comboBoxGenre.getItems().add();
         //TODO create the genre and add the genre to the database

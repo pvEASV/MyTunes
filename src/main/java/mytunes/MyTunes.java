@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import mytunes.be.Genre;
 import mytunes.be.Playlist;
+import mytunes.dal.dao.GenreDAO;
 import mytunes.dal.dao.PlaylistDAO;
 import mytunes.dal.dao.SongDAO;
 
@@ -25,9 +27,14 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+        test();
     }
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public void test(){
+        GenreDAO genreDAO = new GenreDAO();
     }
 }
