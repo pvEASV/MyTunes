@@ -1,7 +1,5 @@
 package mytunes.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +26,8 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
+    private Label lblSongTimeUntilEnd, lblSongTimeSinceStart;
+    @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
     private TextField filterTextField;
@@ -53,26 +53,45 @@ public class MainWindowController {
     private boolean isPlaying = false;
     private final Model model = new Model();
 
+
+    private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
+
     private Media media;
     private MediaPlayer mediaPlayer;
-    private File file = new File("src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3");
+    private File file = new File(onOpenPath);
     private final String MEDIA_URL = file.toURI().toString();
+
+    private double volume = 0.05;
+    private int timeSinceStart = 0;
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
 
+
         media = new Media(MEDIA_URL);
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(0.05);
+        mediaPlayer.setVolume(volume);
 
-        // Loading all songs when filter text field is put in focus
+        // without this listener there can be error for unknown duration
+        mediaPlayer.setOnReady(() -> {
+            System.out.println(media.getDuration());
+            lblSongTimeUntilEnd.setText(humanReadableTime(media.getDuration()));
+        });
+
+
+        // Listener for loading all songs when filter text field is put in focus
         filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
                 model.loadSongsToMemory();
             else
                 model.removeSongsFromMemory();
+        });
+        volumeControlSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            volume = newValue.doubleValue() / 100;
+            mediaPlayer.setVolume(volume);
+            System.out.println(volume);
         });
     }
 
@@ -253,5 +272,13 @@ public class MainWindowController {
         });
         stage.show();
         return fxmlLoader;
+    }
+
+    private String humanReadableTime(javafx.util.Duration duration) {
+        int seconds = (int) duration.toSeconds();
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
