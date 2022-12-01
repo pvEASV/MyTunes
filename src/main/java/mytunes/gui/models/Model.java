@@ -102,4 +102,11 @@ public class Model {
     public List<Song> search(String query){
         return bll.filterSongs(query);
     }
+    public void loadSongsToMemory(){
+        bll.loadSongsToMemory();
+    }
+
+    public void removeSongsFromMemory(){
+        bll.removeSongsFromMemory();
+    }
 }

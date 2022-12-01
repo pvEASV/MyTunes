@@ -15,6 +15,7 @@ public class LogicManager {
     private final SongDAO songDAO = new SongDAO();
     private final GenreDAO genreDAO = new GenreDAO();
     private final PlaylistDAO playlistDAO = new PlaylistDAO();
+    private List<Song> allSongs;
 
     public void createSong(String title, String filepath) {
         songDAO.addSong(new Song(title, new Artist("some author"), new Genre("test genre"), filepath, 404));
@@ -56,9 +57,19 @@ public class LogicManager {
         return genreDAO.getAllGenres();
     }
 
+    public void loadSongsToMemory(){
+        allSongs = songDAO.getAllSongs();
+    }
+
+    public void removeSongsFromMemory(){
+        allSongs.clear();
+    }
+
     public List<Song> filterSongs(String query){
-        List<Song> allSongs = songDAO.getAllSongs();
         List<Song> filteredSongs = new ArrayList<>();
+        if (query.isEmpty()) {
+            return allSongs;
+        }
         for (Song song : allSongs){
             if (song.getTitle().toLowerCase().trim().contains(query.toLowerCase())){
                 filteredSongs.add(song);

@@ -57,12 +57,20 @@ public class MainWindowController {
         showAllSongs();
         showAllPlaylists();
         //filterTextField.textProperty().addListener((obs,o,n) -> model.search(n));
-        filterTextField.textProperty().addListener(new ChangeListener<String>() {
+        filterTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                allSongsTableView.getItems().setAll(model.search(newValue));
-                allSongsTableView.refresh();
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue)
+                    model.loadSongsToMemory();
+                else
+                    model.removeSongsFromMemory();
             }
+
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                allSongsTableView.getItems().setAll(model.search(newValue));
+//                allSongsTableView.refresh();
+//            }
         });
     }
 
@@ -176,7 +184,8 @@ public class MainWindowController {
     }
 
     public void filterOnKeyTyped(KeyEvent keyEvent) {
-
+        allSongsTableView.getItems().setAll(model.search(filterTextField.getText()));
+        allSongsTableView.refresh();
     }
     /**
      * Called when the user clicks the "new" button under all songs section
