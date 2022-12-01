@@ -4,6 +4,7 @@ module mytunes {
     requires com.microsoft.sqlserver.jdbc;
     requires java.sql;
     requires java.naming;
+    requires javafx.media;
 
     opens mytunes to javafx.fxml;
     exports mytunes;
