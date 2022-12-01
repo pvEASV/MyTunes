@@ -1,10 +1,6 @@
 package mytunes.dal.dao;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-import mytunes.be.Artist;
-import mytunes.be.Genre;
 import mytunes.be.Playlist;
-import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
 
 import java.sql.Connection;

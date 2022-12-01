@@ -67,9 +67,6 @@ public class LogicManager {
 
     public List<Song> filterSongs(String query){
         List<Song> filteredSongs = new ArrayList<>();
-        if (query.isEmpty()) {
-            return allSongs;
-        }
         for (Song song : allSongs){
             if (song.getTitle().toLowerCase().trim().contains(query.toLowerCase())){
                 filteredSongs.add(song);

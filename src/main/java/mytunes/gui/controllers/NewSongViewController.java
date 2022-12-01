@@ -17,8 +17,6 @@ import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public class NewSongViewController {
     public TextField txtFieldTitle;
@@ -89,13 +87,17 @@ public class NewSongViewController {
      */
 
     public void btnSaveAction(ActionEvent actionEvent) {
-        //TODO: mae this a separate method
+        // Cleaning up the input and setting variables
+        //TODO: make this a separate method
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
         String artist = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
         int duration = validateDurationInput(txtFieldDuration.getText().trim());
         //TODO wrong duration input
+
+        // Validating the input
+        // for Patrikos tuta zacinam ked pridem z obedu
         if (!title.isEmpty())
             txtFieldTitle.promptTextProperty().setValue("");
         if (!filepath.isEmpty())
@@ -116,30 +118,8 @@ public class NewSongViewController {
             if (filepath.isEmpty())
                 txtFieldFile.promptTextProperty().setValue("Field must not be empty!");
         }
-
     }
 
-    /*
-    private void isSavingSaveAction(ActionEvent actionEvent){
-        String title = txtFieldTitle.getText().trim();
-        String filepath = txtFieldFile.getText().trim();
-        String artist = txtFieldArtist.getText().trim();
-        String genre = comboBoxGenre.getValue();
-        int duration = validateDurationInput(txtFieldDuration.getText().trim());
-        if (!title.isEmpty())
-            txtFieldTitle.promptTextProperty().setValue("");
-        if (!title.isEmpty() && !filepath.isEmpty() && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")
-                && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")) {
-            Node node = (Node) actionEvent.getSource();
-            node.getScene().getWindow().hide();
-        } else {
-            if (title.isEmpty())
-                txtFieldTitle.promptTextProperty().setValue("Field must not be empty!");
-            if (filepath.isEmpty())
-                txtFieldFile.promptTextProperty().setValue("Field must not be empty!");
-        }
-    }
-     */
 
     /**
      * Cancels creating a new song
@@ -158,14 +138,16 @@ public class NewSongViewController {
     private int validateDurationInput(String input) {
         String[] inputArray = input.split(":");
         int duration = -1;
-        if (inputArray.length == 3){
-            duration += Integer.parseInt(inputArray[0])*3600;
-            duration += Integer.parseInt(inputArray[1])*60;
+        if (inputArray.length == 3){ // hh:mm:ss
+            duration = Integer.parseInt(inputArray[0])*3600; // seconds in an hour
+            duration += Integer.parseInt(inputArray[1])*60; // seconds in a minute
             duration += Integer.parseInt(inputArray[2]);
         }
-        else if (inputArray.length == 2){
-            duration += Integer.parseInt(inputArray[0])*60;
+        else if (inputArray.length == 2){ // mm:ss
+            duration = Integer.parseInt(inputArray[0])*60; // seconds in a minute
             duration += Integer.parseInt(inputArray[1]);
+        } else if (inputArray.length == 1){ // ss
+            duration = Integer.parseInt(inputArray[0]);
         }
         return duration;
     }
