@@ -1,6 +1,7 @@
 package mytunes.dal.dao;
 
 import mytunes.be.Playlist;
+import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
 import mytunes.dal.DAOTools;
 
@@ -78,6 +79,34 @@ public class PlaylistDAO {
             stmt.execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public List<Song> getAllSongsInPlaylist(int playlistID) {
+        ArrayList<Song> songsInPlaylist = new ArrayList<>();
+        try (Connection con = cm.getConnection()) {
+            String sql = "SELECT * FROM SONG_PLAYLIST_LINK where playlistId = " + playlistID;
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                int songId = rs.getInt("songId");
+                SongDAO songDAO = new SongDAO();
+                Song song = songDAO.getSong(songId);
+                songsInPlaylist.add(song);
+            }
+            return songsInPlaylist;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public void addSongToPlaylist(int songID, int playlistID) {
+        try (Connection con = cm.getConnection()) {
+            String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
+            Statement statement = con.createStatement();
+            statement.executeQuery(sql);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }

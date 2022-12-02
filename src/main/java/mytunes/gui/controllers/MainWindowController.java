@@ -1,5 +1,7 @@
 package mytunes.gui.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,13 +28,13 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
+    private ListView songsInPlaylistListView;
+    @FXML
     private Label lblSongTimeUntilEnd, lblSongTimeSinceStart;
     @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
     private TextField filterTextField;
-    @FXML
-    private ListView<Song> songsInPlaylistListVIew;
     @FXML
     private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
     @FXML
@@ -115,7 +117,6 @@ public class MainWindowController {
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
 
-
         if (isPlaying) {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
             isPlaying = false;
@@ -138,7 +139,7 @@ public class MainWindowController {
      * Changes opacity of the music controls buttons to 0.5 when mouse is pressed down on them
      * @param mouseEvent The mouse event that triggered this method
      */
-    public void controlsButtonMouseDown(MouseEvent mouseEvent) {
+    public void ImageViewMouseDown(MouseEvent mouseEvent) {
         ImageView imageView = (ImageView) mouseEvent.getSource();
         imageView.setOpacity(0.5);
     }
@@ -267,6 +268,23 @@ public class MainWindowController {
         });
         stage.show();
         return fxmlLoader;
+    }
+
+    public void moveSongToPlaylistMouseDown(MouseEvent mouseEvent) {
+        ImageViewMouseDown(mouseEvent);
+    }
+
+    public void moveSongToPlaylistMouseUp(MouseEvent mouseEvent) {
+        resetOpacity(mouseEvent);
+        Song song = allSongsTableView.getSelectionModel().getSelectedItem();
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (song == null || playlist == null) {
+            new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
+        } else {
+            model.moveSongToPlaylist(song, playlist);
+            showAllSongs();
+            showAllPlaylists();
+        }
     }
 
     private String humanReadableTime(javafx.util.Duration duration) {
