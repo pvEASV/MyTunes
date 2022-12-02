@@ -104,7 +104,7 @@ public class PlaylistDAO {
         try (Connection con = cm.getConnection()) {
             String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
             Statement statement = con.createStatement();
-            statement.executeQuery(sql);
+            statement.execute(sql);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

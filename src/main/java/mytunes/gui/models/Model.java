@@ -14,6 +14,7 @@ public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
     private final ObservableList<Song> allSongs;
+    private final ObservableList<Song> songsInPlaylist;
     private Song songToEdit;
     private Playlist playlistToEdit;
     private Genre genreToEdit;
@@ -23,6 +24,7 @@ public class Model {
         genres = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
         allSongs = FXCollections.observableArrayList();
+        songsInPlaylist = FXCollections.observableArrayList();
     }
 
     public Song getSongToEdit() {
@@ -129,5 +131,18 @@ public class Model {
 
     public void moveSongToPlaylist(Song song, Playlist playlist) {
         bll.addSongToPlaylist(song, playlist);
+    }
+
+    public ObservableList<Song> getSongsInPlaylist(Playlist playlist){
+        songsInPlaylist.clear();
+        songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
+        return songsInPlaylist;
+    }
+
+    public ObservableList<String> getSongsInPlaylistTitles(Playlist playlist){
+        getSongsInPlaylist(playlist);
+        ObservableList<String> titles = FXCollections.observableArrayList();
+        songsInPlaylist.forEach(song -> titles.add(song.getTitle()));
+        return titles;
     }
 }
