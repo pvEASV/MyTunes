@@ -15,15 +15,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,8 +28,6 @@ import java.util.Optional;
 public class MainWindowController {
     @FXML
     private ListView songsInPlaylistListView;
-    @FXML
-    private Label lblSongTimeUntilEnd, lblSongTimeSinceStart;
     @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
@@ -55,44 +50,20 @@ public class MainWindowController {
     //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
-    private final Model model = new Model();
-
-
-    private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
-
-    private Media media;
-    private MediaPlayer mediaPlayer;
-    private File file = new File(onOpenPath);
-    private final String MEDIA_URL = file.toURI().toString();
-
-    private double volume = 0.05;
-    private int timeSinceStart = 0;
+    private Model model = new Model();
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
-
-        media = new Media(MEDIA_URL);
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(volume);
-
-        // without this listener there can be error for unknown duration
-        mediaPlayer.setOnReady(() -> {
-            setMediaPlayerBehavior();
-        });
-
-
-        // Listener for loading all songs when filter text field is put in focus
-        filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                model.loadSongsToMemory();
-            else
-                model.removeSongsFromMemory();
-        });
-        volumeControlSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            volume = newValue.doubleValue() / 100;
-            mediaPlayer.setVolume(volume);
+        filterTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue)
+                    model.loadSongsToMemory();
+                else
+                    model.removeSongsFromMemory();
+            }
         });
     }
 
@@ -118,15 +89,12 @@ public class MainWindowController {
      */
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
-
         if (isPlaying) {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
             isPlaying = false;
-            mediaPlayer.pause();
         } else {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
             isPlaying = true;
-            mediaPlayer.play();
         }
     }
     public void forwardMouseUp(MouseEvent mouseEvent) {
@@ -286,23 +254,6 @@ public class MainWindowController {
             model.moveSongToPlaylist(song, playlist);
             showSongsInPlaylist();
         }
-    }
-
-    private String humanReadableTime(javafx.util.Duration duration) {
-        int seconds = (int) duration.toSeconds();
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        seconds = seconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    private void setMediaPlayerBehavior(){
-        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration()));
-        songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
-        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-            lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().subtract(newValue)));
-            songTimeSlider.setValue(newValue.toSeconds());
-        });
     }
 
     public void playlistTableViewOnMouseUp(MouseEvent mouseEvent) {
