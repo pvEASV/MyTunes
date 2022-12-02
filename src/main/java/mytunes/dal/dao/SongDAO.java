@@ -4,6 +4,8 @@ import mytunes.be.Artist;
 import mytunes.be.Genre;
 import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
+import mytunes.dal.DAOTools;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,10 +53,10 @@ public class SongDAO {
     }
     public void addSong(Song song){
         String sql = "INSERT INTO ALL_SONGS (title, artist, genre, filepath, duration) " +
-                        "VALUES ('" + validateStringForSQL(song.getTitle()) + "', '"
-                        + validateStringForSQL(song.getArtist().getName()) + "', '"
-                        + validateStringForSQL(song.getGenre().getName()) + "', '"
-                        + validateStringForSQL(song.getPath()) + "', "
+                        "VALUES ('" + DAOTools.validateStringForSQL(song.getTitle()) + "', '"
+                        + DAOTools.validateStringForSQL(song.getArtist().getName()) + "', '"
+                        + DAOTools.validateStringForSQL(song.getGenre().getName()) + "', '"
+                        + DAOTools.validateStringForSQL(song.getPath()) + "', "
                         + song.getDuration() + ")";
         try (Connection con = cm.getConnection()){
             Statement stmt = con.createStatement();
@@ -70,10 +72,10 @@ public class SongDAO {
     }
 
     public void editSong(Song song){
-        String sql = "UPDATE ALL_SONGS SET title = '" + validateStringForSQL(song.getTitle()) + "', "
-                + "artist = '" + validateStringForSQL(song.getArtist().getName()) + "', "
-                + "genre = '" + validateStringForSQL(song.getGenre().getName()) + "', "
-                + "filepath = '" + validateStringForSQL(song.getPath()) + "', "
+        String sql = "UPDATE ALL_SONGS SET title = '" + DAOTools.validateStringForSQL(song.getTitle()) + "', "
+                + "artist = '" + DAOTools.validateStringForSQL(song.getArtist().getName()) + "', "
+                + "genre = '" + DAOTools.validateStringForSQL(song.getGenre().getName()) + "', "
+                + "filepath = '" + DAOTools.validateStringForSQL(song.getPath()) + "', "
                 + "duration = " + song.getDuration() + " "
                 + "WHERE id = " + song.getId();
         try (Connection con = cm.getConnection()){
@@ -94,14 +96,4 @@ public class SongDAO {
         }
     }
 
-    /**
-     * Used to replace ' with '' in a string to make it SQL compatible
-     * @param string the string to check
-     * @return the string with ' replaced by ''
-     */
-    public String validateStringForSQL(String string){
-        if (string == null) return null;
-        string = string.replace("'", "''");
-        return string;
-    }
 }

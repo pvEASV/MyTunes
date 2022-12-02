@@ -98,27 +98,25 @@ public class NewSongViewController {
         //TODO wrong duration input
 
         // Validating the input
-        // for Patrikos tuta zacinam ked pridem z obedu
-        if (!title.isEmpty())
-            txtFieldTitle.promptTextProperty().setValue("");
-        if (!filepath.isEmpty())
-            txtFieldFile.promptTextProperty().setValue("");
-        if (!txtFieldDuration.getText().isEmpty() && duration == -1)
-            txtFieldDuration.promptTextProperty().setValue("Invalid input! Duration in format mm:ss");
-        if (!title.isEmpty() && !filepath.isEmpty() && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")
-                && !txtFieldTitle.promptTextProperty().getValue().equals("Field must not be empty!")) {
-            if (isEditing) //TODO instead of having two methods, maybe we can just switch create/edit in here to avoid duplicate code...
+        if (title.isEmpty() || filepath.isEmpty() || duration == -1) {
+            if (title.isEmpty())
+                txtFieldTitle.setPromptText("Field must not be empty!");
+            if (filepath.isEmpty())
+                txtFieldFile.setPromptText("Field must not be empty!");
+            if (duration == -1) {
+                txtFieldDuration.setText("");
+                txtFieldDuration.promptTextProperty().setValue("Invalid input! Duration in format mm:ss");
+            }
+        } else {
+            if (isEditing)
                 model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
             else
                 model.createSong(title, filepath);
+
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
-        } else {
-            if (title.isEmpty())
-                txtFieldTitle.promptTextProperty().setValue("Field must not be empty!");
-            if (filepath.isEmpty())
-                txtFieldFile.promptTextProperty().setValue("Field must not be empty!");
         }
+
     }
 
 
@@ -137,11 +135,12 @@ public class NewSongViewController {
      *@param input The duration of the song
      */
     private int validateDurationInput(String input) {
+        //TODO: this can create a lot of false positives which will fail in parseInt
         String[] inputArray = input.split(":");
         int duration = -1;
         if (inputArray.length == 3){ // hh:mm:ss
-            duration = Integer.parseInt(inputArray[0])*3600; // seconds in an hour
-            duration += Integer.parseInt(inputArray[1])*60; // seconds in a minute
+            duration = Integer.parseInt(inputArray[0])*3600; // 3600 is seconds in an hour
+            duration += Integer.parseInt(inputArray[1])*60; // 60 is seconds in a minute
             duration += Integer.parseInt(inputArray[2]);
         }
         else if (inputArray.length == 2){ // mm:ss

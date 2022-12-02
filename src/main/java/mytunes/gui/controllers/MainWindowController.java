@@ -128,16 +128,35 @@ public class MainWindowController {
      * @param actionEvent The action event that triggered this method
      */
     public void deleteButtonAction(ActionEvent actionEvent){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Node source = (Node) actionEvent.getSource();
-        String type = "song";
-        if (source.getId().equals("playlistDeleteButton"))
-            type = "playlist";
+        String type = source.getId().equals("playlistDeleteButton") ? "playlist" : "song";
+
+        // check if the user has selected a playlist or a song
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        if (type.equals("song")){
+            if (allSongsTableView.getSelectionModel().getSelectedItem() == null){
+                errorAlert.setHeaderText("No song selected");
+                errorAlert.setContentText("Please select a song to delete");
+                errorAlert.showAndWait();
+                return;
+            }
+        } else {
+            if (playlistsTableView.getSelectionModel().getSelectedItem() == null){
+                errorAlert.setHeaderText("No playlist selected");
+                errorAlert.setContentText("Please select a playlist to delete");
+                errorAlert.showAndWait();
+                return;
+            }
+        }
+
+        // ask the user if they are sure they want to delete the selected playlist/song
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete " + type);
         alert.setContentText("Do you really wish to delete this " + type + " ?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK) {
+        if(result.isPresent() && result.get() == ButtonType.OK) {
             if (type.equals("song")) {
                 Song song = allSongsTableView.getSelectionModel().getSelectedItem();
                 model.deleteSong(song);
