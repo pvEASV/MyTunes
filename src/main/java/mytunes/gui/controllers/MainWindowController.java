@@ -2,6 +2,8 @@ package mytunes.gui.controllers;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -282,8 +284,7 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
         } else {
             model.moveSongToPlaylist(song, playlist);
-            showAllSongs();
-            showAllPlaylists();
+            showSongsInPlaylist();
         }
     }
 
@@ -302,5 +303,13 @@ public class MainWindowController {
             lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().subtract(newValue)));
             songTimeSlider.setValue(newValue.toSeconds());
         });
+    }
+
+    public void playlistTableViewOnMouseUp(MouseEvent mouseEvent) {
+        showSongsInPlaylist();
+    }
+
+    private void showSongsInPlaylist(){
+        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));;
     }
 }
