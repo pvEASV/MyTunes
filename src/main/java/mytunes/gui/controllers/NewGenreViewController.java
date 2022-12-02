@@ -32,8 +32,9 @@ public class NewGenreViewController {
             nameTextField.promptTextProperty().setValue("");
             if (isEditing)
                 model.updateGenre(new Genre(name));
-            else
+            else{
                 model.createGenre(name);
+            }
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
         }

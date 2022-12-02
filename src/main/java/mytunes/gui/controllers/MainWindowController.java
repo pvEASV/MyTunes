@@ -207,6 +207,7 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
         NewSongViewController newSongViewController = fxmlLoader.getController();
         newSongViewController.setModel(model);
+        newSongViewController.setComboBoxItems();
     }
 
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {

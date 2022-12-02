@@ -90,9 +90,8 @@ public class Model {
     }
 
     public void createGenre(String name) {
-        //TODO update combobox
         bll.createGenre(new Genre(name));
-        //genres.add(genre);
+        loadAllGenres();
     }
 
     public void updateGenre(Genre genre) {
@@ -107,6 +106,11 @@ public class Model {
     private void loadAllGenres(){
         genres.clear();
         genres.addAll(bll.getAllGenres());
+    }
+
+    public List<Genre> getAllGenres(){
+        loadAllGenres();
+        return genres;
     }
 
     public void setGenreToEdit(Genre genre){

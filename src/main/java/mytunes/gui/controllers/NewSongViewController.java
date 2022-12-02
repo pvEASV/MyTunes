@@ -1,5 +1,7 @@
 package mytunes.gui.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import mytunes.MyTunes;
 import mytunes.be.Artist;
 import mytunes.be.Genre;
@@ -35,6 +38,7 @@ public class NewSongViewController {
     public void initialize() {
         isEditing = false;
     }
+
     /**
      * Called when a user clicks "More" button while creating a new song
      * Enables a user to create and add another genre to the combobox
@@ -45,16 +49,18 @@ public class NewSongViewController {
     public void btnGenreMoreAction(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("views/new-genre-view.fxml"));
         Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Add genre");
         stage.setResizable(false);
-        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setScene(scene);
         stage.centerOnScreen();
-        stage.show();
         NewGenreViewController newGenreViewController = fxmlLoader.getController();
         newGenreViewController.setModel(model);
+        scene.getWindow().setOnHiding(event -> {
+            setComboBoxItems();
+        });
+        stage.show();
 
-        //TODO comboBoxGenre.getItems().add();
-        //TODO create the genre and add the genre to the database
     }
 
     /**
@@ -78,15 +84,6 @@ public class NewSongViewController {
      *
      * @param actionEvent The action event that triggered this method
      */
-    /*
-    public void btnSaveAction(ActionEvent actionEvent) {
-        if (isEditing)
-            isEditingSaveAction(actionEvent);
-        else
-            isSavingSaveAction(actionEvent);
-    }
-     */
-
     public void btnSaveAction(ActionEvent actionEvent) {
         // Cleaning up the input and setting variables
         //TODO: make this a separate method
@@ -116,9 +113,7 @@ public class NewSongViewController {
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
         }
-
     }
-
 
     /**
      * Cancels creating a new song
@@ -160,5 +155,14 @@ public class NewSongViewController {
         comboBoxGenre.setValue(songToEdit.getGenre().getName());
         txtFieldFile.setText(songToEdit.getPath());
         txtFieldDuration.setText("" + songToEdit.getDuration());
+    }
+
+    public void setComboBoxItems(){
+        ObservableList<Genre> genres = FXCollections.observableArrayList();
+        genres.clear();
+        genres.addAll(model.getAllGenres());
+        for (Genre g : genres){
+            comboBoxGenre.getItems().add(g.getName());
+        }
     }
 }
