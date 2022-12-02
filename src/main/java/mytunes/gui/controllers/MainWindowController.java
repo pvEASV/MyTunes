@@ -1,9 +1,5 @@
 package mytunes.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -27,7 +24,7 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
-    private ListView songsInPlaylistListView;
+    private ListView<Song> songsInPlaylistListView;
     @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
@@ -50,20 +47,17 @@ public class MainWindowController {
     //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
-    private Model model = new Model();
+    private final Model model = new Model();
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
-        filterTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue)
-                    model.loadSongsToMemory();
-                else
-                    model.removeSongsFromMemory();
-            }
+        filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                model.loadSongsToMemory();
+            else
+                model.removeSongsFromMemory();
         });
     }
 
@@ -177,7 +171,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void playlistNewButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        Object[] objects = openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+        Window window = (Window) objects[1];
+        window.setOnHiding(event -> showAllPlaylists());
         NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
         newPlaylistViewController.setModel(model);
     }
@@ -187,7 +184,10 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a playlist to edit").showAndWait();
         else {
             model.setPlaylistToEdit(playlist);
-            FXMLLoader fxmlLoader = openNewWindow("Edit playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+            Object[] objects = openNewWindow("Edit Playlist", "views/edit-playlist-view.fxml", "images/playlist.png");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> showAllPlaylists());
             NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
             newPlaylistViewController.setModel(model);
             newPlaylistViewController.setIsEditing();
@@ -205,7 +205,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        Object[] objects = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+        Window window = (Window) objects[1];
+        window.setOnHiding(event -> showAllSongs());
         NewSongViewController newSongViewController = fxmlLoader.getController();
         newSongViewController.setModel(model);
     }
@@ -216,14 +219,17 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a song to edit").showAndWait();
         } else {
             model.setSongToEdit(selectedSong);
-            FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
+            Object[] objects  = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> showAllSongs());
             NewSongViewController newSongViewController = fxmlLoader.getController();
             newSongViewController.setModel(model);
             newSongViewController.setIsEditing();
         }
     }
 
-    private FXMLLoader openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {
+    private Object[] openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource(fxmlFile));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -232,12 +238,9 @@ public class MainWindowController {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();
-        scene.getWindow().setOnHiding(event -> {
-           showAllSongs();
-           showAllPlaylists();
-        });
+        Window window = scene.getWindow();
         stage.show();
-        return fxmlLoader;
+        return new Object[]{fxmlLoader, window};
     }
 
     public void moveSongToPlaylistMouseDown(MouseEvent mouseEvent) {
@@ -261,6 +264,6 @@ public class MainWindowController {
     }
 
     private void showSongsInPlaylist(){
-        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));;
+        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 }
