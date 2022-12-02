@@ -16,6 +16,7 @@ public class Model {
     private final ObservableList<Song> allSongs;
     private Song songToEdit;
     private Playlist playlistToEdit;
+    private Genre genreToEdit;
     private LogicManager bll = new LogicManager();
 
     public Model(){
@@ -90,13 +91,29 @@ public class Model {
 
     public void createGenre(String name) {
         //TODO update combobox
-        Genre genre = bll.createGenre(name);
-        genres.add(genre);
+        bll.createGenre(new Genre(name));
+        //genres.add(genre);
     }
 
-    private void updateGenres() {
+    public void updateGenre(Genre genre) {
+        bll.updateGenre(new Genre(genreToEdit.getId(), genre.getName()));
+    }
+
+    public void deleteGenre(Genre genre){
+        bll.deleteGenre(genre);
+        loadAllGenres();
+    }
+
+    private void loadAllGenres(){
         genres.clear();
         genres.addAll(bll.getAllGenres());
+    }
+
+    public void setGenreToEdit(Genre genre){
+        this.genreToEdit = genre;
+    }
+    public Genre getGenreToEdit(){
+        return genreToEdit;
     }
 
     public List<Song> search(String query){

@@ -2,6 +2,7 @@ package mytunes.dal.dao;
 
 import mytunes.be.Playlist;
 import mytunes.dal.ConnectionManager;
+import mytunes.dal.DAOTools;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -40,17 +41,17 @@ public class PlaylistDAO {
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
             return new Playlist(id, rs.getString("playlistName"), rs.getInt("total_length"));
-
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 
-    public void addPlaylist(Playlist playlist){
+    public void addPlaylist(Playlist playlist) {
         String sql = "INSERT INTO ALL_PLAYLISTS (playlistName, total_length) " +
-                "VALUES ('" + validateStringForSQL(playlist.getName()) + "', "
+                "VALUES ('" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
                 + playlist.getTotalLength() + ")";
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -60,7 +61,7 @@ public class PlaylistDAO {
 
     public void deletePlaylist(Playlist playlist) {
         String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + playlist.getId();
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -69,20 +70,14 @@ public class PlaylistDAO {
     }
 
     public void updatePlaylist(Playlist playlist) {
-        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + validateStringForSQL(playlist.getName()) + "', "
+        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
                 + "total_length = '" + playlist.getTotalLength() + "' "
                 + "WHERE id = " + playlist.getId();
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String validateStringForSQL(String string){
-        if (string == null) return null;
-        string = string.replace("'", "''");
-        return string;
     }
 }

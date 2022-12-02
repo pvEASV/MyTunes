@@ -49,14 +49,6 @@ public class LogicManager {
         playlistDAO.updatePlaylist(playlist);
     }
 
-    public Genre createGenre(String name) {
-        return genreDAO.createGenre(name);
-    }
-
-    public List<Genre> getAllGenres() {
-        return genreDAO.getAllGenres();
-    }
-
     public void loadSongsToMemory(){
         allSongs = songDAO.getAllSongs();
     }
@@ -73,5 +65,21 @@ public class LogicManager {
             }
         }
         return filteredSongs;
+    }
+
+    public void createGenre(Genre genre) {
+        genreDAO.createGenre(genre);
+    }
+
+    public void deleteGenre(Genre genre){
+        genreDAO.deleteGenre(genre);
+    }
+
+    public void updateGenre(Genre genre){
+        genreDAO.updateGenre(genre);
+    }
+
+    public List<Genre> getAllGenres() {
+        return genreDAO.getAllGenres();
     }
 }
