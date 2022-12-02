@@ -41,9 +41,9 @@ public class PlaylistDAO {
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
             return new Playlist(id, rs.getString("playlistName"), rs.getInt("total_length"));
-
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 
