@@ -126,4 +126,8 @@ public class Model {
     public void removeSongsFromMemory(){
         bll.removeSongsFromMemory();
     }
+
+    public void moveSongToPlaylist(Song song, Playlist playlist) {
+        bll.addSongToPlaylist(song, playlist);
+    }
 }
