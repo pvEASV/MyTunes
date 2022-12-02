@@ -53,7 +53,6 @@ public class MainWindowController {
     private boolean isPlaying = false;
     private final Model model = new Model();
 
-
     private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
 
     private Media media;
