@@ -11,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import mytunes.MyTunes;
 import mytunes.be.Artist;
 import mytunes.be.Genre;
@@ -56,9 +55,7 @@ public class NewSongViewController {
         stage.centerOnScreen();
         NewGenreViewController newGenreViewController = fxmlLoader.getController();
         newGenreViewController.setModel(model);
-        scene.getWindow().setOnHiding(event -> {
-            setComboBoxItems();
-        });
+        scene.getWindow().setOnHiding(event -> setComboBoxItems());
         stage.show();
     }
 
@@ -107,7 +104,7 @@ public class NewSongViewController {
             if (isEditing)
                 model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
             else
-                model.createSong(title, filepath);
+                model.createSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
 
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();

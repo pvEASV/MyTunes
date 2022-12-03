@@ -2,7 +2,6 @@ package mytunes.gui.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import mytunes.be.Genre;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -34,8 +33,8 @@ public class Model {
         this.songToEdit = songToEdit;
     }
 
-    public void createSong(String title, String filepath){
-        bll.createSong(title, filepath);
+    public void createSong(Song song){
+        bll.createSong(song);
         loadAllSongs();
     }
 

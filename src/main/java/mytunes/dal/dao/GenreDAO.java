@@ -1,23 +1,21 @@
 package mytunes.dal.dao;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import mytunes.be.Genre;
 import mytunes.dal.ConnectionManager;
 import mytunes.dal.DAOTools;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreDAO {
-    ConnectionManager cm = new ConnectionManager();
+import static mytunes.dal.DAOTools.*;
 
+public class GenreDAO {
     public List<Genre> getAllGenres() {
         ArrayList<Genre> allGenres = new ArrayList<>();
-        try (Connection con = cm.getConnection()){
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM GENRES");
+        String sql = "SELECT * FROM GENRES";
+        try (ResultSet rs = SQLQueryWithRS(sql)){
             while (rs.next()){
                 int id = rs.getInt("id");
                 String genreName = rs.getString("genreName");
@@ -32,8 +30,7 @@ public class GenreDAO {
     }
 
     public Genre getGenre(int id){
-        try (Connection con = cm.getConnection()){
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM GENRES WHERE id = " + id);
+        try (ResultSet rs = SQLQueryWithRS("SELECT * FROM GENRES WHERE id = " + id)){
             rs.next();
             return new Genre(id, rs.getString("genreName"));
         } catch (SQLException e) {
@@ -43,19 +40,33 @@ public class GenreDAO {
     }
 
     public void createGenre(Genre genre) {
-        String sql = "INSERT INTO GENRES (genreName) " + "VALUES ('" + DAOTools.validateStringForSQL(genre.getName()) + "')";
-        try (Connection con = cm.getConnection()){
-            con.createStatement().execute(sql);
-        } catch (SQLException e) {
-            if (e.getMessage().contains("UNIQUE_name")){
-                sql = "SELECT * FROM GENRES WHERE genreName = '" + DAOTools.validateStringForSQL(genre.getName()) + "'";
-                try (Connection con = cm.getConnection()){
-                    ResultSet rs = con.createStatement().executeQuery(sql);
-                    rs.next();
-                }catch (SQLException ex){
-                    ex.printStackTrace();
+        String sql = "INSERT INTO GENRES (genreName) " + "VALUES ('" + validateStringForSQL(genre.getName()) + "')";
+        try {
+            for (Genre g : getAllGenres()){
+                if (g.getName().toLowerCase().trim().equals(genre.getName().toLowerCase().trim())){
+                    return;
                 }
             }
+            SQLQuery(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteGenre(Genre genre){
+        try {
+            SQLQuery("DELETE FROM GENRES WHERE id = " + genre.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateGenre(Genre genre){
+        String sql = "UPDATE GENRES SET genreName = '" + validateStringForSQL(genre.getName()) + "'"
+                + "WHERE id = " + genre.getId();
+        try {
+           SQLQuery(sql);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

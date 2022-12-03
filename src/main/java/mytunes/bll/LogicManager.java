@@ -1,6 +1,5 @@
 package mytunes.bll;
 
-import mytunes.be.Artist;
 import mytunes.be.Genre;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -17,8 +16,8 @@ public class LogicManager {
     private final PlaylistDAO playlistDAO = new PlaylistDAO();
     private List<Song> allSongs;
 
-    public void createSong(String title, String filepath) {
-        songDAO.addSong(new Song(title, new Artist("some author"), new Genre("test genre"), filepath, 404));
+    public void createSong(Song song) {
+        songDAO.addSong(song);
     }
 
     public void deleteSong(Song song){

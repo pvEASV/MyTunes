@@ -2,25 +2,20 @@ package mytunes.dal.dao;
 
 import mytunes.be.Playlist;
 import mytunes.be.Song;
-import mytunes.dal.ConnectionManager;
-import mytunes.dal.DAOTools;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistDAO {
-    ConnectionManager cm = new ConnectionManager();
+import static mytunes.dal.DAOTools.*;
 
+public class PlaylistDAO {
     public List<Playlist> getAllPlaylists() {
         ArrayList<Playlist> allPlaylists = new ArrayList<>();
-        try (Connection con = cm.getConnection()) {
-            String sql = "SELECT * FROM ALL_PLAYLISTS";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+
+        String sql = "SELECT * FROM ALL_PLAYLISTS";
+        try (ResultSet rs = SQLQueryWithRS(sql)){
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String playlistName = rs.getString("playlistName");
@@ -37,9 +32,7 @@ public class PlaylistDAO {
 
     public Playlist getPlaylist(int id) {
         String sql = "SELECT * FROM ALL_PLAYLISTS WHERE id = " + id;
-        try (Connection con = cm.getConnection()) {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        try  (ResultSet rs = SQLQueryWithRS(sql)){
             rs.next();
             return new Playlist(id, rs.getString("playlistName"), rs.getInt("total_length"));
         } catch (SQLException e) {
@@ -50,11 +43,10 @@ public class PlaylistDAO {
 
     public void addPlaylist(Playlist playlist) {
         String sql = "INSERT INTO ALL_PLAYLISTS (playlistName, total_length) " +
-                "VALUES ('" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
+                "VALUES ('" + validateStringForSQL(playlist.getName()) + "', "
                 + playlist.getTotalLength() + ")";
-        try (Connection con = cm.getConnection()) {
-            Statement stmt = con.createStatement();
-            stmt.execute(sql);
+        try {
+            SQLQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -62,21 +54,19 @@ public class PlaylistDAO {
 
     public void deletePlaylist(Playlist playlist) {
         String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + playlist.getId();
-        try (Connection con = cm.getConnection()) {
-            Statement stmt = con.createStatement();
-            stmt.execute(sql);
+        try  {
+            SQLQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void updatePlaylist(Playlist playlist) {
-        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
+        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + validateStringForSQL(playlist.getName()) + "', "
                 + "total_length = '" + playlist.getTotalLength() + "' "
                 + "WHERE id = " + playlist.getId();
-        try (Connection con = cm.getConnection()) {
-            Statement stmt = con.createStatement();
-            stmt.execute(sql);
+        try {
+            SQLQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -84,10 +74,9 @@ public class PlaylistDAO {
 
     public List<Song> getAllSongsInPlaylist(int playlistID) {
         ArrayList<Song> songsInPlaylist = new ArrayList<>();
-        try (Connection con = cm.getConnection()) {
-            String sql = "SELECT * FROM SONG_PLAYLIST_LINK where playlistId = " + playlistID;
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+
+        String sql = "SELECT * FROM SONG_PLAYLIST_LINK where playlistId = " + playlistID;
+        try (ResultSet rs = SQLQueryWithRS(sql)) {
             while (rs.next()) {
                 int songId = rs.getInt("songId");
                 SongDAO songDAO = new SongDAO();
@@ -101,10 +90,9 @@ public class PlaylistDAO {
         }
     }
     public void addSongToPlaylist(int songID, int playlistID) {
-        try (Connection con = cm.getConnection()) {
-            String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
-            Statement statement = con.createStatement();
-            statement.execute(sql);
+        String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
+        try {
+            SQLQuery(sql);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
