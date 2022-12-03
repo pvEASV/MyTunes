@@ -1,7 +1,5 @@
 package mytunes.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -25,11 +24,11 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
+    private ListView<Song> songsInPlaylistListView;
+    @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
     private TextField filterTextField;
-    @FXML
-    private ListView<Song> songsInPlaylistListVIew;
     @FXML
     private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
     @FXML
@@ -48,20 +47,17 @@ public class MainWindowController {
     //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
-    private Model model = new Model();
+    private final Model model = new Model();
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
-        filterTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue)
-                    model.loadSongsToMemory();
-                else
-                    model.removeSongsFromMemory();
-            }
+        filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                model.loadSongsToMemory();
+            else
+                model.removeSongsFromMemory();
         });
     }
 
@@ -87,7 +83,6 @@ public class MainWindowController {
      */
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
-        System.out.println("Play/Pause button mouse down");
         if (isPlaying) {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
             isPlaying = false;
@@ -108,7 +103,7 @@ public class MainWindowController {
      * Changes opacity of the music controls buttons to 0.5 when mouse is pressed down on them
      * @param mouseEvent The mouse event that triggered this method
      */
-    public void controlsButtonMouseDown(MouseEvent mouseEvent) {
+    public void ImageViewMouseDown(MouseEvent mouseEvent) {
         ImageView imageView = (ImageView) mouseEvent.getSource();
         imageView.setOpacity(0.5);
     }
@@ -176,7 +171,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void playlistNewButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        Object[] objects = openNewWindow("Add Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+        FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+        Window window = (Window) objects[1];
+        window.setOnHiding(event -> showAllPlaylists());
         NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
         newPlaylistViewController.setModel(model);
     }
@@ -186,7 +184,10 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a playlist to edit").showAndWait();
         else {
             model.setPlaylistToEdit(playlist);
-            FXMLLoader fxmlLoader = openNewWindow("Edit playlist", "views/new-playlist-view.fxml", "images/playlist.png");
+            Object[] objects = openNewWindow("Edit Playlist", "views/edit-playlist-view.fxml", "images/playlist.png");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> showAllPlaylists());
             NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
             newPlaylistViewController.setModel(model);
             newPlaylistViewController.setIsEditing();
@@ -204,7 +205,10 @@ public class MainWindowController {
      * @throws IOException thrown when the fxml file is not found
      */
     public void songNewButtonAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        Object[] objects = openNewWindow("Add song", "views/new-song-view.fxml", "images/record.png");
+        FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+        Window window = (Window) objects[1];
+        window.setOnHiding(event -> showAllSongs());
         NewSongViewController newSongViewController = fxmlLoader.getController();
         newSongViewController.setModel(model);
         newSongViewController.setComboBoxItems();
@@ -216,14 +220,17 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a song to edit").showAndWait();
         } else {
             model.setSongToEdit(selectedSong);
-            FXMLLoader fxmlLoader = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
+            Object[] objects  = openNewWindow("Edit song", "views/new-song-view.fxml", "images/record.png");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> showAllSongs());
             NewSongViewController newSongViewController = fxmlLoader.getController();
             newSongViewController.setModel(model);
             newSongViewController.setIsEditing();
         }
     }
 
-    private FXMLLoader openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {
+    private Object[] openNewWindow(String title, String fxmlFile, String iconFile) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource(fxmlFile));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -232,11 +239,32 @@ public class MainWindowController {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();
-        scene.getWindow().setOnHiding(event -> {
-           showAllSongs();
-           showAllPlaylists();
-        });
+        Window window = scene.getWindow();
         stage.show();
-        return fxmlLoader;
+        return new Object[]{fxmlLoader, window};
+    }
+
+    public void moveSongToPlaylistMouseDown(MouseEvent mouseEvent) {
+        ImageViewMouseDown(mouseEvent);
+    }
+
+    public void moveSongToPlaylistMouseUp(MouseEvent mouseEvent) {
+        resetOpacity(mouseEvent);
+        Song song = allSongsTableView.getSelectionModel().getSelectedItem();
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (song == null || playlist == null) {
+            new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
+        } else {
+            model.moveSongToPlaylist(song, playlist);
+            showSongsInPlaylist();
+        }
+    }
+
+    public void playlistTableViewOnMouseUp(MouseEvent mouseEvent) {
+        showSongsInPlaylist();
+    }
+
+    private void showSongsInPlaylist(){
+        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 }

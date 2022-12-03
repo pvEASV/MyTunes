@@ -1,7 +1,9 @@
 package mytunes.dal.dao;
 
 import mytunes.be.Playlist;
+import mytunes.be.Song;
 import mytunes.dal.ConnectionManager;
+import mytunes.dal.DAOTools;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,11 +48,11 @@ public class PlaylistDAO {
         }
     }
 
-    public void addPlaylist(Playlist playlist){
+    public void addPlaylist(Playlist playlist) {
         String sql = "INSERT INTO ALL_PLAYLISTS (playlistName, total_length) " +
-                "VALUES ('" + validateStringForSQL(playlist.getName()) + "', "
+                "VALUES ('" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
                 + playlist.getTotalLength() + ")";
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class PlaylistDAO {
 
     public void deletePlaylist(Playlist playlist) {
         String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + playlist.getId();
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -69,10 +71,10 @@ public class PlaylistDAO {
     }
 
     public void updatePlaylist(Playlist playlist) {
-        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + validateStringForSQL(playlist.getName()) + "', "
+        String sql = "UPDATE ALL_PLAYLISTS SET playlistName = '" + DAOTools.validateStringForSQL(playlist.getName()) + "', "
                 + "total_length = '" + playlist.getTotalLength() + "' "
                 + "WHERE id = " + playlist.getId();
-        try (Connection con = cm.getConnection()){
+        try (Connection con = cm.getConnection()) {
             Statement stmt = con.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -80,9 +82,31 @@ public class PlaylistDAO {
         }
     }
 
-    public String validateStringForSQL(String string){
-        if (string == null) return null;
-        string = string.replace("'", "''");
-        return string;
+    public List<Song> getAllSongsInPlaylist(int playlistID) {
+        ArrayList<Song> songsInPlaylist = new ArrayList<>();
+        try (Connection con = cm.getConnection()) {
+            String sql = "SELECT * FROM SONG_PLAYLIST_LINK where playlistId = " + playlistID;
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                int songId = rs.getInt("songId");
+                SongDAO songDAO = new SongDAO();
+                Song song = songDAO.getSong(songId);
+                songsInPlaylist.add(song);
+            }
+            return songsInPlaylist;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public void addSongToPlaylist(int songID, int playlistID) {
+        try (Connection con = cm.getConnection()) {
+            String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
+            Statement statement = con.createStatement();
+            statement.execute(sql);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

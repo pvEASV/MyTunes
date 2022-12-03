@@ -82,4 +82,12 @@ public class LogicManager {
     public List<Genre> getAllGenres() {
         return genreDAO.getAllGenres();
     }
+
+    public void addSongToPlaylist(Song song, Playlist playlist){
+        playlistDAO.addSongToPlaylist(song.getId(), playlist.getId());
+    }
+
+    public List<Song> getSongsInPlaylist(Playlist playlist){
+        return playlistDAO.getAllSongsInPlaylist(playlist.getId());
+    }
 }

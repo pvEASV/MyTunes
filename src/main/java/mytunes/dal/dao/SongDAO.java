@@ -44,8 +44,7 @@ public class SongDAO {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
-
-            return new Song(id, rs.getString("title"), new Artist(rs.getString("author")),
+            return new Song(id, rs.getString("title"), new Artist(rs.getString("artist")),
                     new Genre(rs.getString("genre")), rs.getString("filepath"), rs.getInt("duration"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
