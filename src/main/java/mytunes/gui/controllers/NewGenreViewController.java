@@ -12,12 +12,6 @@ public class NewGenreViewController {
     @FXML
     private TextField nameTextField;
     private Model model = null;
-    private boolean isEditing = false;
-
-    @FXML
-    public void initialize(){
-        isEditing = false;
-    }
 
     public void setModel(Model model) {
         this.model = model;
@@ -30,11 +24,7 @@ public class NewGenreViewController {
         if (!name.isEmpty() && !nameTextField.promptTextProperty().getValue().equals("Field must not be empty!")
                 && !nameTextField.promptTextProperty().getValue().equals("Enter the name of the playlist")){
             nameTextField.promptTextProperty().setValue("");
-            if (isEditing)
-                model.updateGenre(new Genre(name));
-            else{
-                model.createGenre(name);
-            }
+            model.createGenre(name);
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
         }
@@ -45,11 +35,5 @@ public class NewGenreViewController {
     public void cancelButtonAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
         node.getScene().getWindow().hide();
-    }
-
-    public void setIsEditing(){
-        isEditing = true;
-        Playlist playlistToEdit = model.getPlaylistToEdit();
-        nameTextField.setText(playlistToEdit.getName());
     }
 }

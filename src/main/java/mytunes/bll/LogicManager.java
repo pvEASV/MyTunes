@@ -71,14 +71,6 @@ public class LogicManager {
         genreDAO.createGenre(genre);
     }
 
-    public void deleteGenre(Genre genre){
-        genreDAO.deleteGenre(genre);
-    }
-
-    public void updateGenre(Genre genre){
-        genreDAO.updateGenre(genre);
-    }
-
     public List<Genre> getAllGenres() {
         return genreDAO.getAllGenres();
     }

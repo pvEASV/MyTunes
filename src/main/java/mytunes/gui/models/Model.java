@@ -17,7 +17,6 @@ public class Model {
     private final ObservableList<Song> songsInPlaylist;
     private Song songToEdit;
     private Playlist playlistToEdit;
-    private Genre genreToEdit;
     private LogicManager bll = new LogicManager();
 
     public Model(){
@@ -96,15 +95,6 @@ public class Model {
         loadAllGenres();
     }
 
-    public void updateGenre(Genre genre) {
-        bll.updateGenre(new Genre(genreToEdit.getId(), genre.getName()));
-    }
-
-    public void deleteGenre(Genre genre){
-        bll.deleteGenre(genre);
-        loadAllGenres();
-    }
-
     private void loadAllGenres(){
         genres.clear();
         genres.addAll(bll.getAllGenres());
@@ -113,13 +103,6 @@ public class Model {
     public List<Genre> getAllGenres(){
         loadAllGenres();
         return genres;
-    }
-
-    public void setGenreToEdit(Genre genre){
-        this.genreToEdit = genre;
-    }
-    public Genre getGenreToEdit(){
-        return genreToEdit;
     }
 
     public List<Song> search(String query){

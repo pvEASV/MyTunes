@@ -60,7 +60,6 @@ public class NewSongViewController {
             setComboBoxItems();
         });
         stage.show();
-
     }
 
     /**

@@ -3,6 +3,7 @@ package mytunes.dal.dao;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import mytunes.be.Genre;
 import mytunes.dal.ConnectionManager;
+import mytunes.dal.DAOTools;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -42,40 +43,20 @@ public class GenreDAO {
     }
 
     public void createGenre(Genre genre) {
-        String sql = "INSERT INTO GENRES (genreName) " + "VALUES ('" + validateStringForSQL(genre.getName()) + "')";
+        String sql = "INSERT INTO GENRES (genreName) " + "VALUES ('" + DAOTools.validateStringForSQL(genre.getName()) + "')";
         try (Connection con = cm.getConnection()){
-            for (Genre g : getAllGenres()){
-                if (g.getName().toLowerCase().trim().equals(genre.getName().toLowerCase().trim())){
-                    return;
+            con.createStatement().execute(sql);
+        } catch (SQLException e) {
+            if (e.getMessage().contains("UNIQUE_name")){
+                sql = "SELECT * FROM GENRES WHERE genreName = '" + DAOTools.validateStringForSQL(genre.getName()) + "'";
+                try (Connection con = cm.getConnection()){
+                    ResultSet rs = con.createStatement().executeQuery(sql);
+                    rs.next();
+                }catch (SQLException ex){
+                    ex.printStackTrace();
                 }
             }
-            con.createStatement().execute(sql);
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void deleteGenre(Genre genre){
-        try (Connection con = cm.getConnection()){
-            con.createStatement().execute("DELETE FROM GENRES WHERE id = " + genre.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void updateGenre(Genre genre){
-        String sql = "UPDATE GENRES SET genreName = '" + validateStringForSQL(genre.getName()) + "'"
-                + "WHERE id = " + genre.getId();
-        try (Connection con = cm.getConnection()){
-            con.createStatement().execute(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String validateStringForSQL(String string){
-        if (string == null) return null;
-        string = string.replace("'", "''");
-        return string;
     }
 }
