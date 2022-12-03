@@ -160,6 +160,7 @@ public class NewSongViewController {
     public void setComboBoxItems(){
         ObservableList<Genre> genres = FXCollections.observableArrayList();
         genres.clear();
+        comboBoxGenre.getItems().removeAll(comboBoxGenre.getItems());
         genres.addAll(model.getAllGenres());
         for (Genre g : genres){
             comboBoxGenre.getItems().add(g.getName());
