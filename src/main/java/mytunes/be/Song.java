@@ -1,11 +1,12 @@
 package mytunes.be;
 
+import java.util.ArrayList;
+
 public class Song {
     private int id;
-    private String title;
+    private String title, path, durationAsAString;
     private Artist artist;
     private int duration;
-    private String path;
     private Genre genre;
 
     public Song(int id, String title, Artist artist, Genre genre, String path, int duration) {
@@ -68,8 +69,35 @@ public class Song {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
     public String toString(){
         return  "ID: " + id + ", Title: " + title + ", Artist: " + artist.getName() + ", Genre: " + genre.getName() +
                 ", Duration: " + duration + ", Path: " + path;
+    }
+
+    private void convertSecondsIntoString(int duration){
+        durationAsAString = "";
+        int seconds = duration % 60;
+        int minutes = (duration / 60) % 60;
+        int hours = (duration / 60) / 60;
+
+        if (hours > 0){
+            if (hours < 10)
+                durationAsAString += "0";
+            durationAsAString += hours + ":";
+        }
+
+        if (minutes < 10)
+            durationAsAString += "0";
+        durationAsAString += minutes + ":";
+
+        if (seconds < 10)
+            durationAsAString += "0";
+        durationAsAString += seconds;
+    }
+
+    public String getDurationAsAString(){
+        convertSecondsIntoString(this.duration);
+        return durationAsAString;
     }
 }

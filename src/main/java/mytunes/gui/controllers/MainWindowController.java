@@ -34,17 +34,11 @@ public class MainWindowController {
     @FXML
     private TableView<Song> allSongsTableView;
     @FXML
-    private TableColumn<Song, String> titleColumn, artistColumn, genreColumn;
-    @FXML
-    private TableColumn<Song, Integer> durationColumn;
-    //TODO change the duration to mm:ss
+    private TableColumn<Song, String> titleColumn, artistColumn, genreColumn, durationColumn;
     @FXML
     private TableView<Playlist> playlistsTableView;
     @FXML
-    private TableColumn<Playlist, String> playlistNameColumn;
-    @FXML
-    private TableColumn<Playlist, Integer> totalLengthColumn;
-    //TODO change the duration to mm:ss
+    private TableColumn<Playlist, String> playlistNameColumn, totalLengthColumn;
 
     private boolean isPlaying = false;
     private final Model model = new Model();
@@ -66,14 +60,14 @@ public class MainWindowController {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("durationAsAString"));
         allSongsTableView.getItems().setAll(model.getAllSongs());
     }
 
     private void showAllPlaylists(){
         playlistsTableView.refresh();
         playlistNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        totalLengthColumn.setCellValueFactory(new PropertyValueFactory<>("totalLength"));
+        totalLengthColumn.setCellValueFactory(new PropertyValueFactory<>("totalLengthAsAString"));
         playlistsTableView.getItems().setAll(model.getAllPlaylists());
     }
 
@@ -198,6 +192,7 @@ public class MainWindowController {
         allSongsTableView.getItems().setAll(model.search(filterTextField.getText()));
         allSongsTableView.refresh();
     }
+
     /**
      * Called when the user clicks the "new" button under all songs section
      * It opens new window for adding new song

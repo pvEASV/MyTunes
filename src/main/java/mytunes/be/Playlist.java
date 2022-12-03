@@ -7,6 +7,7 @@ public class Playlist {
     private String name;
     private int totalLength;
     private HashMap<Integer, Song> songs;
+    private String totalLengthAsAString;
 
     public Playlist(int id, String name) {
         this.id = id;
@@ -62,5 +63,31 @@ public class Playlist {
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 ", totalLength = " + totalLength;
+    }
+
+    private void convertSecondsIntoString(int duration){
+        totalLengthAsAString = "";
+        int seconds = duration % 60;
+        int minutes = (duration / 60) % 60;
+        int hours = (duration / 60) / 60;
+
+        if (hours > 0){
+            if (hours < 10)
+                totalLengthAsAString += "0";
+            totalLengthAsAString += hours + ":";
+        }
+
+        if (minutes < 10)
+            totalLengthAsAString += "0";
+        totalLengthAsAString += minutes + ":";
+
+        if (seconds < 10)
+            totalLengthAsAString += "0";
+        totalLengthAsAString += seconds;
+    }
+
+    public String getTotalLengthAsAString(){
+        convertSecondsIntoString(this.totalLength);
+        return totalLengthAsAString;
     }
 }
