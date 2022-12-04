@@ -92,12 +92,12 @@
             <Image url="@../images/arrow.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="moveSongDownButton" fitHeight="20.0" fitWidth="20.0" layoutX="402.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="345.0" AnchorPane.topAnchor="471.0">
+      <ImageView fx:id="moveSongDownButton" fitHeight="20.0" fitWidth="20.0" layoutX="402.0" layoutY="473.0" onMousePressed="#moveSongDownMouseDown" onMouseReleased="#moveSongDownMouseUp" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="345.0" AnchorPane.topAnchor="471.0">
          <image>
             <Image url="@../images/arrow.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="moveSongUpButton" fitHeight="20.0" fitWidth="20.0" layoutX="382.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" AnchorPane.leftAnchor="315.0" AnchorPane.topAnchor="470.0">
+      <ImageView fx:id="moveSongUpButton" fitHeight="20.0" fitWidth="20.0" layoutX="382.0" layoutY="473.0" onMousePressed="#moveSongUpMouseDown" onMouseReleased="#moveSongUpMouseUp" pickOnBounds="true" preserveRatio="true" rotate="180.0" AnchorPane.leftAnchor="315.0" AnchorPane.topAnchor="470.0">
          <image>
             <Image url="@../images/arrow.png" />
          </image>

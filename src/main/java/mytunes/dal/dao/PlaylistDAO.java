@@ -74,8 +74,7 @@ public class PlaylistDAO {
 
     public List<Song> getAllSongsInPlaylist(int playlistID) {
         ArrayList<Song> songsInPlaylist = new ArrayList<>();
-
-        String sql = "SELECT * FROM SONG_PLAYLIST_LINK where playlistId = " + playlistID;
+        String sql = "SELECT * FROM SONG_PLAYLIST_LINK WHERE playlistId = " + playlistID + " ORDER BY songIndex";
         try (ResultSet rs = SQLQueryWithRS(sql)) {
             while (rs.next()) {
                 int songId = rs.getInt("songId");
@@ -97,4 +96,16 @@ public class PlaylistDAO {
             ex.printStackTrace();
         }
     }
+
+    public void updateSongOrder(int songID, int playlistID, int songIndex){
+        String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
+                + playlistID + " AND songId = " + songID;
+        try {
+            SQLQuery(sql);
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    //TODO keep track of the song's indexes in a playlist, will finish tomorrow
 }

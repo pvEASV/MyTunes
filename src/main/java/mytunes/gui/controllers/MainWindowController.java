@@ -19,6 +19,7 @@ import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -85,6 +86,7 @@ public class MainWindowController {
             isPlaying = true;
         }
     }
+
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
     }
@@ -261,5 +263,39 @@ public class MainWindowController {
 
     private void showSongsInPlaylist(){
         songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
+    }
+
+    public void moveSongUpMouseUp(MouseEvent mouseEvent){
+        resetOpacity(mouseEvent);
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
+        int songIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
+        if (song == null)
+            new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
+        else{
+            model.moveSongUpInPlaylist(song, playlist, songIndex);
+            songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+        }
+    }
+
+    public void moveSongUpMouseDown(MouseEvent mouseEvent){
+        ImageViewMouseDown(mouseEvent);
+    }
+
+    public void moveSongDownMouseUp(MouseEvent mouseEvent){
+        resetOpacity(mouseEvent);
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
+        int songIndex = songsInPlaylistListView.getEditingIndex();
+        if (song == null)
+            new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
+        else{
+            //model.moveSongDownInPlaylist(song, playlist, songIndex);
+            songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+        }
+    }
+
+    public void moveSongDownMouseDown(MouseEvent mouseEvent){
+        ImageViewMouseDown(mouseEvent);
     }
 }

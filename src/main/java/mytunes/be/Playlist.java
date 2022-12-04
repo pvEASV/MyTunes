@@ -1,13 +1,18 @@
 package mytunes.be;
 
+import mytunes.dal.dao.PlaylistDAO;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Playlist {
-    private int id;
+    private int id, totalLength;
     private String name;
-    private int totalLength;
     private HashMap<Integer, Song> songs;
     private String totalLengthAsAString;
+    private List<Song> songsInPlaylist;
+    PlaylistDAO playlistDAO = new PlaylistDAO();
 
     public Playlist(int id, String name) {
         this.id = id;
@@ -16,6 +21,9 @@ public class Playlist {
 
     public Playlist(String name){
         this.name = name;
+        songsInPlaylist = new ArrayList<>();
+        songsInPlaylist.addAll(playlistDAO.getAllSongsInPlaylist(id));
+        calculateLength();
     }
 
     public Playlist(String name, HashMap<Integer, Song> songs) {
@@ -27,6 +35,9 @@ public class Playlist {
         this.id = id;
         this.name = playlistName;
         this.totalLength = totalLength;
+        songsInPlaylist = new ArrayList<>();
+        songsInPlaylist.addAll(playlistDAO.getAllSongsInPlaylist(id));
+        calculateLength();
     }
 
     public int getId() {
@@ -59,8 +70,7 @@ public class Playlist {
 
     @Override
     public String toString() {
-        return "Playlist" +
-                "id = " + id +
+        return  "id = " + id +
                 ", name = '" + name + '\'' +
                 ", totalLength = " + totalLength;
     }
@@ -89,5 +99,15 @@ public class Playlist {
     public String getTotalLengthAsAString(){
         convertSecondsIntoString(this.totalLength);
         return totalLengthAsAString;
+    }
+
+    public List<Song> getSongsInPlaylist(){
+        return songsInPlaylist;
+    }
+
+    private void calculateLength(){
+        for (Song song : songsInPlaylist){
+            totalLength += song.getDuration();
+        }
     }
 }

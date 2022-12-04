@@ -81,4 +81,8 @@ public class LogicManager {
     public List<Song> getSongsInPlaylist(Playlist playlist){
         return playlistDAO.getAllSongsInPlaylist(playlist.getId());
     }
+
+    public void moveSongUp(Song song, Playlist playlist, int songIndex) {
+        playlistDAO.updateSongOrder(song.getId(), playlist.getId(), songIndex);
+    }
 }

@@ -7,6 +7,7 @@ import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.bll.LogicManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
@@ -130,5 +131,11 @@ public class Model {
         ObservableList<String> titles = FXCollections.observableArrayList();
         songsInPlaylist.forEach(song -> titles.add(song.getTitle()));
         return titles;
+    }
+
+    public void moveSongUpInPlaylist(Song song, Playlist playlist, int songIndex) {
+        bll.moveSongUp(song, playlist, songIndex);
+        songsInPlaylist.clear();
+        songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
     }
 }
