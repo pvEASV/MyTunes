@@ -1,7 +1,5 @@
 package mytunes.be;
 
-import java.util.ArrayList;
-
 public class Song {
     private int id;
     private String title, path, durationAsAString;
@@ -96,7 +94,7 @@ public class Song {
         durationAsAString += seconds;
     }
 
-    public String getDurationAsAString(){
+    public String getDurationAsAString(){  // used by PropertyValueFactory
         convertSecondsIntoString(this.duration);
         return durationAsAString;
     }

@@ -19,7 +19,6 @@ import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,10 +57,10 @@ public class MainWindowController {
 
     private void showAllSongs() {
         allSongsTableView.refresh();
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title")); // cals getDurationAsAString() method
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("durationAsAString"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("durationAsAString")); // cals getDurationAsAString() method
         allSongsTableView.getItems().setAll(model.getAllSongs());
     }
 

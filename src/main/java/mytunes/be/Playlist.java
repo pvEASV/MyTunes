@@ -96,7 +96,7 @@ public class Playlist {
         totalLengthAsAString += seconds;
     }
 
-    public String getTotalLengthAsAString(){
+    public String getTotalLengthAsAString(){  // used by PropertyValueFactory
         convertSecondsIntoString(this.totalLength);
         return totalLengthAsAString;
     }

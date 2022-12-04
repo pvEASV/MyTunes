@@ -1,8 +1,6 @@
 package mytunes.dal.dao;
 
 import mytunes.be.Genre;
-import mytunes.dal.ConnectionManager;
-import mytunes.dal.DAOTools;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
