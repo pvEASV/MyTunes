@@ -27,14 +27,9 @@ public class MyTunes extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-        test();
     }
 
     public static void main(String[] args) {
         launch();
-    }
-
-    public void test(){
-        GenreDAO genreDAO = new GenreDAO();
     }
 }

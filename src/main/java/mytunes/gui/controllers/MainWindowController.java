@@ -120,12 +120,19 @@ public class MainWindowController {
     public void deleteButtonAction(ActionEvent actionEvent){
         Node source = (Node) actionEvent.getSource();
         String type = source.getId().equals("playlistDeleteButton") ? "playlist" : "song";
+        if (source.getId().equals("playlistDeleteButton"))
+            type = "playlist";
+        else if (source.getId().equals("songsDeleteButton"))
+            type = "song";
+        else
+            type = "song in playlist";
 
         // check if the user has selected a playlist or a song
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
         if (type.equals("song")){
-            if (allSongsTableView.getSelectionModel().getSelectedItem() == null){
+            if (allSongsTableView.getSelectionModel().getSelectedItem() == null ||
+                    songsInPlaylistListView.getSelectionModel().getSelectedItem() == null){
                 errorAlert.setHeaderText("No song selected");
                 errorAlert.setContentText("Please select a song to delete");
                 errorAlert.showAndWait();
@@ -151,10 +158,16 @@ public class MainWindowController {
                 Song song = allSongsTableView.getSelectionModel().getSelectedItem();
                 model.deleteSong(song);
                 showAllSongs();
-            } else {
+            } else if (type.equals("playlist")){
                 Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
                 model.deletePlaylist(playlist);
                 showAllPlaylists();
+            } else {
+                Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+                Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
+                int songIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
+                model.deleteSongInPlaylist(song, playlist, songIndex);
+                showSongsInPlaylist();
             }
         }
     }
