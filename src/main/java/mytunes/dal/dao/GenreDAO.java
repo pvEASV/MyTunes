@@ -50,22 +50,4 @@ public class GenreDAO {
             throw new RuntimeException(e);
         }
     }
-
-    public void deleteGenre(Genre genre){
-        try {
-            SQLQuery("DELETE FROM GENRES WHERE id = " + genre.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void updateGenre(Genre genre){
-        String sql = "UPDATE GENRES SET genreName = '" + validateStringForSQL(genre.getName()) + "'"
-                + "WHERE id = " + genre.getId();
-        try {
-           SQLQuery(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
