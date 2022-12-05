@@ -85,4 +85,8 @@ public class LogicManager {
     public void moveSongInPlaylist(Song song, Playlist playlist, Boolean moveUp, int songIndex) {
         playlistDAO.moveSongInPlaylist(song.getId(), playlist.getId(), moveUp, songIndex);
     }
+
+    public void updateIndexInPlaylist(Song song, Playlist playlist){
+        playlistDAO.updateIndexInPlaylist(song.getId(), playlist.getId());
+    }
 }

@@ -252,10 +252,14 @@ public class MainWindowController {
         if (song == null || playlist == null) {
             new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
         } else {
-            model.moveSongToPlaylist(song, playlist);
-            showSongsInPlaylist();
-            //TODO update tableview duration column
-            //TODO set the song's current index within playlist inside the database
+            if (allSongsTableView.getSelectionModel().getSelectedIndex() == 0)
+                new Alert(Alert.AlertType.ERROR, "Can't move this song up").showAndWait();
+            else{
+                model.moveSongToPlaylist(song, playlist);
+                model.updateIndexInPlaylist(song, playlist);
+                showSongsInPlaylist();
+                //TODO update tableview duration column
+            }
         }
     }
 

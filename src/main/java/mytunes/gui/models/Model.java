@@ -137,4 +137,8 @@ public class Model {
         songsInPlaylist.clear();
         songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
     }
+
+    public void updateIndexInPlaylist(Song song, Playlist playlist){
+        bll.updateIndexInPlaylist(song, playlist);
+    }
 }

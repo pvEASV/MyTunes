@@ -102,6 +102,8 @@ public class PlaylistDAO {
     public void moveSongInPlaylist(int songID, int playlistID, boolean moveUp, int songIndex){
         String sql;
         try {
+            if (songIndex == 0)
+                return;
             int newSongIndex;
             if (moveUp)
                 newSongIndex = songIndex-1;
@@ -125,6 +127,17 @@ public class PlaylistDAO {
             }
         }
         catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateIndexInPlaylist(int songID, int playlistID){
+        int songIndex = getAllSongsInPlaylist(playlistID).size()-1;
+        String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
+                + playlistID + " AND songId = " + songID + "AND songIndex IS NULL";
+        try{
+            SQLQuery(sql);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
