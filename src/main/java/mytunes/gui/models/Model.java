@@ -15,7 +15,7 @@ public class Model {
     private final ObservableList<Song> allSongs, songsInPlaylist;
     private Song songToEdit;
     private Playlist playlistToEdit;
-    private LogicManager bll = new LogicManager();
+    private final LogicManager bll = new LogicManager();
 
     public Model(){
         genres = FXCollections.observableArrayList();
@@ -125,15 +125,8 @@ public class Model {
         return songsInPlaylist;
     }
 
-    public ObservableList<String> getSongsInPlaylistTitles(Playlist playlist){
-        getSongsInPlaylist(playlist);
-        ObservableList<String> titles = FXCollections.observableArrayList();
-        songsInPlaylist.forEach(song -> titles.add(song.getTitle()));
-        return titles;
-    }
-
     public void moveSongInPlaylist(Song song, Playlist playlist, Boolean moveUp, int songIndex) {
-        bll.moveSongInPlaylist(song, playlist, moveUp, songIndex);
+        bll.moveSongInPlaylist(song, playlist, moveUp, songIndex + 1); // +1 because the index is 0-based
         songsInPlaylist.clear();
         songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
     }

@@ -118,36 +118,20 @@ public class PlaylistDAO {
      * @param songIndex the current index of the song
      */
     public void moveSongInPlaylist(int songID, int playlistID, boolean moveUp, int songIndex){
-        String sql;
+        int newIndex;
+        if (moveUp) {
+             newIndex = songIndex - 1; // new index has to be one less than old index
+         } else {
+             newIndex = songIndex + 1; // new index has to be one more than old index
+         }
+        String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE songIndex = " + newIndex + " ; "+ // set song's index at this position to old index
+                     "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + newIndex + " WHERE playlistID = " + playlistID +
+             " AND songID = " + songID + " AND songIndex = " + songIndex + " ; "; // set song's index to new index
+
         try {
-            if (songIndex == 0 && moveUp)
-                return;
-            if (songIndex == getAllSongsInPlaylist(playlistID).size()-1 && !moveUp)
-                return;
-            int newSongIndex;
-            if (moveUp)
-                newSongIndex = songIndex-1;
-            else
-                newSongIndex = songIndex+1;
-
-            ResultSet rs = SQLQueryWithRS("SELECT * FROM SONG_PLAYLIST_LINK WHERE songIndex = " + newSongIndex + "AND playlistId = " + playlistID);
-            int songAtIndexBeforeID = 0;
-            while (rs.next()) {
-                songAtIndexBeforeID = rs.getInt("songId");
-            }
-
-            if (songAtIndexBeforeID != songID){
-                sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + newSongIndex + " WHERE playlistId = "
-                        + playlistID + " AND songId = " + songID + "AND songIndex = " + songIndex;
-                SQLQuery(sql);
-
-                sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
-                        + playlistID + " AND songId = " + songAtIndexBeforeID + "AND songIndex = " + newSongIndex;
-                SQLQuery(sql);
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
+            SQLQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -159,7 +143,7 @@ public class PlaylistDAO {
     private void updateIndexInPlaylist(int songID, int playlistID){
         int songIndex = getAllSongsInPlaylist(playlistID).size();
         String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
-                + playlistID + " AND songId = " + songID + "AND songIndex IS NULL";
+                + playlistID + " AND songId = " + songID + " AND songIndex IS NULL";
         try{
             SQLQuery(sql);
         } catch (SQLException ex) {
@@ -177,14 +161,14 @@ public class PlaylistDAO {
         List<Song> allSongsInPlaylist = getAllSongsInPlaylist(playlistID);
         try{
             String sql = "DELETE FROM SONG_PLAYLIST_LINK WHERE playlistID = " + playlistID +
-                    "AND songID = " + songID + "AND songIndex = " + songIndex;
+                    " AND songID = " + songID + " AND songIndex = " + songIndex;
             SQLQuery(sql);
 
             for (int i = songIndex+1; i < allSongsInPlaylist.size(); i++){
                 int newSongIndex = i-1;
                 songID = allSongsInPlaylist.get(i).getId();
                 sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + newSongIndex + " WHERE playlistId = "
-                        + playlistID + " AND songId = " + songID + "AND songIndex = " + i;
+                        + playlistID + " AND songId = " + songID + " AND songIndex = " + i;
                 SQLQuery(sql);
             }
             calculateTotalLength(playlistID);
