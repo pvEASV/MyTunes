@@ -36,8 +36,6 @@ public class MainWindowController {
     @FXML
     private TextField filterTextField;
     @FXML
-    private ListView<Song> songsInPlaylistListVIew;
-    @FXML
     private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
     @FXML
     private TableView<Song> allSongsTableView;
@@ -156,29 +154,37 @@ public class MainWindowController {
      */
     public void deleteButtonAction(ActionEvent actionEvent){
         Node source = (Node) actionEvent.getSource();
-        String type = source.getId().equals("playlistDeleteButton") ? "playlist" : "song";
+
+        String type = "";
+
         if (source.getId().equals("playlistDeleteButton"))
             type = "playlist";
         else if (source.getId().equals("songsDeleteButton"))
             type = "song";
-        else
+        else if (source.getId().equals("songsInPlaylistDeleteButton"))
             type = "song in playlist";
 
         // check if the user has selected a playlist or a song
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
         if (type.equals("song")){
-            if (allSongsTableView.getSelectionModel().getSelectedItem() == null ||
-                    songsInPlaylistListView.getSelectionModel().getSelectedItem() == null){
+            if (allSongsTableView.getSelectionModel().getSelectedItem() == null){
                 errorAlert.setHeaderText("No song selected");
                 errorAlert.setContentText("Please select a song to delete");
                 errorAlert.showAndWait();
                 return;
             }
-        } else {
+        } else if (type.equals("playlist")){
             if (playlistsTableView.getSelectionModel().getSelectedItem() == null){
                 errorAlert.setHeaderText("No playlist selected");
                 errorAlert.setContentText("Please select a playlist to delete");
+                errorAlert.showAndWait();
+                return;
+            }
+        } else if (type.equals("song in playlist")){
+            if (songsInPlaylistListView.getSelectionModel().getSelectedItem() == null){
+                errorAlert.setHeaderText("No song selected");
+                errorAlert.setContentText("Please select a song to delete");
                 errorAlert.showAndWait();
                 return;
             }
