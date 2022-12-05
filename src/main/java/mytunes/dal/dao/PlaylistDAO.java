@@ -112,7 +112,6 @@ public class PlaylistDAO {
             int songAtIndexBeforeID = 0;
             while (rs.next()) {
                 songAtIndexBeforeID = rs.getInt("songId");
-                System.out.println(songAtIndexBeforeID);
             }
 
             if (songAtIndexBeforeID != songID){
