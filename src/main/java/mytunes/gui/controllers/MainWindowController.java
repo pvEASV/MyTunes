@@ -24,6 +24,7 @@ import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -116,17 +117,10 @@ public class MainWindowController {
      */
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
-
-        if (isPlaying) {
-            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
-            isPlaying = false;
-            mediaPlayer.pause();
-        } else {
-            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
-            isPlaying = true;
-            mediaPlayer.play();
-        }
+        playPauseMusic();
     }
+
+
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
@@ -366,6 +360,7 @@ public class MainWindowController {
     }
 
     private void setMediaPlayerBehavior(){
+        mediaPlayer.setVolume(volume);
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
@@ -445,5 +440,34 @@ public class MainWindowController {
 
     public void moveSongDownMouseDown(MouseEvent mouseEvent){
         ImageViewMouseDown(mouseEvent);
+    }
+
+    public void allSongsTableViewMouseClicked(MouseEvent mouseEvent) {
+        Song song = allSongsTableView.getSelectionModel().getSelectedItem();
+        if (mouseEvent.getClickCount() == 2 && (song != null)) {
+            playSong(song);
+        }
+    }
+
+    private void playSong(Song song) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            isPlaying = false;
+        }
+        mediaPlayer = new MediaPlayer(new Media(Paths.get(song.getPath()).toUri().toString()));
+        setMediaPlayerBehavior();
+        playPauseMusic();
+
+    }
+    private void playPauseMusic() {
+        if (isPlaying) {
+            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
+            isPlaying = false;
+            mediaPlayer.pause();
+        } else {
+            playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
+            isPlaying = true;
+            mediaPlayer.play();
+        }
     }
 }
