@@ -199,6 +199,7 @@ public class MainWindowController {
                 Song song = allSongsTableView.getSelectionModel().getSelectedItem();
                 model.deleteSong(song);
                 showAllSongs();
+                showSongsInPlaylist();
             } else if (type.equals("playlist")){
                 Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
                 model.deletePlaylist(playlist);

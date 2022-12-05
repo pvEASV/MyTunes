@@ -6,8 +6,7 @@ public class Song {
     private Artist artist;
     private Genre genre;
 
-    public Song(int id, String title, Artist artist, Genre genre, String path, int duration) {
-        this.id = id;
+    public Song(String title, Artist artist, Genre genre, String path,  int duration) {
         this.title = title;
         this.artist = artist;
         this.duration = duration;
@@ -15,12 +14,9 @@ public class Song {
         this.genre = genre;
     }
 
-    public Song(String title, Artist artist, Genre genre, String path,  int duration) {
-        this.title = title;
-        this.artist = artist;
-        this.duration = duration;
-        this.path = path;
-        this.genre = genre;
+    public Song(int id, String title, Artist artist, Genre genre, String path, int duration) {
+        this(title, artist, genre, path, duration);
+        this.id = id;
     }
 
     public int getId() {
@@ -31,24 +27,12 @@ public class Song {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Artist getArtist() {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
     public String getPath() {
         return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public Genre getGenre() {
@@ -61,10 +45,6 @@ public class Song {
 
     public int getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public String toString(){
