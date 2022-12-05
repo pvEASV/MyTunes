@@ -81,8 +81,10 @@ public class PlaylistDAO {
         try (ResultSet rs = SQLQueryWithRS(sql)) {
             while (rs.next()) {
                 int songId = rs.getInt("songId");
+                int songIndex = rs.getInt("songIndex") + 1;
                 SongDAO songDAO = new SongDAO();
                 Song song = songDAO.getSong(songId);
+                song.setIndexInPlaylist(songIndex);
                 songsInPlaylist.add(song);
             }
             return songsInPlaylist;

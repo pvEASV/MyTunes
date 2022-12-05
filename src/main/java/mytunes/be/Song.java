@@ -5,6 +5,7 @@ public class Song {
     private String title, path, durationAsAString;
     private Artist artist;
     private Genre genre;
+    private int indexInPlaylist;
 
     public Song(String title, Artist artist, Genre genre, String path,  int duration) {
         this.title = title;
@@ -76,5 +77,13 @@ public class Song {
     public String getDurationAsAString(){  // used by PropertyValueFactory
         convertSecondsIntoString(this.duration);
         return durationAsAString;
+    }
+
+    public int getIndexInPlaylist() {
+        return indexInPlaylist;
+    }
+
+    public void setIndexInPlaylist(int indexInPlaylist) {
+        this.indexInPlaylist = indexInPlaylist;
     }
 }

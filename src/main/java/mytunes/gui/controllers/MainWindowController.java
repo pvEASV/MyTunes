@@ -15,6 +15,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
@@ -326,6 +327,17 @@ public class MainWindowController {
         return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
     private void showSongsInPlaylist(){
+        songsInPlaylistListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Song song, boolean empty) {
+                super.updateItem(song, empty);
+                if (empty || song == null || song.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(song.getIndexInPlaylist() + ": " + song.getTitle());
+                }
+            }
+        });
         songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 
