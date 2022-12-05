@@ -11,13 +11,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,9 +30,13 @@ public class MainWindowController {
     @FXML
     private ListView<Song> songsInPlaylistListView;
     @FXML
+    private Label lblSongTimeUntilEnd, lblSongTimeSinceStart;
+    @FXML
     private Slider volumeControlSlider, songTimeSlider;
     @FXML
     private TextField filterTextField;
+    @FXML
+    private ListView<Song> songsInPlaylistListVIew;
     @FXML
     private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
     @FXML
@@ -41,17 +49,44 @@ public class MainWindowController {
     private TableColumn<Playlist, String> playlistNameColumn, totalLengthColumn;
 
     private boolean isPlaying = false;
+    private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
+
+    private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
+
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    private File file = new File(onOpenPath);
+    private final String MEDIA_URL = file.toURI().toString();
+
+    private double volume = 0.05;
+    private int timeSinceStart = 0;
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
+
+        media = new Media(MEDIA_URL);
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(volume);
+
+        // without this listener there can be error for unknown duration
+        mediaPlayer.setOnReady(() -> {
+            setMediaPlayerBehavior();
+        });
+
+
+        // Listener for loading all songs when filter text field is put in focus
         filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
                 model.loadSongsToMemory();
             else
                 model.removeSongsFromMemory();
+        });
+        volumeControlSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            volume = newValue.doubleValue() / 100;
+            mediaPlayer.setVolume(volume);
         });
     }
 
@@ -77,15 +112,17 @@ public class MainWindowController {
      */
     public void playPauseMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+
         if (isPlaying) {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/play.png"))));
             isPlaying = false;
+            mediaPlayer.pause();
         } else {
             playPauseButton.setImage(new Image(Objects.requireNonNull(MyTunes.class.getResourceAsStream("images/pause.png"))));
             isPlaying = true;
+            mediaPlayer.play();
         }
     }
-
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
     }
@@ -280,10 +317,44 @@ public class MainWindowController {
         showSongsInPlaylist();
     }
 
-    private void showSongsInPlaylist(){
+    private String humanReadableTime(double seconds) {
+        double hours = seconds / 3600;
+        double minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
+    }
+        private void showSongsInPlaylist(){
         songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 
+    private void setMediaPlayerBehavior(){
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
+        songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
+        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+            //lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds() - newValue.toSeconds()));
+            if (!isUserChangingSongTime) {
+                lblSongTimeSinceStart.setText(humanReadableTime(newValue.toSeconds()));
+                songTimeSlider.setValue(newValue.toSeconds());
+            }
+        });
+        songTimeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (isUserChangingSongTime) {
+                lblSongTimeSinceStart.setText(humanReadableTime(newValue.doubleValue()));
+            }
+        });
+    }
+
+
+    public void songTimeSliderMouseUp(MouseEvent mouseEvent) {
+        mediaPlayer.seek(Duration.seconds(songTimeSlider.getValue()));
+        isUserChangingSongTime = false;
+    }
+
+    public void songTimeSliderMouseDown(MouseEvent mouseEvent) {
+        isUserChangingSongTime = true;
+        lblSongTimeSinceStart.setText(humanReadableTime(songTimeSlider.getValue()));
+    }
     public void moveSongUpMouseUp(MouseEvent mouseEvent){
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
