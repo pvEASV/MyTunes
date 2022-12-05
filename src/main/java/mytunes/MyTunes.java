@@ -5,14 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import mytunes.be.Genre;
-import mytunes.be.Playlist;
-import mytunes.dal.dao.GenreDAO;
-import mytunes.dal.dao.PlaylistDAO;
-import mytunes.dal.dao.SongDAO;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class MyTunes extends Application {

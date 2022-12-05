@@ -15,7 +15,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
@@ -48,6 +47,7 @@ public class MainWindowController {
     @FXML
     private TableColumn<Playlist, String> playlistNameColumn, totalLengthColumn;
 
+    private Stage thisStage;
     private boolean isPlaying = false;
     private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
@@ -71,6 +71,10 @@ public class MainWindowController {
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volume);
 
+        setupListeners();
+    }
+
+    public void setupListeners(){
         // without this listener there can be error for unknown duration
         mediaPlayer.setOnReady(() -> {
             setMediaPlayerBehavior();
