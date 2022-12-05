@@ -12,8 +12,7 @@ import java.util.List;
 public class Model {
     private final ObservableList<Genre> genres;
     private final ObservableList<Playlist> playlists;
-    private final ObservableList<Song> allSongs;
-    private final ObservableList<Song> songsInPlaylist;
+    private final ObservableList<Song> allSongs, songsInPlaylist;
     private Song songToEdit;
     private Playlist playlistToEdit;
     private LogicManager bll = new LogicManager();
@@ -107,6 +106,7 @@ public class Model {
     public List<Song> search(String query){
         return bll.filterSongs(query);
     }
+
     public void loadSongsToMemory(){
         bll.loadSongsToMemory();
     }

@@ -5,15 +5,13 @@ import java.util.List;
 public class Artist {
     private int id;
     private String name;
-    private String country;
     private List<Genre> genres;
 
     public Artist(String name) {
         this.name = name;
     }
 
-    public Artist(int artistId, String artistName) {
-    }
+    public Artist(int artistId, String artistName) {}
 
     public void setId(int id) {
         this.id = id;
@@ -28,14 +26,6 @@ public class Artist {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public List<Genre> getGenres() {

@@ -36,7 +36,7 @@ public class MainWindowController {
     @FXML
     private TextField filterTextField;
     @FXML
-    private ImageView playPauseButton, moveSongUpButton, moveSongDownButton, moveSongToPlaylistButton;
+    private ImageView playPauseButton;
     @FXML
     private TableView<Song> allSongsTableView;
     @FXML
@@ -156,7 +156,6 @@ public class MainWindowController {
         Node source = (Node) actionEvent.getSource();
 
         String type = "";
-
         if (source.getId().equals("playlistDeleteButton"))
             type = "playlist";
         else if (source.getId().equals("songsDeleteButton"))
@@ -308,14 +307,10 @@ public class MainWindowController {
         if (song == null || playlist == null) {
             new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
         } else {
-            if (allSongsTableView.getSelectionModel().getSelectedIndex() == 0)
-                new Alert(Alert.AlertType.ERROR, "Can't move this song up").showAndWait();
-            else{
-                model.moveSongToPlaylist(song, playlist);
-                model.updateIndexInPlaylist(song, playlist);
-                showSongsInPlaylist();
-                //TODO update tableview duration column
-            }
+            model.moveSongToPlaylist(song, playlist);
+            model.updateIndexInPlaylist(song, playlist);
+            showSongsInPlaylist();
+            showAllPlaylists();
         }
     }
 
@@ -329,7 +324,7 @@ public class MainWindowController {
         seconds = seconds % 60;
         return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
-        private void showSongsInPlaylist(){
+    private void showSongsInPlaylist(){
         songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 
@@ -351,7 +346,6 @@ public class MainWindowController {
         });
     }
 
-
     public void songTimeSliderMouseUp(MouseEvent mouseEvent) {
         mediaPlayer.seek(Duration.seconds(songTimeSlider.getValue()));
         isUserChangingSongTime = false;
@@ -361,6 +355,7 @@ public class MainWindowController {
         isUserChangingSongTime = true;
         lblSongTimeSinceStart.setText(humanReadableTime(songTimeSlider.getValue()));
     }
+
     public void moveSongUpMouseUp(MouseEvent mouseEvent){
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
@@ -368,8 +363,12 @@ public class MainWindowController {
         if (song == null)
             new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
         else{
-            model.moveSongInPlaylist(song, playlist, true, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
-            songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+            if (songsInPlaylistListView.getSelectionModel().getSelectedIndex() == 0)
+                new Alert(Alert.AlertType.ERROR, "Can't move this song up").showAndWait();
+            else{
+                model.moveSongInPlaylist(song, playlist, true, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
+                songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+            }
         }
     }
 

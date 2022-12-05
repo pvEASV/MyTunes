@@ -57,9 +57,13 @@ public class LogicManager {
     }
 
     public List<Song> filterSongs(String query){
+        removeSongsFromMemory();
+        loadSongsToMemory();
         List<Song> filteredSongs = new ArrayList<>();
         for (Song song : allSongs){
-            if (song.getTitle().toLowerCase().trim().contains(query.toLowerCase())){
+            if (song.getTitle().toLowerCase().trim().contains(query.toLowerCase().trim())
+                    || song.getArtist().getName().toLowerCase().trim().contains(query.toLowerCase().trim())
+                    || song.getGenre().getName().toLowerCase().trim().contains(query.toLowerCase().trim())){
                 filteredSongs.add(song);
             }
         }

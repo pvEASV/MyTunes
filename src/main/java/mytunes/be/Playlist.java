@@ -8,9 +8,8 @@ import java.util.List;
 
 public class Playlist {
     private int id, totalLength;
-    private String name;
+    private String name, totalLengthAsAString;
     private HashMap<Integer, Song> songs;
-    private String totalLengthAsAString;
     private List<Song> songsInPlaylist;
     PlaylistDAO playlistDAO = new PlaylistDAO();
 
