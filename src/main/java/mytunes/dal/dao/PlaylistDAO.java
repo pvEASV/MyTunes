@@ -54,8 +54,11 @@ public class PlaylistDAO {
     }
 
     public void deletePlaylist(Playlist playlist) {
-        String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + playlist.getId();
+        int id = playlist.getId();
+        String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + id;
+        String sql_delete = "DELETE FROM SONG_PLAYLIST_LINK WHERE playlistID = " + id;
         try  {
+            SQLQuery(sql_delete);
             SQLQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
