@@ -90,10 +90,6 @@ public class LogicManager {
         playlistDAO.moveSongInPlaylist(song.getId(), playlist.getId(), moveUp, songIndex);
     }
 
-    public void updateIndexInPlaylist(Song song, Playlist playlist){
-        playlistDAO.updateIndexInPlaylist(song.getId(), playlist.getId());
-    }
-
     public void deleteSongInPlaylist(Song song, Playlist playlist, int songIndex){
         playlistDAO.deleteSongInPlaylist(song.getId(), playlist.getId(), songIndex);
     }

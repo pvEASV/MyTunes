@@ -138,10 +138,6 @@ public class Model {
         songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
     }
 
-    public void updateIndexInPlaylist(Song song, Playlist playlist){
-        bll.updateIndexInPlaylist(song, playlist);
-    }
-
     public void deleteSongInPlaylist(Song song, Playlist playlist, int songIndex){
         bll.deleteSongInPlaylist(song, playlist, songIndex);
     }

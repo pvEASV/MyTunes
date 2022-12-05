@@ -87,6 +87,9 @@ public class MainWindowController {
         });
     }
 
+    /**
+     * Responsible for updating the tableview of all songs
+     */
     private void showAllSongs() {
         allSongsTableView.refresh();
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -96,6 +99,9 @@ public class MainWindowController {
         allSongsTableView.getItems().setAll(model.getAllSongs());
     }
 
+    /**
+     * Responsible for updating the tableview of all playlists
+     */
     private void showAllPlaylists(){
         playlistsTableView.refresh();
         playlistNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -120,6 +126,7 @@ public class MainWindowController {
             mediaPlayer.play();
         }
     }
+
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
     }
@@ -217,7 +224,7 @@ public class MainWindowController {
 
     /**
      * Called when the user clicks the "new" button under playlist section
-     * It opens new window for creating new playlist
+     * Opens a new window for creating new playlist
      * @param actionEvent The action event that triggered this method
      * @throws IOException thrown when the fxml file is not found
      */
@@ -230,13 +237,19 @@ public class MainWindowController {
         newPlaylistViewController.setModel(model);
     }
 
+    /**
+     * Called when the user clicks the "edit" button under playlist section
+     * Opens a new window for editing the playlist's name
+     * @param actionEvent The action event that triggered this method
+     * @throws IOException Thrown when the fxml file is not found
+     */
     public void playlistEditButtonAction(ActionEvent actionEvent) throws IOException {
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
         if (playlist == null)
             new Alert(Alert.AlertType.ERROR, "Please select a playlist to edit").showAndWait();
         else {
             model.setPlaylistToEdit(playlist);
-            Object[] objects = openNewWindow("Edit Playlist", "views/edit-playlist-view.fxml", "images/playlist.png");
+            Object[] objects = openNewWindow("Edit Playlist", "views/new-playlist-view.fxml", "images/playlist.png");
             FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
             Window window = (Window) objects[1];
             window.setOnHiding(event -> showAllPlaylists());
@@ -267,6 +280,12 @@ public class MainWindowController {
         newSongViewController.setComboBoxItems();
     }
 
+    /**
+     * Called when the user clicks the "edit" button under song section
+     * Opens a new window for editing the song data
+     * @param actionEvent The action event that triggered this method
+     * @throws IOException Thrown when the fxml file is not found
+     */
     public void songEditButtonAction(ActionEvent actionEvent) throws IOException {
         Song selectedSong = allSongsTableView.getSelectionModel().getSelectedItem();
         if (selectedSong == null) {
@@ -301,6 +320,12 @@ public class MainWindowController {
         ImageViewMouseDown(mouseEvent);
     }
 
+    /**
+     * Called after clicking an arrow for moving songs from all songs tableview to playlist listview
+     * On releasing the mouse button, the selected song is moved into a selected playlist
+     * Throws an alert, if the user hasn't selected a song or a playlist
+     * @param mouseEvent The mouse event that triggered this method
+     */
     public void moveSongToPlaylistMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
         Song song = allSongsTableView.getSelectionModel().getSelectedItem();
@@ -309,7 +334,6 @@ public class MainWindowController {
             new Alert(Alert.AlertType.ERROR, "Please select a song and a playlist").showAndWait();
         } else {
             model.moveSongToPlaylist(song, playlist);
-            model.updateIndexInPlaylist(song, playlist);
             showSongsInPlaylist();
             showAllPlaylists();
         }
@@ -357,6 +381,13 @@ public class MainWindowController {
         lblSongTimeSinceStart.setText(humanReadableTime(songTimeSlider.getValue()));
     }
 
+    /**
+     * Called after clicking an arrow for moving songs up in a playlist listview
+     * On releasing the mouse button, the selected song is moved up by an index
+     * Throws an alert, if the user hasn't selected a song to move
+     * Throws an alert, if the user tries to move the first song
+     * @param mouseEvent The mouse event that triggered this method
+     */
     public void moveSongUpMouseUp(MouseEvent mouseEvent){
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
@@ -377,6 +408,13 @@ public class MainWindowController {
         ImageViewMouseDown(mouseEvent);
     }
 
+    /**
+     * Called after clicking an arrow for moving songs down in a playlist listview
+     * On releasing the mouse button, the selected song is moved up down an index
+     * Throws an alert, if the user hasn't selected a song to move
+     * Throws an alert, if the user tries to move the last song
+     * @param mouseEvent The mouse event that triggered this method
+     */
     public void moveSongDownMouseUp(MouseEvent mouseEvent){
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
@@ -384,8 +422,12 @@ public class MainWindowController {
         if (song == null)
             new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
         else{
-            model.moveSongInPlaylist(song, playlist, false, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
-            songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+            if (songsInPlaylistListView.getSelectionModel().getSelectedIndex() == songsInPlaylistListView.getItems().size()-1)
+                new Alert(Alert.AlertType.ERROR, "Can't move this song down").showAndWait();
+            else{
+                model.moveSongInPlaylist(song, playlist, false, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
+                songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
+            }
         }
     }
 

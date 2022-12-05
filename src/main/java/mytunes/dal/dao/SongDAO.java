@@ -3,16 +3,17 @@ package mytunes.dal.dao;
 import mytunes.be.Artist;
 import mytunes.be.Genre;
 import mytunes.be.Song;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static mytunes.dal.DAOTools.*;
 
 public class SongDAO {
 
+    /**
+     * @return a list of all available songs from the database
+     */
     public List<Song> getAllSongs() {
         ArrayList<Song> allSongs =new ArrayList<>();
         String sql = "SELECT * FROM ALL_SONGS";
@@ -33,6 +34,7 @@ public class SongDAO {
             return null;
         }
     }
+
     public Song getSong(int id) {
         String sql = "SELECT * FROM ALL_SONGS WHERE id = " + id;
         try (ResultSet rs = SQLQueryWithRS(sql)){
@@ -43,6 +45,11 @@ public class SongDAO {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Adds a song to the database, if a song with this name already exists, an alert window is called
+     * @param song The song to add
+     */
     public void addSong(Song song){
         String sql = "INSERT INTO ALL_SONGS (title, artist, genre, filepath, duration) " +
                         "VALUES ('" + validateStringForSQL(song.getTitle()) + "', '"
@@ -57,6 +64,7 @@ public class SongDAO {
             {
                 System.out.println("Song already exists");
                 //throw new IOException("Song already exists");
+                //TODO open an Alert
             } else
                 throw new RuntimeException(e);
         }
@@ -87,5 +95,4 @@ public class SongDAO {
             throw new RuntimeException(e);
         }
     }
-
 }

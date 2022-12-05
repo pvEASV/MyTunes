@@ -12,6 +12,7 @@ import static mytunes.dal.DAOTools.*;
 import static mytunes.dal.DAOTools.SQLQueryWithRS;
 
 public class PlaylistDAO {
+
     public List<Playlist> getAllPlaylists() {
         ArrayList<Playlist> allPlaylists = new ArrayList<>();
         String sql = "SELECT * FROM ALL_PLAYLISTS";
@@ -75,6 +76,11 @@ public class PlaylistDAO {
         }
     }
 
+    /**
+     *
+     * @param playlistID the id of a playlist we're getting the songs from
+     * @return a list of all songs in playlist sorted by their index
+     */
     public List<Song> getAllSongsInPlaylist(int playlistID) {
         ArrayList<Song> songsInPlaylist = new ArrayList<>();
         String sql = "SELECT * FROM SONG_PLAYLIST_LINK WHERE playlistId = " + playlistID + " ORDER BY songIndex";
@@ -96,15 +102,25 @@ public class PlaylistDAO {
         try {
             SQLQuery(sql);
             calculateTotalLength(playlistID);
+            updateIndexInPlaylist(songID, playlistID);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * If possible to move the song up/down by an index, the indices of the selected song and the song before/after will be swapped.
+     * @param songID the ID of the song that should be moved
+     * @param playlistID the ID of the playlist, where we're moving the song
+     * @param moveUp indicates, whether we're moving the song up or down in the playlist
+     * @param songIndex the current index of the song
+     */
     public void moveSongInPlaylist(int songID, int playlistID, boolean moveUp, int songIndex){
         String sql;
         try {
-            if (songIndex == 0)
+            if (songIndex == 0 && moveUp)
+                return;
+            if (songIndex == getAllSongsInPlaylist(playlistID).size()-1 && !moveUp)
                 return;
             int newSongIndex;
             if (moveUp)
@@ -133,8 +149,13 @@ public class PlaylistDAO {
         }
     }
 
-    public void updateIndexInPlaylist(int songID, int playlistID){
-        int songIndex = getAllSongsInPlaylist(playlistID).size()-1;
+    /**
+     * When a song is added to database, this method updates its index in the playlist (always added to the end)
+     * @param songID the song, whose index we are updating
+     * @param playlistID the playlist, where the song is located
+     */
+    private void updateIndexInPlaylist(int songID, int playlistID){
+        int songIndex = getAllSongsInPlaylist(playlistID).size();
         String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
                 + playlistID + " AND songId = " + songID + "AND songIndex IS NULL";
         try{
@@ -144,9 +165,14 @@ public class PlaylistDAO {
         }
     }
 
+    /**
+     * Deletes the song from a playlist and moves all consequential songs by one index forward
+     * @param songID the ID of the song we're deleting
+     * @param playlistID the ID of the playlist, in which we're deleting the song
+     * @param songIndex the current index of the song
+     */
     public void deleteSongInPlaylist(int songID, int playlistID, int songIndex){
         List<Song> allSongsInPlaylist = getAllSongsInPlaylist(playlistID);
-
         try{
             String sql = "DELETE FROM SONG_PLAYLIST_LINK WHERE playlistID = " + playlistID +
                     "AND songID = " + songID + "AND songIndex = " + songIndex;
@@ -165,6 +191,11 @@ public class PlaylistDAO {
         }
     }
 
+    /**
+     * Calculates the total length of the playlist from the durations of the songs
+     * within the playlist and updates the total length in the database
+     * @param playlistID the ID of the playlist we're calculating the length of
+     */
     private void calculateTotalLength(int playlistID){
         List<Song> songsInPlaylist = getAllSongsInPlaylist(playlistID);
         try {
