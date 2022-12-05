@@ -305,7 +305,7 @@ public class MainWindowController {
         double minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
         return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
-
+    }
         private void showSongsInPlaylist(){
         songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
@@ -337,6 +337,7 @@ public class MainWindowController {
     public void songTimeSliderMouseDown(MouseEvent mouseEvent) {
         isUserChangingSongTime = true;
         lblSongTimeSinceStart.setText(humanReadableTime(songTimeSlider.getValue()));
+    }
     public void moveSongUpMouseUp(MouseEvent mouseEvent){
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
