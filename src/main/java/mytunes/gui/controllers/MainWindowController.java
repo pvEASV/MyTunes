@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import mytunes.MyTunes;
 import mytunes.be.Playlist;
 import mytunes.be.Song;
@@ -51,6 +52,7 @@ public class MainWindowController {
     //TODO change the duration to mm:ss
 
     private boolean isPlaying = false;
+    private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
 
     private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
@@ -268,20 +270,39 @@ public class MainWindowController {
         return fxmlLoader;
     }
 
-    private String humanReadableTime(javafx.util.Duration duration) {
-        int seconds = (int) duration.toSeconds();
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
+    private String humanReadableTime(double seconds) {
+        double hours = seconds / 3600;
+        double minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
 
     private void setMediaPlayerBehavior(){
-        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration()));
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-            lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().subtract(newValue)));
-            songTimeSlider.setValue(newValue.toSeconds());
+            //lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds() - newValue.toSeconds()));
+            if (!isUserChangingSongTime) {
+                lblSongTimeSinceStart.setText(humanReadableTime(newValue.toSeconds()));
+                songTimeSlider.setValue(newValue.toSeconds());
+            }
         });
+        songTimeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (isUserChangingSongTime) {
+                lblSongTimeSinceStart.setText(humanReadableTime(newValue.doubleValue()));
+            }
+        });
+    }
+
+
+    public void songTimeSliderMouseUp(MouseEvent mouseEvent) {
+        mediaPlayer.seek(Duration.seconds(songTimeSlider.getValue()));
+        isUserChangingSongTime = false;
+    }
+
+    public void songTimeSliderMouseDown(MouseEvent mouseEvent) {
+        isUserChangingSongTime = true;
+        lblSongTimeSinceStart.setText(humanReadableTime(songTimeSlider.getValue()));
     }
 }
