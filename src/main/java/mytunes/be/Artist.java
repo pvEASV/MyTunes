@@ -5,13 +5,15 @@ import java.util.List;
 public class Artist {
     private int id;
     private String name;
-    private List<Genre> genres;
 
     public Artist(String name) {
         this.name = name;
     }
 
-    public Artist(int artistId, String artistName) {}
+    public Artist(int artistId, String artistName) {
+        this(artistName);
+        this.id = artistId;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -26,18 +28,6 @@ public class Artist {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public void addGenre(Genre genre) {
-        genres.add(genre);
     }
 
     @Override

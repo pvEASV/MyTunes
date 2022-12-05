@@ -1,10 +1,9 @@
 package mytunes.be;
 
 public class Song {
-    private int id;
+    private int id, duration;
     private String title, path, durationAsAString;
     private Artist artist;
-    private int duration;
     private Genre genre;
 
     public Song(int id, String title, Artist artist, Genre genre, String path, int duration) {

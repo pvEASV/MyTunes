@@ -9,34 +9,19 @@ import java.util.List;
 public class Playlist {
     private int id, totalLength;
     private String name, totalLengthAsAString;
-    private HashMap<Integer, Song> songs;
-    private List<Song> songsInPlaylist;
-    PlaylistDAO playlistDAO = new PlaylistDAO();
-
-    public Playlist(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public Playlist(String name){
         this.name = name;
-        songsInPlaylist = new ArrayList<>();
-        songsInPlaylist.addAll(playlistDAO.getAllSongsInPlaylist(id));
-        calculateLength();
     }
 
-    public Playlist(String name, HashMap<Integer, Song> songs) {
-        this.name = name;
-        this.songs = songs;
-    }
-
-    public Playlist(int id, String playlistName, int totalLength) {
+    public Playlist(int id, String name) {
+        this(name);
         this.id = id;
-        this.name = playlistName;
+    }
+
+    public Playlist(int id, String name, int totalLength) {
+        this(id, name);
         this.totalLength = totalLength;
-        songsInPlaylist = new ArrayList<>();
-        songsInPlaylist.addAll(playlistDAO.getAllSongsInPlaylist(id));
-        calculateLength();
     }
 
     public int getId() {
@@ -53,18 +38,6 @@ public class Playlist {
 
     public int getTotalLength() {
         return totalLength;
-    }
-
-    public void setTotalLength(int totalLength) {
-        this.totalLength = totalLength;
-    }
-
-    public HashMap<Integer, Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(HashMap<Integer, Song> songs) {
-        this.songs = songs;
     }
 
     @Override
@@ -98,15 +71,5 @@ public class Playlist {
     public String getTotalLengthAsAString(){  // used by PropertyValueFactory
         convertSecondsIntoString(this.totalLength);
         return totalLengthAsAString;
-    }
-
-    public List<Song> getSongsInPlaylist(){
-        return songsInPlaylist;
-    }
-
-    private void calculateLength(){
-        for (Song song : songsInPlaylist){
-            totalLength += song.getDuration();
-        }
     }
 }

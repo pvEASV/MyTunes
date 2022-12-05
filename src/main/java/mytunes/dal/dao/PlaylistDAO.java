@@ -14,7 +14,6 @@ import static mytunes.dal.DAOTools.SQLQueryWithRS;
 public class PlaylistDAO {
     public List<Playlist> getAllPlaylists() {
         ArrayList<Playlist> allPlaylists = new ArrayList<>();
-
         String sql = "SELECT * FROM ALL_PLAYLISTS";
         try (ResultSet rs = SQLQueryWithRS(sql)){
             while (rs.next()) {
@@ -96,6 +95,7 @@ public class PlaylistDAO {
         String sql = "INSERT INTO SONG_PLAYLIST_LINK (songId, playlistId) VALUES (" + songID + ", " + playlistID + ")";
         try {
             SQLQuery(sql);
+            calculateTotalLength(playlistID);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -159,7 +159,22 @@ public class PlaylistDAO {
                         + playlistID + " AND songId = " + songID + "AND songIndex = " + i;
                 SQLQuery(sql);
             }
+            calculateTotalLength(playlistID);
         } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void calculateTotalLength(int playlistID){
+        List<Song> songsInPlaylist = getAllSongsInPlaylist(playlistID);
+        try {
+            int totalLength = 0;
+            for (Song song : songsInPlaylist){
+                totalLength += song.getDuration();
+            }
+            String sql = "UPDATE ALL_PLAYLISTS SET total_length = " + totalLength + " WHERE id = " + playlistID;
+            SQLQuery(sql);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }

@@ -74,7 +74,6 @@ public class MainWindowController {
             setMediaPlayerBehavior();
         });
 
-
         // Listener for loading all songs when filter text field is put in focus
         filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
@@ -90,7 +89,7 @@ public class MainWindowController {
 
     private void showAllSongs() {
         allSongsTableView.refresh();
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title")); // cals getDurationAsAString() method
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("durationAsAString")); // cals getDurationAsAString() method
@@ -210,6 +209,7 @@ public class MainWindowController {
                 int songIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
                 model.deleteSongInPlaylist(song, playlist, songIndex);
                 showSongsInPlaylist();
+                showAllPlaylists();
             }
         }
     }
