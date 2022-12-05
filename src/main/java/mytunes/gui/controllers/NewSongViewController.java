@@ -68,7 +68,11 @@ public class NewSongViewController {
     public void btnFileChooseAction(ActionEvent actionEvent) {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
+
         fileChooser.setTitle("Choose a song file");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") + "Music"));
+        // TODO - Open path thats in the textfield
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("MP3 files", "*.mp3"));
         File file = fileChooser.showOpenDialog(stage);
         if (file != null)
             txtFieldFile.setText(file.getAbsolutePath());
