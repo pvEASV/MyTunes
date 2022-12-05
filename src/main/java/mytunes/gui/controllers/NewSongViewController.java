@@ -27,12 +27,12 @@ public class NewSongViewController {
     private ComboBox<String> comboBoxGenre;
 
     private Model model = null;
-
     private boolean isEditing = false;
 
     public void setModel(Model model) {
         this.model = model;
     }
+
     @FXML
     public void initialize() {
         isEditing = false;

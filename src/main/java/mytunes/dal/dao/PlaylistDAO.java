@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mytunes.dal.DAOTools.*;
+import static mytunes.dal.DAOTools.SQLQueryWithRS;
 
 public class PlaylistDAO {
     public List<Playlist> getAllPlaylists() {
@@ -59,6 +60,7 @@ public class PlaylistDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        //TODO not working anymore because of the linking database
     }
 
     public void updatePlaylist(Playlist playlist) {
@@ -97,15 +99,34 @@ public class PlaylistDAO {
         }
     }
 
-    public void updateSongOrder(int songID, int playlistID, int songIndex){
-        String sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
-                + playlistID + " AND songId = " + songID;
+    public void moveSongInPlaylist(int songID, int playlistID, boolean moveUp, int songIndex){
+        String sql;
         try {
-            SQLQuery(sql);
+            int newSongIndex;
+            if (moveUp)
+                newSongIndex = songIndex-1;
+            else
+                newSongIndex = songIndex+1;
+
+            ResultSet rs = SQLQueryWithRS("SELECT * FROM SONG_PLAYLIST_LINK WHERE songIndex = " + newSongIndex + "AND playlistId = " + playlistID);
+            int songAtIndexBeforeID = 0;
+            while (rs.next()) {
+                songAtIndexBeforeID = rs.getInt("songId");
+                System.out.println(songAtIndexBeforeID);
+            }
+
+            if (songAtIndexBeforeID != songID){
+                sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + newSongIndex + " WHERE playlistId = "
+                        + playlistID + " AND songId = " + songID + "AND songIndex = " + songIndex;
+                SQLQuery(sql);
+
+                sql = "UPDATE SONG_PLAYLIST_LINK SET songIndex = " + songIndex + " WHERE playlistId = "
+                        + playlistID + " AND songId = " + songAtIndexBeforeID + "AND songIndex = " + newSongIndex;
+                SQLQuery(sql);
+            }
         }
         catch (SQLException ex){
             ex.printStackTrace();
         }
     }
-    //TODO keep track of the song's indexes in a playlist, will finish tomorrow
 }

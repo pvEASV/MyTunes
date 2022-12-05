@@ -173,6 +173,7 @@ public class MainWindowController {
         NewPlaylistViewController newPlaylistViewController = fxmlLoader.getController();
         newPlaylistViewController.setModel(model);
     }
+
     public void playlistEditButtonAction(ActionEvent actionEvent) throws IOException {
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
         if (playlist == null)
@@ -253,6 +254,8 @@ public class MainWindowController {
         } else {
             model.moveSongToPlaylist(song, playlist);
             showSongsInPlaylist();
+            //TODO update tableview duration column
+            //TODO set the song's current index within playlist inside the database
         }
     }
 
@@ -268,11 +271,10 @@ public class MainWindowController {
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
         Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
-        int songIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
         if (song == null)
             new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
         else{
-            model.moveSongUpInPlaylist(song, playlist, songIndex);
+            model.moveSongInPlaylist(song, playlist, true, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
             songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
         }
     }
@@ -285,11 +287,10 @@ public class MainWindowController {
         resetOpacity(mouseEvent);
         Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
         Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
-        int songIndex = songsInPlaylistListView.getEditingIndex();
         if (song == null)
             new Alert(Alert.AlertType.ERROR, "Please select a song to move").showAndWait();
         else{
-            //model.moveSongDownInPlaylist(song, playlist, songIndex);
+            model.moveSongInPlaylist(song, playlist, false, songsInPlaylistListView.getSelectionModel().getSelectedIndex());
             songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlist));
         }
     }

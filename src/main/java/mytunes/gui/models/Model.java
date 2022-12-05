@@ -7,7 +7,6 @@ import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.bll.LogicManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
@@ -133,8 +132,8 @@ public class Model {
         return titles;
     }
 
-    public void moveSongUpInPlaylist(Song song, Playlist playlist, int songIndex) {
-        bll.moveSongUp(song, playlist, songIndex);
+    public void moveSongInPlaylist(Song song, Playlist playlist, Boolean moveUp, int songIndex) {
+        bll.moveSongInPlaylist(song, playlist, moveUp, songIndex);
         songsInPlaylist.clear();
         songsInPlaylist.addAll(bll.getSongsInPlaylist(playlist));
     }

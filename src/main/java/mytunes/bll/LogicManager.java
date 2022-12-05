@@ -82,7 +82,7 @@ public class LogicManager {
         return playlistDAO.getAllSongsInPlaylist(playlist.getId());
     }
 
-    public void moveSongUp(Song song, Playlist playlist, int songIndex) {
-        playlistDAO.updateSongOrder(song.getId(), playlist.getId(), songIndex);
+    public void moveSongInPlaylist(Song song, Playlist playlist, Boolean moveUp, int songIndex) {
+        playlistDAO.moveSongInPlaylist(song.getId(), playlist.getId(), moveUp, songIndex);
     }
 }
