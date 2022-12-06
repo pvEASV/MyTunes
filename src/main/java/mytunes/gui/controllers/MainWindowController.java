@@ -24,6 +24,7 @@ import mytunes.gui.models.Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,7 +59,9 @@ public class MainWindowController {
     private MediaPlayer mediaPlayer;
 
     private double volume = 0.05;
-    private int timeSinceStart = 0;
+    private int currentSongIndex = 0;
+    private List<Song> queue = model.getAllSongs();
+
 
     @FXML
     public void initialize() {
@@ -117,6 +120,8 @@ public class MainWindowController {
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        currentSongIndex = currentSongIndex == queue.size() - 1 ? 0 : currentSongIndex + 1;
+        playSong(queue.get(currentSongIndex));
     }
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
@@ -443,9 +448,10 @@ public class MainWindowController {
     }
 
     public void allSongsTableViewMouseClicked(MouseEvent mouseEvent) {
-        Song song = allSongsTableView.getSelectionModel().getSelectedItem();
-        if (mouseEvent.getClickCount() == 2 && (song != null)) {
-            playSong(song);
+        queue = model.getAllSongs();
+        currentSongIndex = allSongsTableView.getSelectionModel().getSelectedIndex();
+        if (mouseEvent.getClickCount() == 2 && (queue.get(currentSongIndex) != null)) {
+            playSong(queue.get(currentSongIndex));
         }
     }
 
@@ -475,10 +481,11 @@ public class MainWindowController {
     }
 
     public void songsInPlaylistListviewMouseClicked(MouseEvent mouseEvent) {
-        Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
-        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
-        if (mouseEvent.getClickCount() == 2 && (song != null)) {
-            playSong(song);
+        if (mouseEvent.getClickCount() == 2) {
+            Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+            currentSongIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
+            queue = model.getSongsInPlaylist(playlist);
+            playSong(queue.get(currentSongIndex));
         }
     }
 }
