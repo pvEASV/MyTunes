@@ -29,6 +29,10 @@ import java.util.Optional;
 
 public class MainWindowController {
     @FXML
+    private Label currentArtistLabel;
+    @FXML
+    private Label currentSongsLabel;
+    @FXML
     private ListView<Song> songsInPlaylistListView;
     @FXML
     private Label lblSongTimeUntilEnd, lblSongTimeSinceStart;
@@ -52,12 +56,7 @@ public class MainWindowController {
     private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
 
-    private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
-
-    private Media media;
     private MediaPlayer mediaPlayer;
-    private File file = new File(onOpenPath);
-    private final String MEDIA_URL = file.toURI().toString();
 
     private double volume = 0.05;
     private int timeSinceStart = 0;
@@ -67,19 +66,10 @@ public class MainWindowController {
         showAllSongs();
         showAllPlaylists();
 
-        media = new Media(MEDIA_URL);
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(volume);
-
         setupListeners();
     }
 
     public void setupListeners(){
-        // without this listener there can be error for unknown duration
-        mediaPlayer.setOnReady(() -> {
-            setMediaPlayerBehavior();
-        });
-
         // Listener for loading all songs when filter text field is put in focus
         filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
@@ -364,8 +354,10 @@ public class MainWindowController {
     }
 
     private void setMediaPlayerBehavior(){
+        // without this there can be error for unknown duration
+        mediaPlayer.setOnReady(() -> {
+
         mediaPlayer.setVolume(volume);
-        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
@@ -379,6 +371,7 @@ public class MainWindowController {
             if (isUserChangingSongTime) {
                 lblSongTimeSinceStart.setText(humanReadableTime(newValue.doubleValue()));
             }
+        });
         });
     }
 
@@ -459,6 +452,9 @@ public class MainWindowController {
             isPlaying = false;
         }
         mediaPlayer = new MediaPlayer(new Media(Paths.get(song.getPath()).toUri().toString()));
+        currentSongsLabel.setText(song.getTitle());
+        currentArtistLabel.setText(song.getArtist().getName());
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         setMediaPlayerBehavior();
         playPauseMusic();
 
