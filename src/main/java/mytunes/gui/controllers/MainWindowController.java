@@ -69,6 +69,9 @@ public class MainWindowController {
         showAllPlaylists();
 
         setupListeners();
+        allSongsTableView.setPlaceholder(new Label("No songs found"));
+        playlistsTableView.setPlaceholder(new Label("No playlists found"));
+        songsInPlaylistListView.setPlaceholder(new Label("No songs in playlist"));
     }
 
     public void setupListeners(){
@@ -356,7 +359,10 @@ public class MainWindowController {
                 }
             }
         });
-        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
+        Playlist selectedPlaylist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (selectedPlaylist != null) {
+            songsInPlaylistListView.setItems(model.getSongsInPlaylist(selectedPlaylist));
+        }
     }
 
     private void setMediaPlayerBehavior(){
