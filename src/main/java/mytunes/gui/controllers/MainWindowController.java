@@ -21,7 +21,6 @@ import mytunes.be.Playlist;
 import mytunes.be.Song;
 import mytunes.gui.models.Model;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
@@ -123,10 +122,14 @@ public class MainWindowController {
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        currentSongIndex = currentSongIndex == queue.size() - 1 ? 0 : currentSongIndex + 1;
+        playSong(queue.get(currentSongIndex));
     }
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        currentSongIndex = currentSongIndex == 0 ? queue.size()-1 : currentSongIndex - 1;
+        playSong(queue.get(currentSongIndex));
     }
 
     /**
@@ -166,26 +169,30 @@ public class MainWindowController {
         // check if the user has selected a playlist or a song
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
-        if (type.equals("song")){
-            if (allSongsTableView.getSelectionModel().getSelectedItem() == null){
-                errorAlert.setHeaderText("No song selected");
-                errorAlert.setContentText("Please select a song to delete");
-                errorAlert.showAndWait();
-                return;
+        switch (type) {
+            case "song" -> {
+                if (allSongsTableView.getSelectionModel().getSelectedItem() == null) {
+                    errorAlert.setHeaderText("No song selected");
+                    errorAlert.setContentText("Please select a song to delete");
+                    errorAlert.showAndWait();
+                    return;
+                }
             }
-        } else if (type.equals("playlist")){
-            if (playlistsTableView.getSelectionModel().getSelectedItem() == null){
-                errorAlert.setHeaderText("No playlist selected");
-                errorAlert.setContentText("Please select a playlist to delete");
-                errorAlert.showAndWait();
-                return;
+            case "playlist" -> {
+                if (playlistsTableView.getSelectionModel().getSelectedItem() == null) {
+                    errorAlert.setHeaderText("No playlist selected");
+                    errorAlert.setContentText("Please select a playlist to delete");
+                    errorAlert.showAndWait();
+                    return;
+                }
             }
-        } else if (type.equals("song in playlist")){
-            if (songsInPlaylistListView.getSelectionModel().getSelectedItem() == null){
-                errorAlert.setHeaderText("No song selected");
-                errorAlert.setContentText("Please select a song to delete");
-                errorAlert.showAndWait();
-                return;
+            case "song in playlist" -> {
+                if (songsInPlaylistListView.getSelectionModel().getSelectedItem() == null) {
+                    errorAlert.setHeaderText("No song selected");
+                    errorAlert.setContentText("Please select a song to delete");
+                    errorAlert.showAndWait();
+                    return;
+                }
             }
         }
 
@@ -368,7 +375,7 @@ public class MainWindowController {
 
         mediaPlayer.setVolume(volume);
         mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);;
+            mediaPlayer.seek(Duration.ZERO);
             playPauseMusic();
         });
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
