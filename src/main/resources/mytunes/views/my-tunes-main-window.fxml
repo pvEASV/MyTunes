@@ -10,7 +10,7 @@
       <TextField fx:id="filterTextField" layoutX="586.0" layoutY="14.0" onKeyTyped="#filterOnKeyTyped" prefHeight="25.0" prefWidth="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="15.0" />
       <Slider fx:id="songTimeSlider" layoutX="265.0" layoutY="655.0" onMousePressed="#songTimeSliderMouseDown" onMouseReleased="#songTimeSliderMouseUp" prefHeight="15.0" prefWidth="600.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" />
       <Slider fx:id="volumeControlSlider" layoutX="721.0" layoutY="476.0" orientation="VERTICAL" prefHeight="110.0" prefWidth="14.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0" />
-      <ListView fx:id="songsInPlaylistListView" layoutX="311.0" layoutY="65.0" prefHeight="400.0" prefWidth="230.0" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="65.0" />
+      <ListView fx:id="songsInPlaylistListView" layoutX="311.0" layoutY="65.0" onMouseClicked="#songsInPlaylistListviewMouseClicked" prefHeight="400.0" prefWidth="230.0" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="65.0" />
       <Label layoutX="14.0" layoutY="45.0" prefHeight="20.0" prefWidth="50.0" text="Playlists" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="45.0">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -23,7 +23,7 @@
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="20.0" layoutY="645.0" prefHeight="20.0" prefWidth="150.0" text="Current song" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="20.0">
+      <Label fx:id="currentSongsLabel" layoutX="20.0" layoutY="645.0" prefHeight="20.0" prefWidth="150.0" text="Current song" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="20.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
@@ -49,7 +49,7 @@
             <Image url="@../images/rewind.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblSongTimeUntilEnd" layoutX="911.0" layoutY="653.0" text="Song length" AnchorPane.bottomAnchor="30.0" />
+      <Label fx:id="lblSongTimeUntilEnd" layoutX="911.0" layoutY="653.0" text="00:00:00" AnchorPane.bottomAnchor="30.0" />
       <Label fx:id="lblSongTimeSinceStart" layoutX="245.0" layoutY="653.0" text="00:00:00" AnchorPane.bottomAnchor="30.0" />
       <TableView fx:id="allSongsTableView" layoutX="456.0" layoutY="64.0" onMouseClicked="#allSongsTableViewMouseClicked" prefHeight="400.0" prefWidth="600.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="65.0">
         <columns>
@@ -70,7 +70,7 @@
             <Image url="@../images/magnifying-glass.png" />
          </image>
       </ImageView>
-      <Label layoutX="13.0" layoutY="662.0" prefHeight="4.0" prefWidth="114.0" text="Current artist" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+      <Label fx:id="currentArtistLabel" layoutX="13.0" layoutY="662.0" prefHeight="4.0" prefWidth="114.0" text="Current artist" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>

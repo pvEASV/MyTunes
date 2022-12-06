@@ -24,10 +24,15 @@ import mytunes.gui.models.Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class MainWindowController {
+    @FXML
+    private Label currentArtistLabel;
+    @FXML
+    private Label currentSongsLabel;
     @FXML
     private ListView<Song> songsInPlaylistListView;
     @FXML
@@ -47,39 +52,29 @@ public class MainWindowController {
     @FXML
     private TableColumn<Playlist, String> playlistNameColumn, totalLengthColumn;
 
-    private Stage thisStage;
     private boolean isPlaying = false;
     private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
 
-    private final String onOpenPath = "src/main/java/mytunes/Bring_me_the_Horizon_-_Drown.mp3";
-
-    private Media media;
     private MediaPlayer mediaPlayer;
-    private File file = new File(onOpenPath);
-    private final String MEDIA_URL = file.toURI().toString();
 
     private double volume = 0.05;
-    private int timeSinceStart = 0;
+    private int currentSongIndex = 0;
+    private List<Song> queue = model.getAllSongs();
+
 
     @FXML
     public void initialize() {
         showAllSongs();
         showAllPlaylists();
 
-        media = new Media(MEDIA_URL);
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(volume);
-
         setupListeners();
+        allSongsTableView.setPlaceholder(new Label("No songs found"));
+        playlistsTableView.setPlaceholder(new Label("No playlists found"));
+        songsInPlaylistListView.setPlaceholder(new Label("No songs in playlist"));
     }
 
     public void setupListeners(){
-        // without this listener there can be error for unknown duration
-        mediaPlayer.setOnReady(() -> {
-            setMediaPlayerBehavior();
-        });
-
         // Listener for loading all songs when filter text field is put in focus
         filterTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
@@ -123,6 +118,8 @@ public class MainWindowController {
         resetOpacity(mouseEvent);
         playPauseMusic();
     }
+
+
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
@@ -359,12 +356,21 @@ public class MainWindowController {
                 }
             }
         });
-        songsInPlaylistListView.setItems(model.getSongsInPlaylist(playlistsTableView.getSelectionModel().getSelectedItem()));
+        Playlist selectedPlaylist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (selectedPlaylist != null) {
+            songsInPlaylistListView.setItems(model.getSongsInPlaylist(selectedPlaylist));
+        }
     }
 
     private void setMediaPlayerBehavior(){
+        // without this there can be error for unknown duration
+        mediaPlayer.setOnReady(() -> {
+
         mediaPlayer.setVolume(volume);
-        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);;
+            playPauseMusic();
+        });
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
@@ -378,6 +384,7 @@ public class MainWindowController {
             if (isUserChangingSongTime) {
                 lblSongTimeSinceStart.setText(humanReadableTime(newValue.doubleValue()));
             }
+        });
         });
     }
 
@@ -446,9 +453,10 @@ public class MainWindowController {
     }
 
     public void allSongsTableViewMouseClicked(MouseEvent mouseEvent) {
-        Song song = allSongsTableView.getSelectionModel().getSelectedItem();
-        if (mouseEvent.getClickCount() == 2 && (song != null)) {
-            playSong(song);
+        queue = model.getAllSongs();
+        currentSongIndex = allSongsTableView.getSelectionModel().getSelectedIndex();
+        if (mouseEvent.getClickCount() == 2 && (queue.get(currentSongIndex) != null)) {
+            playSong(queue.get(currentSongIndex));
         }
     }
 
@@ -458,6 +466,9 @@ public class MainWindowController {
             isPlaying = false;
         }
         mediaPlayer = new MediaPlayer(new Media(Paths.get(song.getPath()).toUri().toString()));
+        currentSongsLabel.setText(song.getTitle());
+        currentArtistLabel.setText(song.getArtist().getName());
+        lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         setMediaPlayerBehavior();
         playPauseMusic();
 
@@ -474,9 +485,12 @@ public class MainWindowController {
         }
     }
 
-    private int getFileInformation(){
-        Double d = media.getDuration().toSeconds();
-        int duration = (int) Math.round(d);
-        return duration;
+    public void songsInPlaylistListviewMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+            currentSongIndex = songsInPlaylistListView.getSelectionModel().getSelectedIndex();
+            queue = model.getSongsInPlaylist(playlist);
+            playSong(queue.get(currentSongIndex));
+        }
     }
 }
