@@ -123,14 +123,10 @@ public class MainWindowController {
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
-        currentSongIndex = currentSongIndex == queue.size() - 1 ? 0 : currentSongIndex + 1;
-        playSong(queue.get(currentSongIndex));
     }
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
-        currentSongIndex = currentSongIndex == 0 ? queue.size()-1 : currentSongIndex - 1;
-        playSong(queue.get(currentSongIndex));
     }
 
     /**
@@ -347,6 +343,7 @@ public class MainWindowController {
         seconds = seconds % 60;
         return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
+
     private void showSongsInPlaylist(){
         songsInPlaylistListView.setCellFactory(param -> new ListCell<>() {
             @Override
