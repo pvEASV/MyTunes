@@ -2,7 +2,6 @@ package mytunes.gui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,6 @@ import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 public class NewSongViewController {
     @FXML
@@ -30,7 +28,6 @@ public class NewSongViewController {
     @FXML
     private ComboBox<String> comboBoxGenre;
 
-    private Media media;
     private Model model = null;
     private boolean isEditing = false;
     private int duration;
@@ -91,6 +88,7 @@ public class NewSongViewController {
                 txtFieldDuration.setText(humanReadableTime(duration));
                 txtFieldTitle.setText((String) media.getMetadata().get("title"));
                 txtFieldArtist.setText((String) media.getMetadata().get("artist"));
+                comboBoxGenre.setValue((String) media.getMetadata().get("genre"));
             });
         }
     }
