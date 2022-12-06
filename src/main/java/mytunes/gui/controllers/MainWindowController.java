@@ -51,7 +51,6 @@ public class MainWindowController {
     @FXML
     private TableColumn<Playlist, String> playlistNameColumn, totalLengthColumn;
 
-    private Stage thisStage;
     private boolean isPlaying = false;
     private boolean isUserChangingSongTime = false;
     private final Model model = new Model();
@@ -358,6 +357,10 @@ public class MainWindowController {
         mediaPlayer.setOnReady(() -> {
 
         mediaPlayer.setVolume(volume);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);;
+            playPauseMusic();
+        });
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
