@@ -126,6 +126,8 @@ public class MainWindowController {
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        currentSongIndex = currentSongIndex == 0 ? queue.size()-1 : currentSongIndex - 1;
+        playSong(queue.get(currentSongIndex));
     }
 
     /**
