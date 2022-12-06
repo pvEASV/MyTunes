@@ -473,4 +473,12 @@ public class MainWindowController {
             mediaPlayer.play();
         }
     }
+
+    public void songsInPlaylistListviewMouseClicked(MouseEvent mouseEvent) {
+        Song song = songsInPlaylistListView.getSelectionModel().getSelectedItem();
+        Playlist playlist = playlistsTableView.getSelectionModel().getSelectedItem();
+        if (mouseEvent.getClickCount() == 2 && (song != null)) {
+            playSong(song);
+        }
+    }
 }
