@@ -122,12 +122,20 @@ public class MainWindowController {
 
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        forwardMusic();
+    }
+
+    private void forwardMusic() {
         currentSongIndex = currentSongIndex == queue.size() - 1 ? 0 : currentSongIndex + 1;
         playSong(queue.get(currentSongIndex));
     }
 
     public void rewindMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
+        rewindMusic();
+    }
+
+    private void rewindMusic() {
         currentSongIndex = currentSongIndex == 0 ? queue.size()-1 : currentSongIndex - 1;
         playSong(queue.get(currentSongIndex));
     }
@@ -374,10 +382,7 @@ public class MainWindowController {
         mediaPlayer.setOnReady(() -> {
 
         mediaPlayer.setVolume(volume);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            playPauseMusic();
-        });
+        mediaPlayer.setOnEndOfMedia(this::forwardMusic);
         songTimeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         lblSongTimeUntilEnd.setText(humanReadableTime(mediaPlayer.getTotalDuration().toSeconds()));
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
