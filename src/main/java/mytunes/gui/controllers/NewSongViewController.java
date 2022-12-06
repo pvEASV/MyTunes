@@ -2,6 +2,7 @@ package mytunes.gui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mytunes.MyTunes;
@@ -19,6 +22,7 @@ import mytunes.gui.models.Model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class NewSongViewController {
     @FXML
@@ -26,8 +30,10 @@ public class NewSongViewController {
     @FXML
     private ComboBox<String> comboBoxGenre;
 
+    private Media media;
     private Model model = null;
     private boolean isEditing = false;
+    private int duration;
 
     public void setModel(Model model) {
         this.model = model;
@@ -71,11 +77,22 @@ public class NewSongViewController {
 
         fileChooser.setTitle("Choose a song file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") + "Music"));
-        // TODO - Open path thats in the textfield
+        // TODO - Open path that's in the textfield
         fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("MP3 files", "*.mp3"));
         File file = fileChooser.showOpenDialog(stage);
-        if (file != null)
+        if (file != null){
             txtFieldFile.setText(file.getAbsolutePath());
+
+            //waits until media is ready, fills out available data for the user
+            Media media = new Media(file.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setOnReady(() -> {
+                double duration = media.getDuration().toSeconds();
+                txtFieldDuration.setText(humanReadableTime(duration));
+                txtFieldTitle.setText((String) media.getMetadata().get("title"));
+                txtFieldArtist.setText((String) media.getMetadata().get("artist"));
+            });
+        }
     }
 
     /**
@@ -86,24 +103,17 @@ public class NewSongViewController {
      */
     public void btnSaveAction(ActionEvent actionEvent) {
         // Cleaning up the input and setting variables
-        //TODO: make this a separate method
         String title = txtFieldTitle.getText().trim();
         String filepath = txtFieldFile.getText().trim();
         String artist = txtFieldArtist.getText().trim();
         String genre = comboBoxGenre.getValue();
-        int duration = validateDurationInput(txtFieldDuration.getText().trim());
-        //TODO wrong duration input
 
         // Validating the input
-        if (title.isEmpty() || filepath.isEmpty() || duration == -1) {
+        if (title.isEmpty() || filepath.isEmpty()) {
             if (title.isEmpty())
                 txtFieldTitle.setPromptText("Field must not be empty!");
             if (filepath.isEmpty())
                 txtFieldFile.setPromptText("Field must not be empty!");
-            if (duration == -1) {
-                txtFieldDuration.setText("");
-                txtFieldDuration.promptTextProperty().setValue("Invalid input! Duration in format mm:ss");
-            }
         } else {
             if (isEditing)
                 model.updateSong(new Song(title, new Artist(artist), new Genre(genre), filepath, duration));
@@ -125,28 +135,6 @@ public class NewSongViewController {
         node.getScene().getWindow().hide();
     }
 
-    /**
-     * Checks, whether the user-input duration of the song is valid and converts it into seconds
-     *@param input The duration of the song
-     */
-    private int validateDurationInput(String input) {
-        //TODO: this can create a lot of false positives which will fail in parseInt
-        String[] inputArray = input.split(":");
-        int duration = -1;
-        if (inputArray.length == 3){ // hh:mm:ss
-            duration = Integer.parseInt(inputArray[0])*3600; // 3600 is seconds in an hour
-            duration += Integer.parseInt(inputArray[1])*60; // 60 is seconds in a minute
-            duration += Integer.parseInt(inputArray[2]);
-        }
-        else if (inputArray.length == 2){ // mm:ss
-            duration = Integer.parseInt(inputArray[0])*60; // seconds in a minute
-            duration += Integer.parseInt(inputArray[1]);
-        } else if (inputArray.length == 1){ // ss
-            duration = Integer.parseInt(inputArray[0]);
-        }
-        return duration;
-    }
-
     public void setIsEditing() {
         isEditing = true;
         Song songToEdit = model.getSongToEdit();
@@ -165,5 +153,12 @@ public class NewSongViewController {
         for (Genre g : genres){
             comboBoxGenre.getItems().add(g.getName());
         }
+    }
+
+    private String humanReadableTime(double seconds) {
+        double hours = seconds / 3600;
+        double minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
 }

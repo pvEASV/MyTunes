@@ -124,8 +124,6 @@ public class MainWindowController {
         playPauseMusic();
     }
 
-
-
     public void forwardMouseUp(MouseEvent mouseEvent) {
         resetOpacity(mouseEvent);
     }
@@ -348,6 +346,7 @@ public class MainWindowController {
         seconds = seconds % 60;
         return String.format("%02d:%02d:%02d", (int) hours, (int) minutes, (int) seconds);
     }
+
     private void showSongsInPlaylist(){
         songsInPlaylistListView.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -473,5 +472,11 @@ public class MainWindowController {
             isPlaying = true;
             mediaPlayer.play();
         }
+    }
+
+    private int getFileInformation(){
+        Double d = media.getDuration().toSeconds();
+        int duration = (int) Math.round(d);
+        return duration;
     }
 }
