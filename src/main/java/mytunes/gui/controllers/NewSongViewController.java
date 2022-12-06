@@ -87,7 +87,8 @@ public class NewSongViewController {
             Media media = new Media(file.toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setOnReady(() -> {
-                double duration = media.getDuration().toSeconds();
+                double d = media.getDuration().toSeconds();
+                duration = (int) d;
                 txtFieldDuration.setText(humanReadableTime(duration));
                 txtFieldTitle.setText((String) media.getMetadata().get("title"));
                 txtFieldArtist.setText((String) media.getMetadata().get("artist"));
@@ -142,7 +143,7 @@ public class NewSongViewController {
         txtFieldArtist.setText(songToEdit.getArtist().getName());
         comboBoxGenre.setValue(songToEdit.getGenre().getName());
         txtFieldFile.setText(songToEdit.getPath());
-        txtFieldDuration.setText("" + songToEdit.getDuration());
+        txtFieldDuration.setText(humanReadableTime(songToEdit.getDuration()));
     }
 
     public void setComboBoxItems(){
