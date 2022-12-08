@@ -56,9 +56,9 @@ public class PlaylistDAO {
     public void deletePlaylist(Playlist playlist) {
         int id = playlist.getId();
         String sql = "DELETE FROM ALL_PLAYLISTS WHERE id =" + id;
-        String sql_delete = "DELETE FROM SONG_PLAYLIST_LINK WHERE playlistID = " + id;
+        String sql_delete_from_link = "DELETE FROM SONG_PLAYLIST_LINK WHERE playlistID = " + id;
         try  {
-            SQLQuery(sql_delete);
+            SQLQuery(sql_delete_from_link);
             SQLQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,7 +83,7 @@ public class PlaylistDAO {
      */
     public List<Song> getAllSongsInPlaylist(int playlistID) {
         ArrayList<Song> songsInPlaylist = new ArrayList<>();
-        String sql = "SELECT * FROM SONG_PLAYLIST_LINK WHERE playlistId = " + playlistID + " ORDER BY songIndex";
+        String sql = "SELECT playlistID, songID, songIndex FROM SONG_PLAYLIST_LINK WHERE playlistId = " + playlistID + " ORDER BY songIndex";
         try (ResultSet rs = SQLQueryWithRS(sql)) {
             while (rs.next()) {
                 int songId = rs.getInt("songId");
